@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration PUBLIC
+  "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+  <properties resource="mybatis-generator/generatorConfig.properties"/>
+  <context id="mysql" targetRuntime="MyBatis3Simple" defaultModelType="flat">
+    <property name="javaFileEncoding" value="UTF-8"/>
+    <property name="useMapperCommentGenerator" value="true"/>
+
+    <!-- 格式化java代码 -->
+    <property name="javaFormatter" value="org.mybatis.generator.api.dom.DefaultJavaFormatter"/>
+    <!-- 格式化XML代码 -->
+    <property name="xmlFormatter" value="org.mybatis.generator.api.dom.DefaultXmlFormatter"/>
+
+    <!--通用 Mapper 插件，可以生成带注解的实体类-->
+    <plugin type="tk.mybatis.mapper.generator.MapperPlugin">
+      <property name="mappers" value="tk.mybatis.mapper.common.Mapper"/>
+      <property name="caseSensitive" value="true"/>
+      <property name="forceAnnotation" value="true"/>
+      <property name="beginningDelimiter" value="`"/>
+      <property name="endingDelimiter" value="`"/>
+      <!--配置是否启用lombok, 支持如下6种注解Getter,Setter,Data,ToString,Accessors,EqualsAndHashCode-->
+      <!--当配置 Data 后，Getter Setter ToString EqualsAndHashCode 会被忽略-->
+      <property name="lombok" value="Data,Accessors"/>
+    </plugin>
+
+    <!-- 自动为entity生成swagger2文档-->
+    <plugin type="mybatis.generator.plugins.GeneratorSwagger2Doc">
+      <property name="apiModelAnnotationPackage" value="io.swagger.annotations.ApiModel" />
+      <property name="apiModelPropertyAnnotationPackage" value="io.swagger.annotations.ApiModelProperty" />
+    </plugin>
+
+
+    <!--序列化-->
+    <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
+    <!--toString-->
+<!--    <plugin type="org.mybatis.generator.plugins.ToStringPlugin"/>-->
+
+    <!--generate entity时，生成hashcode和equals方法-->
+<!--    <plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin"/>-->
+
+
+    <!-- 生成自动注释 -->
+<!--    <commentGenerator>-->
+<!--      <property name="suppressAllComments" value="false"/>-->
+<!--      <property name="suppressDate" value="false"/>-->
+<!--      <property name="addRemarkComments" value="true"/>-->
+<!--      <property name="dateFormat" value="true"/>-->
+<!--    </commentGenerator>-->
+
+
+    <!-- 数据库连接信息 -->
+    <jdbcConnection driverClass="${jdbc_driver}"
+      connectionURL="${jdbc_url}"
+      userId="${jdbc_user}"
+      password="${jdbc_password}"/>
+
+    <!--非必须，类型处理器，在数据库类型和java类型之间的转换控制-->
+    <javaTypeResolver>
+      <!-- 默认情况下数据库中的 decimal，bigInt 在 Java 对应是 sql 下的 BigDecimal 类 -->
+      <!-- 不是 double 和 long 类型 -->
+      <!-- 使用常用的基本类型代替 sql 包下的引用类型 -->
+      <property name="forceBigDecimals" value="false"/>
+    </javaTypeResolver>
+
+    <!-- targetPackage：生成的实体类所在的包 -->
+    <!-- targetProject：生成的实体类所在的硬盘位置 -->
+    <javaModelGenerator targetPackage="org.zuoyu.model"
+      targetProject="${project}">
+      <!-- 是否允许子包 -->
+      <property name="enableSubPackages" value="false"/>
+      <!-- 是否对modal添加构造函数 -->
+      <property name="constructorBased" value="true"/>
+      <!-- 是否清理从数据库中查询出的字符串左右两边的空白字符 -->
+      <property name="trimStrings" value="true"/>
+      <!-- 建立modal对象是否不可改变 即生成的modal对象不会有setter方法，只有构造方法 -->
+      <property name="immutable" value="false"/>
+    </javaModelGenerator>
+
+    <!-- targetPackage 和 targetProject：生成的 mapper 文件的包和位置 -->
+    <sqlMapGenerator targetPackage="mapper"
+      targetProject="${resources}">
+      <!-- 针对数据库的一个配置，是否把 schema 作为字包名 -->
+      <property name="enableSubPackages" value="false"/>
+    </sqlMapGenerator>
+
+    <!-- targetPackage 和 targetProject：生成的 interface 文件的包和位置 -->
+    <javaClientGenerator type="XMLMAPPER" targetPackage="org.zuoyu.dao"
+      targetProject="${project}">
+      <!-- 针对 oracle 数据库的一个配置，是否把 schema 作为字包名 -->
+      <property name="enableSubPackages" value="false"/>
+    </javaClientGenerator>
+
+
+    <table tableName="TB_BANK_CARD" domainObjectName="BankCard">
+    </table>
+
+  </context>
+</generatorConfiguration>

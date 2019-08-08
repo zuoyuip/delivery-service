@@ -1,0 +1,41 @@
+spring:
+  main:
+    web-application-type: SERVLET
+  application:
+    name: delivery-service
+  profiles:
+    include: c3p0
+    active: dev
+  datasource:
+    type: com.mchange.v2.c3p0.ComboPooledDataSource
+logging:
+  config: classpath:logback-spring.xml
+  level:
+    tk.mybatis: info
+mapper:
+  not-empty: true
+  identity: MYSQL
+  style: camelhumpanduppercase
+  enable-method-annotation: false
+  enum-as-simple-type: true
+  safe-delete: true
+  safe-update: true
+
+mybatis:
+  mapper-locations: classpath:mapper/*Mapper.xml
+  base-packages: org.zuoyu.dao
+  type-aliases-package: org.zuoyu.model
+  configuration:
+    lazy-loading-enabled: true
+    cache-enabled: true
+    aggressive-lazy-loading: true
+    multiple-result-sets-enabled: true
+    use-generated-keys: true
+    use-column-label: true
+    auto-mapping-behavior: partial
+    default-executor-type: simple
+    map-underscore-to-camel-case: true
+    local-cache-scope: session
+    jdbc-type-for-null: null
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+    default-enum-type-handler: org.apache.ibatis.type.StringTypeHandler
