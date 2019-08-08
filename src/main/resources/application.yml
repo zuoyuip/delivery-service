@@ -14,7 +14,6 @@ logging:
     tk.mybatis: info
 mapper:
   not-empty: true
-  identity: MYSQL
   style: camelhumpanduppercase
   enable-method-annotation: false
   enum-as-simple-type: true
