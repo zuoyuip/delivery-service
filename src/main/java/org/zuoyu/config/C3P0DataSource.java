@@ -7,6 +7,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.Scope;
 
 /**
@@ -16,6 +17,7 @@ import org.springframework.context.annotation.Scope;
  **/
 public class C3P0DataSource {
 
+  @Profile("prod")
   @Bean
   @Primary
   @Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
