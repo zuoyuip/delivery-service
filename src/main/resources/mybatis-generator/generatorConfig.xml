@@ -94,8 +94,20 @@
     </javaClientGenerator>
 
 
-    <table tableName="TB_BANK_CARD" domainObjectName="BankCard">
+<!--    <table tableName="TB_DELIVERY" domainObjectName="Delivery">-->
+<!--    </table>-->
+
+<!--    <table tableName="TB_REVIEW" domainObjectName="Review">-->
+<!--    </table>-->
+
+<!--    <table tableName="TB_SUGGEST" domainObjectName="Suggest">-->
+<!--    </table>-->
+
+    <table tableName="TB_USER" domainObjectName="User">
     </table>
+
+<!--    <table tableName="TB_USER_INFO" domainObjectName="UserInfo">-->
+<!--    </table>-->
 
   </context>
 </generatorConfiguration>

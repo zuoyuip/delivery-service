@@ -10,7 +10,7 @@ spring:
     name: delivery-service
   profiles:
     include: c3p0
-    active: dev
+    active: prod
   jackson:
     date-format: yyyy-MM-dd HH:mm
   servlet:

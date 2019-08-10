@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import java.time.Duration;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
@@ -49,6 +52,9 @@ public class CacheConfig extends CachingConfigurerSupport {
     objectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
     objectMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
     objectMapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+    objectMapper.registerModule(new ParameterNamesModule())
+        .registerModule(new Jdk8Module())
+        .registerModule(new JavaTimeModule());
     return objectMapper;
   }
 
@@ -75,6 +81,8 @@ public class CacheConfig extends CachingConfigurerSupport {
     redisTemplate.setValueSerializer(jackson2JsonRedisSerializer);
     redisTemplate.setHashKeySerializer(stringRedisSerializer);
     redisTemplate.setHashValueSerializer(jackson2JsonRedisSerializer);
+    redisTemplate.setDefaultSerializer(jackson2JsonRedisSerializer);
+    redisTemplate.setEnableDefaultSerializer(true);
     redisTemplate.afterPropertiesSet();
     return redisTemplate;
   }

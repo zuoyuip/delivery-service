@@ -64,14 +64,14 @@
   </logger>
 
   <!--指定最基础的日志输出级别-->
-  <springProfile name="dev">
+  <springProfile name="prod">
     <root level="INFO">
       <appender-ref ref="consoleLog"/>
     </root>
   </springProfile>
 
 
-  <springProfile name="prod">
+  <springProfile name="dev">
     <root level="INFO">
       <appender-ref ref="fileLog"/>
     </root>
