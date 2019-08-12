@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.zuoyu.dao.UserInfoMapper">
+  <resultMap id="BaseResultMap" type="org.zuoyu.model.UserInfo">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <constructor>
+      <arg column="USER_INFO_ID" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="USER_INFO_NAME" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="USER_INFO_COLLEGE" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="USER_INFO_SUBJECT" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="USER_INFO_CLASS" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="USER_INFO_STUDENT_NUMBER" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="USER_INFO_PHOTO_URL" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="USER_INFO_THUMB_PHOTO_URL" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+</mapper>

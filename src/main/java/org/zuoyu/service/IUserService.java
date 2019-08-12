@@ -13,10 +13,24 @@ public interface IUserService {
 
 
   /**
-   * 根据用户名称查找安全用户
+   * 根据用户手机号查找安全用户
    *
-   * @param userName - 用户名称
+   * @param userPhone - 用户手机号
    * @return - 安全用户
    */
-  User getUserDetailsByUserName(String userName);
+  User getUserDetailsByUserPhone(String userPhone);
+
+  /**
+   * 添加一个安全账户
+   * @param user - 安全账户
+   * @return - 插入的个数
+   */
+  int insertUser(User user);
+
+  /**
+   * 检测是否存在同样的手机帐号
+   * @param userPhone - 手机帐号
+   * @return - true/false
+   */
+  boolean isPresenceByUserPhone(String userPhone);
 }

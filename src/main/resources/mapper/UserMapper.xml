@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.zuoyu.dao.UserMapper">
+  <resultMap id="BaseResultMap" type="org.zuoyu.model.User">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <constructor>
+      <arg column="USER_ID" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="USER_PHONE" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="USER_PASSWORD" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="USER_IS_VALID" javaType="java.lang.Boolean" jdbcType="BIT" />
+      <arg column="USER_IS_ENABLED" javaType="java.lang.Boolean" jdbcType="BIT" />
+      <arg column="USER_IS_ACCOUNT_NON_EXPIRED" javaType="java.lang.Boolean" jdbcType="BIT" />
+      <arg column="USER_IS_CREDENTIALS_NON_EXPIRED" javaType="java.lang.Boolean" jdbcType="BIT" />
+      <arg column="USER_IS_ACCOUNT_NON_LOCKED" javaType="java.lang.Boolean" jdbcType="BIT" />
+      <arg column="USER_IS_BY_REVIEW" javaType="java.lang.Boolean" jdbcType="BIT" />
+      <arg column="USER_IS_SUBMIT_REVIEW" javaType="java.lang.Boolean" jdbcType="BIT" />
+      <arg column="USER_INFO_ID" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="REVIEW_ID" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+
+  <select id="countByUserPhone" parameterType="java.lang.String" resultType="java.lang.Integer">
+    SELECT COUNT(DELIVERY.TB_USER.USER_PHONE) FROM DELIVERY.TB_USER WHERE DELIVERY.TB_USER.USER_PHONE = #{userPhone}
+  </select>
+</mapper>

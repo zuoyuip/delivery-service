@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.zuoyu.dao.ReviewMapper">
+  <resultMap id="BaseResultMap" type="org.zuoyu.model.Review">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <constructor>
+      <arg column="REVIEW_ID" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="REVIEW_DATE" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="REVIEW_IS_BY" javaType="java.lang.Boolean" jdbcType="BIT" />
+      <arg column="USER_ID" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="REVIEW_MESSAGE" javaType="java.lang.String" jdbcType="LONGVARCHAR" />
+    </constructor>
+  </resultMap>
+</mapper>

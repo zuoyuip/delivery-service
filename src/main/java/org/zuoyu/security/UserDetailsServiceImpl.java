@@ -28,6 +28,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
   @Override
   public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-    return iUserService.getUserDetailsByUserName(s);
+    return (UserDetails) iUserService.getUserDetailsByUserPhone(s);
   }
 }

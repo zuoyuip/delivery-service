@@ -12,6 +12,7 @@ import springfox.documentation.spring.web.plugins.Docket;
 /**
  * swagger配置.
  *
+ * http://localhost:8080/swagger-ui.html
  * @author zuoyu
  **/
 public class SwaggerConfig {

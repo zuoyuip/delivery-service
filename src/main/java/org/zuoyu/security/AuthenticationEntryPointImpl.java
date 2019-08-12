@@ -26,5 +26,6 @@ public class AuthenticationEntryPointImpl implements AuthenticationEntryPoint {
     PrintWriter responseWriter = response.getWriter();
     responseWriter.write("{\"status\":401,\"message\":\"" + "您还没有登录，请先登录" + "\"}");
     responseWriter.flush();
+    responseWriter.close();
   }
 }

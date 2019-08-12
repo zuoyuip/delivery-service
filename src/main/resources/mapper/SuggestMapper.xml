@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.zuoyu.dao.SuggestMapper">
+  <resultMap id="BaseResultMap" type="org.zuoyu.model.Suggest">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <constructor>
+      <arg column="SUGGEST_ID" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="SUGGEST_USER_ID" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="SUGGEST_CONTENT" javaType="java.lang.String" jdbcType="LONGVARCHAR" />
+    </constructor>
+  </resultMap>
+</mapper>

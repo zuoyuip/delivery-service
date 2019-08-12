@@ -26,5 +26,6 @@ public class LogoutSuccessHandlerImpl implements LogoutSuccessHandler {
     PrintWriter responseWriter = response.getWriter();
     responseWriter.write("{\"status\":200,\"message\":\"注销成功\"}");
     responseWriter.flush();
+    responseWriter.close();
   }
 }

@@ -27,5 +27,6 @@ public class AccessDeniedHandlerImpl implements AccessDeniedHandler {
     responseWriter.print(
         "{\"status\":401,\"message\":\"" + "对不起，您没有访问权限" + "\"}");
     responseWriter.flush();
+    responseWriter.close();
   }
 }

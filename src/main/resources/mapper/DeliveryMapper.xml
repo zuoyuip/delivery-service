@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.zuoyu.dao.DeliveryMapper">
+  <resultMap id="BaseResultMap" type="org.zuoyu.model.Delivery">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <constructor>
+      <arg column="DELIVERY_ID" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="DELIVERY_NAME" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="DELIVERY_CODE" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="DELIVERY_USER_NAME" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="DELIVERY_USER_SEX" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="DELIVERY_ADDRESS" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="DELIVERY_GOAL_ADDRESS" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="DELIVERY_WEIGHT" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="DELIVERY_REWARD" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="DELIVERY_REMARK" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="DELIVERY_DATE" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="DELIVERY_USER_ID" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="DELIVERY_DELIVERY_USER_ID" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="DELIVERY_STATUS" javaType="java.lang.Boolean" jdbcType="BIT" />
+    </constructor>
+  </resultMap>
+</mapper>

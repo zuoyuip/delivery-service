@@ -26,5 +26,6 @@ public class AuthenticationSuccessHandlerImpl implements AuthenticationSuccessHa
     PrintWriter responseWriter = response.getWriter();
     responseWriter.write("{\"status\":200,\"message\":\"登录成功\"}");
     responseWriter.flush();
+    responseWriter.close();
   }
 }
