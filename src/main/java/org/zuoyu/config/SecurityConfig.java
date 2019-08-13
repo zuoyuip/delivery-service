@@ -81,10 +81,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .authorizeRequests()
         .requestMatchers(CorsUtils::isPreFlightRequest)
         .permitAll()
-        .antMatchers(HttpMethod.GET, "/**")
+        .antMatchers(HttpMethod.POST, "user")
+        .permitAll()
+        .antMatchers("/**")
         .permitAll();
     super.configure(http);
   }
+
 
   @Bean("passwordEncoder")
   @Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)

@@ -4,12 +4,14 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AccountExpiredException;
 import org.springframework.security.authentication.CredentialsExpiredException;
 import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
@@ -20,6 +22,7 @@ import org.springframework.stereotype.Service;
  *
  * @author zuoyu
  **/
+@Slf4j
 @Service("authenticationFailureHandler")
 @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class AuthenticationFailureHandlerImpl implements AuthenticationFailureHandler {
@@ -45,7 +48,12 @@ public class AuthenticationFailureHandlerImpl implements AuthenticationFailureHa
       writer(responseWriter, "{\"status\":403,\"message\":\"您的凭证已过期\"}");
       return;
     }
-    writer(responseWriter, "{\"status\":403,\"message\":\"登录失败，密码或帐号错误\"}");
+    if (exception.fillInStackTrace().getClass() == InternalAuthenticationServiceException.class) {
+      writer(responseWriter, "{\"status\":403,\"message\":\"登录失败，密码或帐号错误\"}");
+      return;
+    }
+    log.error(exception.getLocalizedMessage(), exception);
+    writer(responseWriter, "{\"status\":500,\"message\":\"登录功能异常\"}");
   }
 
   private void writer(PrintWriter printWriter, String content) {

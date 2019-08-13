@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.zuoyu.util.Result;
@@ -84,13 +83,6 @@ public class CustomExceptionHandler {
   }
 
 
-  @ExceptionHandler(InternalAuthenticationServiceException.class)
-  public ResponseEntity<Result> handlerInternalAuthenticationServiceException(
-      InternalAuthenticationServiceException e) {
-    return exceptionFormat(e.getMessage());
-  }
-
-
   /**
    * 格式化
    */
@@ -101,6 +93,6 @@ public class CustomExceptionHandler {
 
   private ResponseEntity<Result> exceptionFormat(int code, String message) {
     log.error("errorCode is : " + code + "\t" + "errorMessage is : " + message);
-    return ResponseEntity.status(code).body(Result.message(message));
+    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Result.message(message));
   }
 }

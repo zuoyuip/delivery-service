@@ -6,7 +6,13 @@ import java.io.Serializable;
 import javax.persistence.*;
 import lombok.Data;
 import lombok.experimental.Accessors;
+import org.zuoyu.util.UUIDGenerated;
+import tk.mybatis.mapper.annotation.KeySql;
 
+/**
+ * 安全用户
+ * @author zuoyu
+ */
 @ApiModel(value="org.zuoyu.model.User")
 @Data
 @Accessors(chain = true)
@@ -15,6 +21,7 @@ public class User implements Serializable {
     /**
      * 安全用户唯一标识
      */
+    @KeySql(genId = UUIDGenerated.class)
     @Column(name = "`USER_ID`")
     @ApiModelProperty(value="userId安全用户唯一标识")
     private String userId;
