@@ -14,7 +14,7 @@ import tk.mybatis.mapper.annotation.KeySql;
  * 包裹信息
  * @author zuoyu
  */
-@ApiModel(value="org.zuoyu.model.Delivery")
+@ApiModel(value="Delivery", description = "包裹信息")
 @Data
 @Accessors(chain = true)
 @Table(name = "`TB_DELIVERY`")
@@ -22,6 +22,7 @@ public class Delivery implements Serializable {
     /**
      * 包裹信息-唯一标识
      */
+    @Id
     @KeySql(genId = UUIDGenerated.class)
     @Column(name = "`DELIVERY_ID`")
     @ApiModelProperty(value="deliveryId包裹信息-唯一标识")

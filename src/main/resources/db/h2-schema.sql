@@ -71,7 +71,7 @@ create table if not exists TB_DELIVERY
     DELIVERY_WEIGHT           varchar(20) not null comment '包裹信息-包裹重量',
     DELIVERY_REWARD           varchar(20) not null comment '包裹信息-包裹的赏金',
     DELIVERY_REMARK           tinytext    null comment '包裹信息-备注',
-    DELIVERY_DATE             datetime    not null comment '包裹信息-日期',
+    DELIVERY_DATE             datetime    null comment '包裹信息-日期',
     DELIVERY_USER_ID          varchar(40) not null comment '包裹信息-发布者的安全用户唯一标识',
     DELIVERY_DELIVERY_USER_ID varchar(40) null comment '包裹信息-包裹工作者的安全用户唯一标识',
     DELIVERY_STATUS           tinyint(1)  not null comment '包裹信息-包裹是否被接单',

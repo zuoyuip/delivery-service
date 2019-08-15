@@ -13,7 +13,7 @@ import tk.mybatis.mapper.annotation.KeySql;
  * 用户信息
  * @author zuoyu
  */
-@ApiModel(value="org.zuoyu.model.UserInfo")
+@ApiModel(value="UserInfo", description = "用户详细信息")
 @Data
 @Accessors(chain = true)
 @Table(name = "`TB_USER_INFO`")
@@ -21,6 +21,7 @@ public class UserInfo implements Serializable {
     /**
      * 用户信息的唯一标识
      */
+    @Id
     @KeySql(genId = UUIDGenerated.class)
     @Column(name = "`USER_INFO_ID`")
     @ApiModelProperty(value="userInfoId用户信息的唯一标识")

@@ -1,5 +1,6 @@
 package org.zuoyu.service.impl;
 
+import java.util.List;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -48,5 +49,10 @@ public class UserServiceImpl implements IUserService {
   public boolean isPresenceByUserPhone(String userPhone) {
     int count = userMapper.countByUserPhone(userPhone);
     return count > 0;
+  }
+
+  @Override
+  public List<User> listUser() {
+    return userMapper.selectAll();
   }
 }

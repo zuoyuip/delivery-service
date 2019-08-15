@@ -13,7 +13,7 @@ import tk.mybatis.mapper.annotation.KeySql;
  * 建议反馈
  * @author zuoyu
  */
-@ApiModel(value="org.zuoyu.model.Suggest")
+@ApiModel(value="Suggest", description = "建议反馈")
 @Data
 @Accessors(chain = true)
 @Table(name = "`TB_SUGGEST`")
@@ -21,6 +21,7 @@ public class Suggest implements Serializable {
     /**
      * 建议反馈的唯一标识
      */
+    @Id
     @KeySql(genId = UUIDGenerated.class)
     @Column(name = "`SUGGEST_ID`")
     @ApiModelProperty(value="suggestId建议反馈的唯一标识")

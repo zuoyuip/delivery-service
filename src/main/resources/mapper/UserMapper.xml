@@ -22,6 +22,6 @@
   </resultMap>
 
   <select id="countByUserPhone" parameterType="java.lang.String" resultType="java.lang.Integer">
-    SELECT COUNT(DELIVERY.TB_USER.USER_PHONE) FROM DELIVERY.TB_USER WHERE DELIVERY.TB_USER.USER_PHONE = #{userPhone}
+    SELECT COUNT(TB_USER.USER_PHONE) FROM TB_USER WHERE TB_USER.USER_PHONE = #{userPhone}
   </select>
 </mapper>

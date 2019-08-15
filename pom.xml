@@ -116,6 +116,14 @@
       <artifactId>fastdfs-client</artifactId>
       <version>1.26.5</version>
     </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpclient</artifactId>
+      <version>4.5.6</version>
+    </dependency>
+
   </dependencies>
 
   <build>

@@ -1,5 +1,6 @@
 package org.zuoyu.service;
 
+import java.util.List;
 import org.zuoyu.model.User;
 
 /**
@@ -33,4 +34,10 @@ public interface IUserService {
    * @return - true/false
    */
   boolean isPresenceByUserPhone(String userPhone);
+
+  /**
+   * 获取所有的用户信息
+   * @return - 用户信息集合
+   */
+  List<User> listUser();
 }

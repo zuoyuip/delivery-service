@@ -14,7 +14,7 @@ import tk.mybatis.mapper.annotation.KeySql;
  * 审核信息
  * @author zuoyu
  */
-@ApiModel(value="org.zuoyu.model.Review")
+@ApiModel(value="Review", description = "审核信息")
 @Data
 @Accessors(chain = true)
 @Table(name = "`TB_REVIEW`")
@@ -22,6 +22,7 @@ public class Review implements Serializable {
     /**
      * 审核信息的唯一标识
      */
+    @Id
     @KeySql(genId = UUIDGenerated.class)
     @Column(name = "`REVIEW_ID`")
     @ApiModelProperty(value="reviewId审核信息的唯一标识")
