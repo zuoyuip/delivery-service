@@ -30,6 +30,9 @@ public class UserServiceImpl implements IUserService {
 
   @Override
   public User getUserDetailsByUserPhone(String userPhone) {
+    if ("".equals(userPhone)) {
+      return null;
+    }
     Example userExample = new Example(User.class);
     userExample.createCriteria().andEqualTo("userPhone", userPhone);
     return userMapper.selectOneByExample(userExample);
@@ -37,6 +40,9 @@ public class UserServiceImpl implements IUserService {
 
   @Override
   public int insertUser(User user) {
+    if (user == null) {
+      return 0;
+    }
     String passWord = user.getUserPassword();
     String encryptionPassWord = passwordEncoder.encode(passWord);
     user.setUserPassword(encryptionPassWord).setUserIsAccountNonExpired(true)
@@ -47,6 +53,9 @@ public class UserServiceImpl implements IUserService {
 
   @Override
   public boolean isPresenceByUserPhone(String userPhone) {
+    if ("".equals(userPhone)) {
+      return false;
+    }
     int count = userMapper.countByUserPhone(userPhone);
     return count > 0;
   }

@@ -30,16 +30,25 @@ public class DeliveryServiceImpl implements IDeliveryService {
 
   @Override
   public int insertDelivery(Delivery delivery) {
+    if (delivery == null){
+      return 0;
+    }
     return deliveryManager.insertDelivery(delivery);
   }
 
   @Override
   public int transactionDelivery(String deliveryId, String deliveryDeliveryUserId) {
+    if ("".equals(deliveryId) || "".equals(deliveryDeliveryUserId)){
+      return 0;
+    }
     return deliveryManager.transactionDelivery(deliveryId, deliveryDeliveryUserId);
   }
 
   @Override
   public Delivery getDeliveryById(String deliveryId) {
+    if ("".equals(deliveryId)){
+      return null;
+    }
     return deliveryManager.getDeliveryById(deliveryId);
   }
 }
