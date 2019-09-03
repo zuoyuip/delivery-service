@@ -72,7 +72,7 @@ mybatis:
   type-aliases-package: org.zuoyu.model
   configuration:
     lazy-loading-enabled: true
-    cache-enabled: true
+    cache-enabled: false
     aggressive-lazy-loading: true
     multiple-result-sets-enabled: true
     use-generated-keys: true
