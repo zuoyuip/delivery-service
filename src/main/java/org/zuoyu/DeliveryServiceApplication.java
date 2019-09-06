@@ -17,12 +17,12 @@ import tk.mybatis.spring.annotation.MapperScan;
  * @author zuoyu
  */
 @EnableSwagger2
-@EnableCaching
+//@EnableCaching
 @EnableTransactionManagement
 @SpringBootApplication
 @MapperScan(basePackages = "org.zuoyu.dao")
 @Import(value = {C3P0DataSource.class, SwaggerConfig.class,
-    SecurityConfig.class, CacheConfig.class, WebMvcConfig.class})
+    SecurityConfig.class, WebMvcConfig.class})
 public class DeliveryServiceApplication {
 
   public static void main(String[] args) {

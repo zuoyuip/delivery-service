@@ -17,7 +17,7 @@ import org.zuoyu.model.Delivery;
  * @create 2019-08-15 15:35
  **/
 @Component
-@CacheConfig(cacheNames = "delivery", cacheManager = "cacheManager", keyGenerator = "keyGenerator")
+//@CacheConfig(cacheNames = "delivery", cacheManager = "cacheManager", keyGenerator = "keyGenerator")
 public class DeliveryManager {
 
   private final DeliveryMapper deliveryMapper;
@@ -31,7 +31,7 @@ public class DeliveryManager {
    *
    * @return - 包裹信息集合
    */
-  @Cacheable
+//  @Cacheable
   public List<Delivery> listDelivery() {
     return deliveryMapper.listDeliveryIntroduction();
   }
@@ -42,7 +42,7 @@ public class DeliveryManager {
    * @param deliveryId - 包裹的唯一标识
    * @return - 包裹信息
    */
-  @Cacheable(unless = "#result == null ")
+//  @Cacheable(unless = "#result == null ")
   public Delivery getDeliveryById(String deliveryId) {
     return deliveryMapper.selectByPrimaryKey(deliveryId);
   }
@@ -53,7 +53,7 @@ public class DeliveryManager {
    * @param delivery - 包裹信息
    * @return - 成功添加的个数
    */
-  @CacheEvict(allEntries = true, condition = "#result > 0")
+//  @CacheEvict(allEntries = true, condition = "#result > 0")
   public int insertDelivery(Delivery delivery) {
     return deliveryMapper
         .insertSelective(delivery.setDeliveryDate(new Date()).setDeliveryStatus(false));
@@ -66,7 +66,7 @@ public class DeliveryManager {
    * @param deliveryDeliveryUserId - 接单工作者的唯一标识
    * @return - 成功达成交接的个数
    */
-  @CacheEvict(allEntries = true, condition = "#result > 0")
+//  @CacheEvict(allEntries = true, condition = "#result > 0")
   public int transactionDelivery(String deliveryId, String deliveryDeliveryUserId) {
     Delivery delivery = new Delivery().setDeliveryId(deliveryId).setDeliveryStatus(true)
         .setDeliveryDeliveryUserId(deliveryDeliveryUserId);
