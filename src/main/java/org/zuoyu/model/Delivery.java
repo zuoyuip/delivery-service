@@ -65,7 +65,7 @@ public class Delivery implements Serializable {
 
 
   /**
-   * 包裹信息-包裹要送达的地址
+   * 包裹信息-包裹要送达的楼号
    */
   @Column(name = "`DELIVERY_GOAL_FLOOR`")
   @ApiModelProperty(value="deliveryGoalFloor包裹信息-包裹要送达的楼号")
