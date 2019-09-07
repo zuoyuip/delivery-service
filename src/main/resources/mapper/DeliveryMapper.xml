@@ -13,6 +13,7 @@
       <arg column="DELIVERY_USER_NAME" javaType="java.lang.String" jdbcType="VARCHAR"/>
       <arg column="DELIVERY_USER_SEX" javaType="java.lang.String" jdbcType="VARCHAR"/>
       <arg column="DELIVERY_ADDRESS" javaType="java.lang.String" jdbcType="VARCHAR"/>
+      <arg column="DELIVERY_GOAL_FLOOR" javaType="java.lang.String" jdbcType="VARCHAR"/>
       <arg column="DELIVERY_GOAL_ADDRESS" javaType="java.lang.String" jdbcType="VARCHAR"/>
       <arg column="DELIVERY_WEIGHT" javaType="java.lang.String" jdbcType="VARCHAR"/>
       <arg column="DELIVERY_REWARD" javaType="java.lang.String" jdbcType="VARCHAR"/>
@@ -28,6 +29,7 @@
            DELIVERY_NAME,
            DELIVERY_USER_SEX,
            DELIVERY_ADDRESS,
+           DELIVERY_GOAL_FLOOR,
            DELIVERY_GOAL_ADDRESS,
            DELIVERY_WEIGHT,
            DELIVERY_REWARD,

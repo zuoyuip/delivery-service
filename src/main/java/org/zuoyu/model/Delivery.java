@@ -63,6 +63,14 @@ public class Delivery implements Serializable {
     @ApiModelProperty(value="deliveryAddress包裹信息-包裹所在地址")
     private String deliveryAddress;
 
+
+  /**
+   * 包裹信息-包裹要送达的地址
+   */
+  @Column(name = "`DELIVERY_GOAL_FLOOR`")
+  @ApiModelProperty(value="deliveryGoalFloor包裹信息-包裹要送达的楼号")
+  private String deliveryGoalFloor;
+
     /**
      * 包裹信息-包裹要送达的地址
      */
