@@ -29,6 +29,16 @@ public class DeliveryServiceImpl implements IDeliveryService {
   }
 
   @Override
+  public List<Delivery> deliveriesMe(String deliveryUserId) {
+    return deliveryManager.deliveriesMe(deliveryUserId);
+  }
+
+  @Override
+  public List<Delivery> deliveriesDeliveryMe(String deliveryDeliveryUserId) {
+    return deliveryManager.deliveriesDeliveryMe(deliveryDeliveryUserId);
+  }
+
+  @Override
   public int insertDelivery(Delivery delivery) {
     if (delivery == null){
       return 0;

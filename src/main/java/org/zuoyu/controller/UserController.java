@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -56,5 +57,11 @@ public class UserController {
   public ResponseEntity<List<User>> selectAll() {
     List<User> users = iUserService.listUser();
     return ResponseEntity.ok(users);
+  }
+
+  @ApiOperation(value = "获取当前的安全用户", notes = "该方法仅适用客户端")
+  @GetMapping("/authentication")
+  public Authentication getCurrentUser(Authentication authentication){
+    return authentication;
   }
 }

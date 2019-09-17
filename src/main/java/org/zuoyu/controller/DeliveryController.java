@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,6 +39,7 @@ public class DeliveryController {
 
   @ApiOperation(value = "获取未被接单的包裹信息(只有简介信息，涉及重要私密信息不显示)", notes = "注意：若返回状态码为204，表示没有信息", response = Delivery.class, ignoreJsonView = true)
   @GetMapping
+//  @PreAuthorize("authenticated")
   public ResponseEntity<List<Delivery>> selectAll() {
     List<Delivery> deliveries = iDeliveryService.listDelivery();
     if (deliveries.size() < 1) {

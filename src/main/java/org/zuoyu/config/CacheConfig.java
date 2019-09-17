@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.cache.RedisCacheWriter;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
@@ -72,11 +72,11 @@ public class CacheConfig extends CachingConfigurerSupport {
 
   @Bean
   public RedisTemplate<String, Object> redisTemplate(
-      RedisConnectionFactory redisConnectionFactory,
+      LettuceConnectionFactory lettuceConnectionFactory,
       GenericJackson2JsonRedisSerializer jackson2JsonRedisSerializer,
       StringRedisSerializer stringRedisSerializer) {
     RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
-    redisTemplate.setConnectionFactory(redisConnectionFactory);
+    redisTemplate.setConnectionFactory(lettuceConnectionFactory);
     redisTemplate.setKeySerializer(stringRedisSerializer);
     redisTemplate.setValueSerializer(jackson2JsonRedisSerializer);
     redisTemplate.setHashKeySerializer(stringRedisSerializer);
@@ -88,7 +88,7 @@ public class CacheConfig extends CachingConfigurerSupport {
   }
 
   @Bean
-  public CacheManager cacheManager(RedisConnectionFactory redisConnectionFactory,
+  public CacheManager cacheManager(LettuceConnectionFactory lettuceConnectionFactory,
       GenericJackson2JsonRedisSerializer jackson2JsonRedisSerializer,
       StringRedisSerializer stringRedisSerializer) {
     RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig()
@@ -100,7 +100,7 @@ public class CacheConfig extends CachingConfigurerSupport {
         .disableCachingNullValues()
         .disableKeyPrefix();
     return RedisCacheManager
-        .builder(RedisCacheWriter.nonLockingRedisCacheWriter(redisConnectionFactory))
+        .builder(RedisCacheWriter.nonLockingRedisCacheWriter(lettuceConnectionFactory))
         .cacheDefaults(redisCacheConfiguration)
         .build();
   }

@@ -14,4 +14,12 @@ public class UUIDGenerated implements GenId<String> {
   public String genId(String table, String column) {
     return UUID.randomUUID().toString().replaceAll("-", "");
   }
+
+  /**
+   * 手动获取UUID
+   * @return UUID
+   */
+  public static String obtain(){
+    return UUID.randomUUID().toString().replaceAll("-", "");
+  }
 }

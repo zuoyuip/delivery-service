@@ -19,10 +19,9 @@ import tk.mybatis.mapper.annotation.KeySql;
 @Table(name = "`TB_USER_INFO`")
 public class UserInfo implements Serializable {
     /**
-     * 用户信息的唯一标识
+     * 用户信息的唯一标识(该表不使用自动主键)
      */
     @Id
-    @KeySql(genId = UUIDGenerated.class)
     @Column(name = "`USER_INFO_ID`")
     @ApiModelProperty(value="userInfoId用户信息的唯一标识")
     private String userInfoId;

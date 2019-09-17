@@ -62,6 +62,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .and()
 //        记住
         .rememberMe()
+        .alwaysRemember(true)
         .rememberMeParameter("rememberMe")
         .tokenValiditySeconds(31558150)
         .key("zuoyu")

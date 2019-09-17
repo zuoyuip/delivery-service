@@ -60,13 +60,13 @@
   </appender>
 
   <logger name="org.zuoyu.dao" level="debug" additivity="false">
-    <appender-ref ref="consoleLog"/>
+    <appender-ref ref="fileLog"/>
   </logger>
 
   <!--指定最基础的日志输出级别-->
   <springProfile name="dev">
     <root level="INFO">
-      <appender-ref ref="consoleLog"/>
+      <appender-ref ref="fileLog"/>
     </root>
   </springProfile>
 

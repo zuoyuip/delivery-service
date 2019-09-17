@@ -20,6 +20,22 @@ public interface IDeliveryService {
   List<Delivery> listDelivery();
 
   /**
+   * 获取指定用户发布的所有包裹
+   *
+   * @param deliveryUserId - 用户ID
+   * @return - 包裹信息集合
+   */
+  List<Delivery> deliveriesMe(String deliveryUserId);
+
+  /**
+   * 获取指定用户代领的所有包裹
+   *
+   * @param deliveryDeliveryUserId - 用户ID
+   * @return - 包裹信息集合
+   */
+  List<Delivery> deliveriesDeliveryMe(String deliveryDeliveryUserId);
+
+  /**
    * 添加包裹信息
    *
    * @param delivery - 包裹信息
@@ -40,6 +56,7 @@ public interface IDeliveryService {
 
   /**
    * 根据唯一标识获取指定的包裹信息
+   *
    * @param deliveryId - 包裹的唯一标识
    * @return - 包裹信息
    */
