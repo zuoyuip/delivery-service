@@ -1,5 +1,6 @@
 package org.zuoyu.service.impl;
 
+import java.util.Date;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.zuoyu.manager.DeliveryManager;
@@ -24,6 +25,21 @@ public class DeliveryServiceImpl implements IDeliveryService {
   }
 
   @Override
+  public List<Delivery> selectDeliveryAll() {
+    return deliveryManager.selectDeliveryAll();
+  }
+
+  @Override
+  public List<Delivery> selectDeliveryNotReceive() {
+    return deliveryManager.selectDeliveryNotReceive();
+  }
+
+  @Override
+  public List<Delivery> selectDeliveryReceive() {
+    return deliveryManager.selectDeliveryReceive();
+  }
+
+  @Override
   public List<Delivery> listDelivery() {
     return deliveryManager.listDelivery();
   }
@@ -43,6 +59,7 @@ public class DeliveryServiceImpl implements IDeliveryService {
     if (delivery == null){
       return 0;
     }
+    delivery.setDeliveryDate(new Date()).setDeliveryStatus(false);
     return deliveryManager.insertDelivery(delivery);
   }
 
@@ -51,7 +68,9 @@ public class DeliveryServiceImpl implements IDeliveryService {
     if ("".equals(deliveryId) || "".equals(deliveryDeliveryUserId)){
       return 0;
     }
-    return deliveryManager.transactionDelivery(deliveryId, deliveryDeliveryUserId);
+    Delivery delivery = new Delivery().setDeliveryId(deliveryId).setDeliveryStatus(true)
+        .setDeliveryDeliveryUserId(deliveryDeliveryUserId);
+    return deliveryManager.transactionDelivery(delivery);
   }
 
   @Override

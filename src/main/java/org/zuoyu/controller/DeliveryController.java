@@ -37,9 +37,9 @@ public class DeliveryController {
     this.iDeliveryService = iDeliveryService;
   }
 
-  @ApiOperation(value = "获取未被接单的包裹信息(只有简介信息，涉及重要私密信息不显示)", notes = "注意：若返回状态码为204，表示没有信息", response = Delivery.class, ignoreJsonView = true)
+  @ApiOperation(value = "获取未被接单的包裹信息(只有简介信息，涉及重要私密信息不显示)",
+      notes = "注意：若返回状态码为204，表示没有信息", response = Delivery.class, ignoreJsonView = true)
   @GetMapping
-//  @PreAuthorize("authenticated")
   public ResponseEntity<List<Delivery>> selectAll() {
     List<Delivery> deliveries = iDeliveryService.listDelivery();
     if (deliveries.size() < 1) {
@@ -53,7 +53,11 @@ public class DeliveryController {
       consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, ignoreJsonView = true)
   @ApiImplicitParam(name = "Delivery.Class", value = "包裹信息实例", required = true, dataTypeClass = Delivery.class)
   @PostMapping
+  @PreAuthorize("authenticated")
   public ResponseEntity<Result> addDelivery(Delivery delivery) {
+    if (delivery == null){
+      return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Result.message("请填写快递信息"));
+    }
     int i = iDeliveryService.insertDelivery(delivery);
     if (i < 1) {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Result.message("添加失败"));

@@ -12,8 +12,31 @@ import org.zuoyu.model.Delivery;
  **/
 public interface IDeliveryService {
 
+
   /**
-   * 获取所有的包裹信息
+   * 获取所有包裹信息
+   *
+   * @return - 包裹信息集合
+   */
+  List<Delivery> selectDeliveryAll();
+
+  /**
+   * 获取所有未被接收的包裹信息
+   *
+   * @return - 包裹信息
+   */
+  List<Delivery> selectDeliveryNotReceive();
+
+
+  /**
+   * 获取所有已被接收的包裹信息
+   *
+   * @return - 包裹信息
+   */
+  List<Delivery> selectDeliveryReceive();
+
+  /**
+   * 获取所有未被接收的包裹信息（不含敏感信息）
    *
    * @return - 包裹信息集合
    */

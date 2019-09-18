@@ -41,6 +41,9 @@ public class UserController {
   @ApiImplicitParam(name = "User.Class", value = "安全用户实例", required = true, dataTypeClass = User.class)
   @PostMapping(consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
   public ResponseEntity<Result> register(User user) {
+    if (user == null){
+      return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Result.message("请填写注册信息"));
+    }
     boolean isPresence = iUserService.isPresenceByUserPhone(user.getUserPhone());
     if (isPresence) {
       return ResponseEntity.status(HttpStatus.CREATED).body(Result.message("账户已存在！"));

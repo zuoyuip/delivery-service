@@ -1,6 +1,5 @@
 package org.zuoyu.manager;
 
-import java.util.Date;
 import java.util.List;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
@@ -8,6 +7,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 import org.zuoyu.dao.DeliveryMapper;
 import org.zuoyu.model.Delivery;
+import tk.mybatis.mapper.entity.Example;
 
 /**
  * 包裹的通用业务.
@@ -26,8 +26,45 @@ public class DeliveryManager {
     this.deliveryMapper = deliveryMapper;
   }
 
+
   /**
-   * 获取所有的包裹信息
+   * 获取所有包裹信息
+   *
+   * @return - 包裹信息集合
+   */
+  @Cacheable
+  public List<Delivery> selectDeliveryAll() {
+    return deliveryMapper.selectAll();
+  }
+
+  /**
+   * 获取所有未被接收的包裹信息
+   *
+   * @return - 包裹信息
+   */
+  @Cacheable
+  public List<Delivery> selectDeliveryNotReceive() {
+    Example example = new Example(Delivery.class);
+    example.setForUpdate(true);
+    example.createCriteria().andEqualTo("deliveryStatus", false);
+    return deliveryMapper.selectByExample(example);
+  }
+
+  /**
+   * 获取所有已被接收的包裹信息
+   *
+   * @return - 包裹信息
+   */
+  @Cacheable
+  public List<Delivery> selectDeliveryReceive() {
+    Example example = new Example(Delivery.class);
+    example.setForUpdate(true);
+    example.createCriteria().andEqualTo("deliveryStatus", true);
+    return deliveryMapper.selectByExample(example);
+  }
+
+  /**
+   * 获取所有未被领取的包裹信息(不含敏感信息）
    *
    * @return - 包裹信息集合
    */
@@ -38,24 +75,29 @@ public class DeliveryManager {
 
   /**
    * 获取指定用户发布的所有包裹
+   *
    * @param deliveryUserId - 用户ID
    * @return - 包裹信息集合
    */
-  @Cacheable
-  public List<Delivery> deliveriesMe(String deliveryUserId){
-    Delivery delivery = new Delivery().setDeliveryId(deliveryUserId);
-    return deliveryMapper.select(delivery);
+  @Cacheable(unless = "#result.size() < 1 ")
+  public List<Delivery> deliveriesMe(String deliveryUserId) {
+    Example example = new Example(Delivery.class);
+    example.createCriteria().andEqualTo("deliveryUserId", deliveryUserId);
+    return deliveryMapper.selectByExample(example);
   }
 
   /**
    * 获取指定用户代领的所有包裹
+   *
    * @param deliveryDeliveryUserId - 用户ID
    * @return - 包裹信息集合
    */
-  @Cacheable
-  public List<Delivery> deliveriesDeliveryMe(String deliveryDeliveryUserId){
-    Delivery delivery = new Delivery().setDeliveryDeliveryUserId(deliveryDeliveryUserId);
-    return deliveryMapper.select(delivery);
+  @Cacheable(unless = "#result.size() < 1 ")
+  public List<Delivery> deliveriesDeliveryMe(String deliveryDeliveryUserId) {
+    Example example = new Example(Delivery.class);
+    example.createCriteria().andEqualTo("deliveryDeliveryUserId", deliveryDeliveryUserId)
+        .andEqualTo("deliveryStatus", true);
+    return deliveryMapper.selectByExample(example);
   }
 
   /**
@@ -77,22 +119,18 @@ public class DeliveryManager {
    */
   @CacheEvict(allEntries = true, condition = "#result > 0")
   public int insertDelivery(Delivery delivery) {
-    return deliveryMapper
-        .insertSelective(delivery.setDeliveryDate(new Date()).setDeliveryStatus(false));
+    return deliveryMapper.insertSelective(delivery);
   }
 
 
   /**
    * 订单交接
    *
-   * @param deliveryId - 包裹的唯一标识
-   * @param deliveryDeliveryUserId - 接单工作者的唯一标识
+   * @param delivery - 包裹
    * @return - 成功达成交接的个数
    */
   @CacheEvict(allEntries = true, condition = "#result > 0")
-  public int transactionDelivery(String deliveryId, String deliveryDeliveryUserId) {
-    Delivery delivery = new Delivery().setDeliveryId(deliveryId).setDeliveryStatus(true)
-        .setDeliveryDeliveryUserId(deliveryDeliveryUserId);
+  public int transactionDelivery(Delivery delivery) {
     return deliveryMapper.updateByPrimaryKeySelective(delivery);
   }
 }
