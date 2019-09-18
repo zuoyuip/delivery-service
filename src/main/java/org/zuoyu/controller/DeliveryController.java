@@ -9,14 +9,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.zuoyu.model.Delivery;
+import org.zuoyu.model.User;
 import org.zuoyu.service.IDeliveryService;
 import org.zuoyu.util.Result;
+import org.zuoyu.util.UserUtil;
 
 /**
  * 包裹信息.
@@ -42,7 +46,7 @@ public class DeliveryController {
   @GetMapping
   public ResponseEntity<List<Delivery>> selectAll() {
     List<Delivery> deliveries = iDeliveryService.listDelivery();
-    if (deliveries.size() < 1) {
+    if (deliveries.isEmpty()) {
       return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
     return ResponseEntity.ok(deliveries);
@@ -55,7 +59,7 @@ public class DeliveryController {
   @PostMapping
   @PreAuthorize("authenticated")
   public ResponseEntity<Result> addDelivery(Delivery delivery) {
-    if (delivery == null){
+    if (delivery == null) {
       return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Result.message("请填写快递信息"));
     }
     int i = iDeliveryService.insertDelivery(delivery);
@@ -78,5 +82,25 @@ public class DeliveryController {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
     return ResponseEntity.ok(delivery);
+  }
+
+  @ApiOperation(value = "根据包裹信息唯一标识接受该订单", notes = "若返回状态码为500,表示服务器异常",
+      response = Result.class, ignoreJsonView = true)
+  @ApiImplicitParam(name = "deliveryId", value = "包裹信息实例的唯一标识", required = true, dataTypeClass = String.class)
+  @PutMapping(path = "/transaction/{deliveryId}")
+  public ResponseEntity<Result> transactionDelivery(Authentication authentication,
+      @PathVariable String deliveryId) {
+    User user = (User) authentication.getPrincipal();
+    if (user == null) {
+      return ResponseEntity.status(HttpStatus.FORBIDDEN)
+          .body(Result.message("无法获取当前账户"));
+    }
+    String mySelfUserId = user.getUserId();
+    int i = iDeliveryService.transactionDelivery(deliveryId, mySelfUserId);
+    if (i < 1) {
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+          .body(Result.message("订单接受失败"));
+    }
+    return ResponseEntity.ok(Result.message("订单接受成功"));
   }
 }

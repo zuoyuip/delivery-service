@@ -1,11 +1,12 @@
 package org.zuoyu.service.impl;
 
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.zuoyu.dao.SuggestMapper;
 import org.zuoyu.model.Suggest;
+import org.zuoyu.model.User;
 import org.zuoyu.service.ISuggestService;
+import org.zuoyu.util.UserUtil;
 
 /**
  * 建议反馈的服务实现.
@@ -30,6 +31,10 @@ public class SuggestServiceImpl implements ISuggestService {
 
   @Override
   public int addSuggest(Suggest suggest) {
+    if (UserUtil.isAuthenticated()) {
+      User user = UserUtil.currentUser();
+      suggest.setSuggestUserId(user.getUserId());
+    }
     return suggestMapper.insert(suggest);
   }
 }

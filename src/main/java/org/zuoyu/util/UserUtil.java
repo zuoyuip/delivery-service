@@ -1,5 +1,6 @@
 package org.zuoyu.util;
 
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,18 +16,35 @@ import org.zuoyu.model.User;
  **/
 public class UserUtil {
 
-  private UserUtil(){}
+  private UserUtil() {
+  }
 
-  public static User currentUser(){
+  /**
+   * 获取当前用户
+   *
+   * @return - 当前用户
+   */
+  public static User currentUser() {
     SecurityContext securityContext = SecurityContextHolder.getContext();
     Authentication authentication = securityContext.getAuthentication();
-    if (authentication == null){
+    if (authentication == null) {
       throw new CustomException("当前无用户");
     }
     User user = (User) authentication.getPrincipal();
-    if (user == null){
+    if (user == null) {
       throw new CustomException("无法获取该用户");
     }
     return user;
+  }
+
+  /**
+   * 当前是否被登录
+   *
+   * @return - true/false
+   */
+  public static boolean isAuthenticated() {
+    SecurityContext securityContext = SecurityContextHolder.getContext();
+    Authentication authentication = securityContext.getAuthentication();
+    return !(authentication instanceof AnonymousAuthenticationToken);
   }
 }

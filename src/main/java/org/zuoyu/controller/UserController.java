@@ -41,7 +41,7 @@ public class UserController {
   @ApiImplicitParam(name = "User.Class", value = "安全用户实例", required = true, dataTypeClass = User.class)
   @PostMapping(consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
   public ResponseEntity<Result> register(User user) {
-    if (user == null){
+    if (user == null) {
       return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Result.message("请填写注册信息"));
     }
     boolean isPresence = iUserService.isPresenceByUserPhone(user.getUserPhone());
@@ -55,7 +55,7 @@ public class UserController {
     return ResponseEntity.ok(Result.message("注册成功！"));
   }
 
-  @ApiOperation(value = "获取所有安全账户",notes = "该方法不可轻易调用", response = User.class, ignoreJsonView = true)
+  @ApiOperation(value = "获取所有安全账户", notes = "该方法不可轻易调用", response = User.class, ignoreJsonView = true)
   @GetMapping
   public ResponseEntity<List<User>> selectAll() {
     List<User> users = iUserService.listUser();
@@ -63,8 +63,8 @@ public class UserController {
   }
 
   @ApiOperation(value = "获取当前的安全用户", notes = "该方法仅适用客户端")
-  @GetMapping("/authentication")
-  public Authentication getCurrentUser(Authentication authentication){
-    return authentication;
+  @GetMapping(path = "/authentication")
+  public ResponseEntity<Authentication> getCurrentUser(Authentication authentication) {
+    return ResponseEntity.ok(authentication);
   }
 }
