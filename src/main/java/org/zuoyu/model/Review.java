@@ -20,10 +20,9 @@ import tk.mybatis.mapper.annotation.KeySql;
 @Table(name = "`TB_REVIEW`")
 public class Review implements Serializable {
     /**
-     * 审核信息的唯一标识
+     * 审核信息的唯一标识（不使用自动主键）
      */
     @Id
-    @KeySql(genId = UUIDGenerated.class)
     @Column(name = "`REVIEW_ID`")
     @ApiModelProperty(value="reviewId审核信息的唯一标识")
     private String reviewId;

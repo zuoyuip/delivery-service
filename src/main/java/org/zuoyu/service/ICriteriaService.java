@@ -1,11 +1,16 @@
 package org.zuoyu.service;
 
 import java.io.IOException;
+import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
+import org.zuoyu.model.User;
 import org.zuoyu.model.UserInfo;
 
 /**
- * 审核服务.
+ * 审核服务. 审核状态制定： userInfoId为null； userIsByReview为false； userIsSubmitReview为false ————该用户为从未提交审核。
+ * userInfoId不为null； userIsByReview为false； userIsSubmitReview为true ————该用户为已提交审核，但管理员还未处理。
+ * userInfoId不为null； userIsByReview为false； userIsSubmitReview为false ————该用户为已提交审核，但被管理员拒绝通过审核。
+ * userInfoId不为null； userIsByReview为true； userIsSubmitReview为true ————该用户为已提交审核，并通过管理员的审核。
  *
  * @author zuoyu
  * @program delivery-service
@@ -13,11 +18,42 @@ import org.zuoyu.model.UserInfo;
  **/
 public interface ICriteriaService {
 
+
   /**
    * 申请审核
+   *
    * @param userInfo - 用户信息
    * @param multipartFile - 图片文件
    * @return - 申请成功1,申请失败0
+   * @throws IOException - 流解析异常
    */
   int applicationCriteria(UserInfo userInfo, MultipartFile multipartFile) throws IOException;
+
+
+  /**
+   * 获取所有待审核用户
+   *
+   * @return - 待审核用户
+   */
+  List<User> waitCriteria();
+
+
+  /**
+   * 对用户的申请进行处理
+   *
+   * @param userId - 帐户ID
+   * @param isPass - 是否通过
+   * @param reviewMessage - 审核信息
+   * @return - 成功返回 1,失败返回 0
+   */
+  int dealWithCriteria(String userId, boolean isPass, String reviewMessage);
+
+  /**
+   * 对用户的申请进行处理
+   * @param userId - 帐户ID
+   * @param isPass - 是否通过
+   * @return - 成功返回 1,失败返回 0
+   */
+  int dealWithCriteria(String userId, boolean isPass);
+
 }
