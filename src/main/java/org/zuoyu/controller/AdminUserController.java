@@ -1,12 +1,15 @@
 package org.zuoyu.controller;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.zuoyu.model.User;
@@ -36,5 +39,17 @@ public class AdminUserController {
   public ResponseEntity<List<User>> selectAll() {
     List<User> users = iUserService.listUser();
     return ResponseEntity.ok(users);
+  }
+
+  @ApiOperation(value = "根据唯一标识获取对应的账户信息", notes = "注意：若返回状态码为204,表示没有该账户信息；若返回状态码为500,表示服务器异常",
+      response = User.class, ignoreJsonView = true)
+  @ApiImplicitParam(name = "userId", value = "账户信息实例的唯一标识", required = true, dataTypeClass = String.class)
+  @GetMapping(path = "/{userId}")
+  public ResponseEntity<User> selectUserById(@PathVariable String userId) {
+    User user = iUserService.getUserById(userId);
+    if (user == null) {
+      return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+    return ResponseEntity.ok(user);
   }
 }

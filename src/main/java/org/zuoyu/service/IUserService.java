@@ -36,8 +36,16 @@ public interface IUserService {
   boolean isPresenceByUserPhone(String userPhone);
 
   /**
-   * 获取所有的用户信息
-   * @return - 用户信息集合
+   * 获取所有的账户信息
+   * @return - 账户信息集合
    */
   List<User> listUser();
+
+
+  /**
+   * 根据ID获取一个账户
+   * @param userId - 账户ID
+   * @return 账户信息
+   */
+  User getUserById(String userId);
 }

@@ -65,6 +65,7 @@ create table if not exists TB_DELIVERY
     DELIVERY_NAME             varchar(20) not null comment '包裹信息-快递名称',
     DELIVERY_CODE             varchar(20) not null comment '包裹信息-快递取货号',
     DELIVERY_USER_NAME        varchar(20) not null comment '包裹信息-包裹的收货人名字',
+    DELIVERY_USER_PHONE       varchar(20) not null comment '包裹信息-包裹的收货人手机号码',
     DELIVERY_USER_SEX         varchar(20) not null comment '包裹信息-包裹收货人性别',
     DELIVERY_ADDRESS          tinytext    not null comment '包裹信息-包裹所在地址',
     DELIVERY_GOAL_FLOOR       tinytext    not null comment '包裹信息-包裹所在地址',

@@ -30,7 +30,7 @@ public class UserServiceImpl implements IUserService {
 
   @Override
   public User getUserDetailsByUserPhone(String userPhone) {
-    if ("".equals(userPhone)) {
+    if (userPhone == null || "".equals(userPhone.trim()) || userPhone.trim().isEmpty()) {
       return null;
     }
     Example userExample = new Example(User.class);
@@ -53,7 +53,7 @@ public class UserServiceImpl implements IUserService {
 
   @Override
   public boolean isPresenceByUserPhone(String userPhone) {
-    if ("".equals(userPhone)) {
+    if (userPhone == null || "".equals(userPhone.trim()) || userPhone.trim().isEmpty()) {
       return false;
     }
     int count = userMapper.countByUserPhone(userPhone);
@@ -63,5 +63,13 @@ public class UserServiceImpl implements IUserService {
   @Override
   public List<User> listUser() {
     return userMapper.selectAll();
+  }
+
+  @Override
+  public User getUserById(String userId) {
+    if (userId == null || "".equals(userId.trim()) || userId.trim().isEmpty()){
+      return null;
+    }
+    return userMapper.selectByPrimaryKey(userId);
   }
 }

@@ -46,17 +46,25 @@ public class DeliveryServiceImpl implements IDeliveryService {
 
   @Override
   public List<Delivery> deliveriesMe(String deliveryUserId) {
+    if (deliveryUserId == null || "".equals(deliveryUserId.trim()) || deliveryUserId.trim()
+        .isEmpty()) {
+      return null;
+    }
     return deliveryManager.deliveriesMe(deliveryUserId);
   }
 
   @Override
   public List<Delivery> deliveriesDeliveryMe(String deliveryDeliveryUserId) {
+    if (deliveryDeliveryUserId == null || "".equals(deliveryDeliveryUserId.trim())
+        || deliveryDeliveryUserId.trim().isEmpty()) {
+      return null;
+    }
     return deliveryManager.deliveriesDeliveryMe(deliveryDeliveryUserId);
   }
 
   @Override
   public int insertDelivery(Delivery delivery) {
-    if (delivery == null){
+    if (delivery == null) {
       return 0;
     }
     delivery.setDeliveryDate(new Date()).setDeliveryStatus(false);
@@ -65,7 +73,9 @@ public class DeliveryServiceImpl implements IDeliveryService {
 
   @Override
   public int transactionDelivery(String deliveryId, String deliveryDeliveryUserId) {
-    if ("".equals(deliveryId) || "".equals(deliveryDeliveryUserId)){
+    if (deliveryId == null || "".equals(deliveryId.trim()) || deliveryId.trim().isEmpty()
+        || deliveryDeliveryUserId == null || "".equals(deliveryDeliveryUserId.trim())
+        || deliveryDeliveryUserId.trim().isEmpty()) {
       return 0;
     }
     Delivery delivery = new Delivery().setDeliveryId(deliveryId).setDeliveryStatus(true)
@@ -75,7 +85,7 @@ public class DeliveryServiceImpl implements IDeliveryService {
 
   @Override
   public Delivery getDeliveryById(String deliveryId) {
-    if ("".equals(deliveryId)){
+    if (deliveryId == null || "".equals(deliveryId.trim()) || deliveryId.trim().isEmpty()) {
       return null;
     }
     return deliveryManager.getDeliveryById(deliveryId);

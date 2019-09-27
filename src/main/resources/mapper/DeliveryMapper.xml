@@ -11,6 +11,7 @@
       <arg column="DELIVERY_NAME" javaType="java.lang.String" jdbcType="VARCHAR"/>
       <arg column="DELIVERY_CODE" javaType="java.lang.String" jdbcType="VARCHAR"/>
       <arg column="DELIVERY_USER_NAME" javaType="java.lang.String" jdbcType="VARCHAR"/>
+      <arg column="DELIVERY_USER_PHONE" javaType="java.lang.String" jdbcType="VARCHAR"/>
       <arg column="DELIVERY_USER_SEX" javaType="java.lang.String" jdbcType="VARCHAR"/>
       <arg column="DELIVERY_ADDRESS" javaType="java.lang.String" jdbcType="VARCHAR"/>
       <arg column="DELIVERY_GOAL_FLOOR" javaType="java.lang.String" jdbcType="VARCHAR"/>

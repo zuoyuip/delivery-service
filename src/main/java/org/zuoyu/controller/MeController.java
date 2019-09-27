@@ -79,7 +79,8 @@ public class MeController {
   @ApiImplicitParam(name = "Suggest.Class", value = "反馈信息实例", required = true, dataTypeClass = Suggest.class)
   @PostMapping("/suggest")
   public ResponseEntity<Result> addSuggest(Suggest suggest) {
-    if (suggest == null){
+    String content = suggest.getSuggestContent();
+    if (content.trim().isEmpty()) {
       return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Result.message("请填写建议内容"));
     }
     int i = iSuggestService.addSuggest(suggest);
@@ -99,7 +100,7 @@ public class MeController {
   @PostMapping("/submitCriteria")
   public ResponseEntity<Result> submitCriteria(UserInfo userInfo,
       @RequestParam("file") MultipartFile multipartFile) {
-    if (userInfo == null){
+    if (userInfo == null) {
       return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Result.message("请填写您的信息"));
     }
     if (multipartFile.isEmpty()) {

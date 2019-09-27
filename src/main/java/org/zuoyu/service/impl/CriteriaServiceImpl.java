@@ -80,6 +80,9 @@ public class CriteriaServiceImpl implements ICriteriaService {
   @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class,
       CustomException.class})
   public int dealWithCriteria(String userId, boolean isPass, String reviewMessage) {
+    if (userId == null || "".equals(userId.trim()) || userId.trim().isEmpty()) {
+      return 0;
+    }
     User user = userMapper.selectByPrimaryKey(userId);
     if (user == null) {
       throw new CustomException("没有该用户");
@@ -98,6 +101,9 @@ public class CriteriaServiceImpl implements ICriteriaService {
 
   @Override
   public int dealWithCriteria(String userId, boolean isPass) {
+    if (userId == null || "".equals(userId.trim()) || userId.trim().isEmpty()) {
+      return 0;
+    }
     User user = new User().setUserId(userId).setUserIsSubmitReview(isPass)
         .setUserIsByReview(isPass);
     return userMapper.updateByPrimaryKeySelective(user);

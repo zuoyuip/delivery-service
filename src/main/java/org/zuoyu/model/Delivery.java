@@ -49,6 +49,13 @@ public class Delivery implements Serializable {
     @ApiModelProperty(value="deliveryUserName包裹信息-包裹的收货人名字")
     private String deliveryUserName;
 
+  /**
+   * 包裹信息-包裹的收货人名字
+   */
+  @Column(name = "`DELIVERY_USER_PHONE`")
+  @ApiModelProperty(value="deliveryUserPhone包裹信息-包裹的收货人名字")
+  private String deliveryUserPhone;
+
     /**
      * 包裹信息-包裹收货人性别
      */

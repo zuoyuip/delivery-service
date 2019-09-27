@@ -28,11 +28,11 @@ public class DeliveryServiceApplicationTests {
 
   @Test
   public void contextLoads() throws FileNotFoundException {
-    File file = new File(
-        "/home/zuoyu/Pictures/diagram.png");
-    StorePath storePath = fastFileStorageClient
-        .uploadImageAndCrtThumbImage(new FileInputStream(file), file.length(),
-            "png", null);
+//    File file = new File(
+//        "/home/zuoyu/Pictures/diagram.png");
+//    StorePath storePath = fastFileStorageClient
+//        .uploadImageAndCrtThumbImage(new FileInputStream(file), file.length(),
+//            "png", null);
 //    // 带分组的路径
 //    log.info("带分组的路径\n" + storePath.getFullPath());
 //    // 不带分组的路径
@@ -40,7 +40,7 @@ public class DeliveryServiceApplicationTests {
 //    // 获取缩略图路径
 //    String thumbImagePath = thumbImageConfig.getThumbImagePath(storePath.getPath());
 //    log.info("获取缩略图路径\n" + thumbImagePath);
-    System.out.println(storePath.getGroup());
+//    System.out.println(storePath.getGroup());
   }
 
 }
