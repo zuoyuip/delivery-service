@@ -35,6 +35,12 @@ public class UserInfo implements Serializable {
   @ApiModelProperty(value = "userInfoName用户信息—名字")
   private String userInfoName;
   /**
+   * 用户信息—性别
+   */
+  @Column(name = "`USER_INFO_SEX`")
+  @ApiModelProperty(value = "userInfoSex用户信息—性别")
+  private String userInfoSex;
+  /**
    * 用户信息-学院
    */
   @Column(name = "`USER_INFO_COLLEGE`")

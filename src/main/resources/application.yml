@@ -11,8 +11,6 @@ spring:
   profiles:
     include: c3p0
     active: dev
-  jackson:
-    date-format: yyyy-MM-dd HH:mm
   servlet:
     multipart:
       enabled: true

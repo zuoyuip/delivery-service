@@ -62,7 +62,8 @@ public class DeliveryController {
     if (delivery == null) {
       return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Result.message("请填写快递信息"));
     }
-    int i = iDeliveryService.insertDelivery(delivery);
+    User user = UserUtil.currentUser();
+    int i = iDeliveryService.insertDelivery(delivery.setDeliveryUserId(user.getUserId()));
     if (i < 1) {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Result.message("添加失败"));
     }

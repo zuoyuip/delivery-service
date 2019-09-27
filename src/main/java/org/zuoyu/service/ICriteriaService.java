@@ -3,6 +3,7 @@ package org.zuoyu.service;
 import java.io.IOException;
 import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
+import org.zuoyu.model.Review;
 import org.zuoyu.model.User;
 import org.zuoyu.model.UserInfo;
 
@@ -55,5 +56,20 @@ public interface ICriteriaService {
    * @return - 成功返回 1,失败返回 0
    */
   int dealWithCriteria(String userId, boolean isPass);
+
+  /**
+   * 根据唯一标识符获取审核申请
+   * @param reviewId - 唯一标识符
+   * @return - 审核申请
+   */
+  Review findReviewById(String reviewId);
+
+
+  /**
+   * 根据唯一标识符获取账户信息
+   * @param userInfoId - 唯一标识符
+   * @return - 账户信息
+   */
+  UserInfo findUserInfoById(String userInfoId);
 
 }

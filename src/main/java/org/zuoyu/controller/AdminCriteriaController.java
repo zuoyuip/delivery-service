@@ -15,8 +15,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.zuoyu.model.Delivery;
+import org.zuoyu.model.Review;
 import org.zuoyu.model.Suggest;
 import org.zuoyu.model.User;
+import org.zuoyu.model.UserInfo;
 import org.zuoyu.service.ICriteriaService;
 import org.zuoyu.service.ISuggestService;
 import org.zuoyu.util.Result;
@@ -85,5 +88,30 @@ public class AdminCriteriaController {
       return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
     return ResponseEntity.ok(suggests);
+  }
+
+
+  @ApiOperation(value = "根据唯一标识获取对应的审核申请信息", notes = "注意：若返回状态码为204,表示没有该审核申请信息；若返回状态码为500,表示服务器异常",
+      response = Review.class, ignoreJsonView = true)
+  @ApiImplicitParam(name = "reviewId", value = "审核申请信息实例的唯一标识", required = true, dataTypeClass = String.class)
+  @GetMapping(path = "wait/{reviewId}")
+  public ResponseEntity<Review> getReviewById(@PathVariable String reviewId) {
+    Review review = iCriteriaService.findReviewById(reviewId);
+    if (review == null) {
+      return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+    return ResponseEntity.ok(review);
+  }
+
+  @ApiOperation(value = "根据唯一标识获取对应的用户详情信息", notes = "注意：若返回状态码为204,表示没有该用户详情信息；若返回状态码为500,表示服务器异常",
+      response = UserInfo.class, ignoreJsonView = true)
+  @ApiImplicitParam(name = "userInfoId", value = "用户详情信息实例的唯一标识", required = true, dataTypeClass = String.class)
+  @GetMapping(path = "userInfo/{userInfoId}")
+  public ResponseEntity<UserInfo> getUserInfoById(@PathVariable String userInfoId) {
+    UserInfo userInfo = iCriteriaService.findUserInfoById(userInfoId);
+    if (userInfo == null) {
+      return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+    return ResponseEntity.ok(userInfo);
   }
 }

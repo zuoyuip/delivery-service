@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -97,6 +98,7 @@ public class MeController {
       {@ApiImplicitParam(name = "UserInfo.class", value = "用户详细信息", required = true, dataTypeClass = UserInfo.class),
           @ApiImplicitParam(name = "MultipartFile.class", value = "证件照片", required = true, dataTypeClass = MultipartFile.class)}
   )
+  @PreAuthorize("authenticated")
   @PostMapping("/submitCriteria")
   public ResponseEntity<Result> submitCriteria(UserInfo userInfo,
       @RequestParam("file") MultipartFile multipartFile) {

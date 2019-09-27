@@ -17,9 +17,10 @@ create table if not exists TB_USER_INFO
 (
     USER_INFO_ID              varchar(40)  not null comment '用户信息的唯一标识',
     USER_INFO_NAME            varchar(20)  not null comment '用户信息—名字',
+    USER_INFO_SEX             varchar(20)  not null comment '用户信息—性别',
     USER_INFO_COLLEGE         varchar(20)  not null comment '用户信息-学院',
     USER_INFO_SUBJECT         varchar(20)  not null comment '用户信息-专业',
-    USER_INFO_CLASS           varchar(20)  not null comment '用户信息-班级',
+    USER_INFO_CLASS           varchar(20)  comment '用户信息-班级',
     USER_INFO_STUDENT_NUMBER  varchar(20)  not null comment '用户信息-学号',
     USER_INFO_PHOTO_URL       varchar(120) not null comment '用户信息-审核图片',
     USER_INFO_THUMB_PHOTO_URL varchar(120) not null comment '用户信息-审核缩略图片',

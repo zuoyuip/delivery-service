@@ -1,5 +1,6 @@
 package org.zuoyu.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
@@ -53,7 +54,7 @@ public class Delivery implements Serializable {
    * 包裹信息-包裹的收货人名字
    */
   @Column(name = "`DELIVERY_USER_PHONE`")
-  @ApiModelProperty(value="deliveryUserPhone包裹信息-包裹的收货人名字")
+  @ApiModelProperty(value="deliveryUserPhone包裹信息-包裹的收货人手机号")
   private String deliveryUserPhone;
 
     /**
@@ -111,6 +112,7 @@ public class Delivery implements Serializable {
      */
     @Column(name = "`DELIVERY_DATE`")
     @ApiModelProperty(value="deliveryDate包裹信息-日期")
+    @JsonFormat(pattern="yyyy年MM月dd日 HH:mm:ss",timezone="GMT+8")
     private Date deliveryDate;
 
     /**
