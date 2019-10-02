@@ -22,7 +22,7 @@ spring:
     host: 39.107.244.193
     port: 6379
     database: 0
-    timeout: 50
+#    timeout: 50
   cache:
     type: redis
     redis:

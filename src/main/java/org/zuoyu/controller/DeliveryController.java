@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -73,6 +74,7 @@ public class DeliveryController {
   @ApiOperation(value = "根据唯一标识获取对应的包裹信息", notes = "注意：若返回状态码为204,表示没有该包裹信息；若返回状态码为500,表示服务器异常",
       response = Delivery.class, ignoreJsonView = true)
   @ApiImplicitParam(name = "deliveryId", value = "包裹信息实例的唯一标识", required = true, dataTypeClass = String.class)
+  @PreAuthorize("authenticated")
   @GetMapping(path = "/{deliveryId}")
   public ResponseEntity<Delivery> getDeliveryById(@PathVariable String deliveryId) {
     Delivery delivery = iDeliveryService.getDeliveryById(deliveryId);
@@ -88,6 +90,7 @@ public class DeliveryController {
   @ApiOperation(value = "根据包裹信息唯一标识接受该订单", notes = "若返回状态码为500,表示服务器异常",
       response = Result.class, ignoreJsonView = true)
   @ApiImplicitParam(name = "deliveryId", value = "包裹信息实例的唯一标识", required = true, dataTypeClass = String.class)
+  @PreAuthorize("authenticated")
   @PutMapping(path = "/transaction/{deliveryId}")
   public ResponseEntity<Result> transactionDelivery(Authentication authentication,
       @PathVariable String deliveryId) {
@@ -103,5 +106,19 @@ public class DeliveryController {
           .body(Result.message("订单接受失败"));
     }
     return ResponseEntity.ok(Result.message("订单接受成功"));
+  }
+
+  @ApiOperation(value = "根据包裹信息唯一标识取消该订单", notes = "若返回状态码为500,表示服务器异常",
+      response = Result.class, ignoreJsonView = true)
+  @ApiImplicitParam(name = "deliveryId", value = "包裹信息实例的唯一标识", required = true, dataTypeClass = String.class)
+  @DeleteMapping(path = "{deliveryId}")
+  @PreAuthorize("authenticated")
+  public ResponseEntity<Result> cancelDelivery(@PathVariable String deliveryId){
+    int i = iDeliveryService.cancelDeliveryById(deliveryId);
+    if (i < 1) {
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+          .body(Result.message("订单取消失败"));
+    }
+    return ResponseEntity.ok(Result.message("订单取消成功"));
   }
 }

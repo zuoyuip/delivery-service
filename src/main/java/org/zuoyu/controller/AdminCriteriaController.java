@@ -61,8 +61,9 @@ public class AdminCriteriaController {
   @ApiOperation(value = "审核申请处理", notes = "注意：若返回状态码为500，表示服务器异常导致的反馈失败", response = Result.class,
       consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, ignoreJsonView = true)
   @ApiImplicitParams(
-      {@ApiImplicitParam(name = "boolean.class", value = "是否通过申请", required = true, dataTypeClass = boolean.class),
-          @ApiImplicitParam(name = "String.class", value = "如果未通过申请，原因说明", required = false, dataTypeClass = String.class)}
+      {@ApiImplicitParam(name = "userId", value = "账户ID", required = true, dataTypeClass = String.class),
+          @ApiImplicitParam(name = "isPass", value = "是否通过申请", required = true, dataTypeClass = boolean.class),
+          @ApiImplicitParam(name = "reviewMessage", value = "如果未通过申请，原因说明", required = false, dataTypeClass = String.class)}
   )
   @PutMapping(path = "/deal/{userId}")
   public ResponseEntity<Result> dealWithCriteria(@PathVariable String userId, boolean isPass,

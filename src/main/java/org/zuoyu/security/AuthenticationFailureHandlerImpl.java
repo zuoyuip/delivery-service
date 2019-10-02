@@ -9,6 +9,7 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AccountExpiredException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.CredentialsExpiredException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
@@ -49,6 +50,10 @@ public class AuthenticationFailureHandlerImpl implements AuthenticationFailureHa
       return;
     }
     if (exception.fillInStackTrace().getClass() == InternalAuthenticationServiceException.class) {
+      writer(responseWriter, "{\"status\":403,\"message\":\"登录失败，密码或帐号错误\"}");
+      return;
+    }
+    if (exception.fillInStackTrace().getClass() == BadCredentialsException.class){
       writer(responseWriter, "{\"status\":403,\"message\":\"登录失败，密码或帐号错误\"}");
       return;
     }

@@ -23,6 +23,7 @@ public interface IUserService {
 
   /**
    * 添加一个安全账户
+   *
    * @param user - 安全账户
    * @return - 插入的个数
    */
@@ -30,6 +31,7 @@ public interface IUserService {
 
   /**
    * 检测是否存在同样的手机帐号
+   *
    * @param userPhone - 手机帐号
    * @return - true/false
    */
@@ -37,6 +39,7 @@ public interface IUserService {
 
   /**
    * 获取所有的账户信息
+   *
    * @return - 账户信息集合
    */
   List<User> listUser();
@@ -44,8 +47,25 @@ public interface IUserService {
 
   /**
    * 根据ID获取一个账户
+   *
    * @param userId - 账户ID
    * @return 账户信息
    */
   User getUserById(String userId);
+
+  /**
+   * 根据唯一标识符修改账户
+   *
+   * @param user - 含有ID的账户
+   * @param isPasswordEncoder - 是否对密码进行加密
+   * @return - 是否成功
+   */
+  int updateUserById(User user, boolean isPasswordEncoder);
+
+  /**
+   * 验证该用户
+   * @param passWord - 密码
+   * @return - true/false
+   */
+  boolean verifyUser(String passWord);
 }

@@ -124,6 +124,17 @@ public class DeliveryManager {
 
 
   /**
+   * 更改包裹信息
+   *
+   * @param delivery - 包裹信息
+   * @return - 成功更改的个数
+   */
+  @CacheEvict(allEntries = true, condition = "#result > 0")
+  public int updateDelivery(Delivery delivery){
+    return deliveryMapper.updateByPrimaryKeySelective(delivery);
+  }
+
+  /**
    * 订单交接
    *
    * @param delivery - 包裹

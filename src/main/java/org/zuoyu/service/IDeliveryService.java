@@ -84,4 +84,11 @@ public interface IDeliveryService {
    * @return - 包裹信息
    */
   Delivery getDeliveryById(String deliveryId);
+
+  /**
+   * 根据唯一标识符对包裹信息进行取消
+   * @param deliveryId - 包裹信息唯一标识符
+   * @return - 是否成功
+   */
+  int cancelDeliveryById(String deliveryId);
 }

@@ -90,4 +90,15 @@ public class DeliveryServiceImpl implements IDeliveryService {
     }
     return deliveryManager.getDeliveryById(deliveryId);
   }
+
+  @Override
+  public int cancelDeliveryById(String deliveryId) {
+    if (deliveryId == null || "".equals(deliveryId.trim()) || deliveryId.trim().isEmpty()) {
+      return 0;
+    }
+    Delivery delivery = new Delivery().setDeliveryId(deliveryId).setDeliveryStatus(true);
+    return deliveryManager.updateDelivery(delivery);
+  }
+
+
 }

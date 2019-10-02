@@ -5,8 +5,10 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.zuoyu.dao.UserMapper;
+import org.zuoyu.exception.CustomException;
 import org.zuoyu.model.User;
 import org.zuoyu.service.IUserService;
+import org.zuoyu.util.UserUtil;
 import tk.mybatis.mapper.entity.Example;
 
 /**
@@ -67,9 +69,41 @@ public class UserServiceImpl implements IUserService {
 
   @Override
   public User getUserById(String userId) {
-    if (userId == null || "".equals(userId.trim()) || userId.trim().isEmpty()){
+    if (userId == null || "".equals(userId.trim()) || userId.trim().isEmpty()) {
       return null;
     }
     return userMapper.selectByPrimaryKey(userId);
+  }
+
+  @Override
+  public int updateUserById(User user, boolean isPasswordEncoder) {
+    if (user == null) {
+      return 0;
+    }
+    String userId = user.getUserId();
+    if (userId == null || "".equals(userId.trim()) || userId.trim().isEmpty()) {
+      return 0;
+    }
+    if (isPasswordEncoder) {
+      String passWord = user.getUserPassword();
+      if (passWord == null || "".equals(passWord.trim()) || passWord.trim().isEmpty()) {
+        return 0;
+      }
+      String encryptionPassWord = passwordEncoder.encode(passWord);
+      user.setUserPassword(encryptionPassWord);
+    }
+    return userMapper.updateByPrimaryKeySelective(user);
+  }
+
+  @Override
+  public boolean verifyUser(String passWord) {
+    if (passWord == null || "".equals(passWord.trim()) || passWord.trim().isEmpty()) {
+      return false;
+    }
+    if (!UserUtil.isAuthenticated()){
+      throw new CustomException("当前用户未登录");
+    }
+    User user = UserUtil.currentUser();
+    return passwordEncoder.matches(passWord, user.getPassword());
   }
 }
