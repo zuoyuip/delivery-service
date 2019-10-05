@@ -25,10 +25,10 @@ public interface ICriteriaService {
    *
    * @param userInfo - 用户信息
    * @param multipartFile - 图片文件
-   * @return - 申请成功1,申请失败0
+   * @return - 更改后的user
    * @throws IOException - 流解析异常
    */
-  int applicationCriteria(UserInfo userInfo, MultipartFile multipartFile) throws IOException;
+  User applicationCriteria(UserInfo userInfo, MultipartFile multipartFile) throws IOException;
 
 
   /**

@@ -9,6 +9,7 @@
       <arg column="SUGGEST_ID" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="SUGGEST_USER_ID" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="SUGGEST_CONTENT" javaType="java.lang.String" jdbcType="LONGVARCHAR" />
+      <arg column="SUGGEST_DATE" javaType="java.util.Date" jdbcType="TIMESTAMP" />
     </constructor>
   </resultMap>
 </mapper>

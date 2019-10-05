@@ -6,11 +6,15 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import java.io.IOException;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,7 +23,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.zuoyu.model.Delivery;
+import org.zuoyu.model.Review;
 import org.zuoyu.model.Suggest;
+import org.zuoyu.model.User;
 import org.zuoyu.model.UserInfo;
 import org.zuoyu.service.ICriteriaService;
 import org.zuoyu.service.IDeliveryService;
@@ -103,7 +109,7 @@ public class MeController {
   @PreAuthorize("authenticated")
   @PostMapping("/submitCriteria")
   public ResponseEntity<Result> submitCriteria(UserInfo userInfo,
-      @RequestParam("file") MultipartFile multipartFile) {
+      @RequestParam("file") MultipartFile multipartFile, HttpServletRequest request) {
     if (userInfo == null) {
       return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Result.message("请填写您的信息"));
     }
@@ -111,16 +117,48 @@ public class MeController {
       return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Result.message("请上传照片"));
     }
     try {
-      int i = iCriteriaService.applicationCriteria(userInfo, multipartFile);
-      if (i < 1) {
+      User user = iCriteriaService.applicationCriteria(userInfo, multipartFile);
+      if (user == null) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
             .body(Result.message("服务器内部错误，请联系管理员"));
       }
+      updateAuth(request, user);
     } catch (IOException e) {
       e.printStackTrace();
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
           .body(Result.message("照片解析错误"));
     }
+
     return ResponseEntity.ok(Result.message("审核申请成功"));
+  }
+
+  @ApiOperation(value = "根据唯一标识获取对应的审核申请信息", notes = "注意：若返回状态码为204,表示没有该审核申请信息；若返回状态码为500,表示服务器异常",
+      response = Review.class, ignoreJsonView = true)
+  @ApiImplicitParam(name = "reviewId", value = "审核申请信息实例的唯一标识", required = true, dataTypeClass = String.class)
+  @GetMapping(path = "/review/{reviewId}")
+  @PreAuthorize("authenticated")
+  public ResponseEntity<Review> getReviewByUser(@PathVariable String reviewId){
+    Review review = iCriteriaService.findReviewById(reviewId);
+    if (review == null) {
+      return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+    return ResponseEntity.ok(review);
+  }
+
+  private void updateAuth(HttpServletRequest request, User user) {
+    if (user == null) {
+      return;
+    }
+    //1.从HttpServletRequest中获取SecurityContextImpl对象
+    SecurityContextImpl securityContextImpl = (SecurityContextImpl) request.getSession()
+        .getAttribute("SPRING_SECURITY_CONTEXT");
+//2.从SecurityContextImpl中获取Authentication对象
+    Authentication authentication = securityContextImpl.getAuthentication();
+//3.初始化UsernamePasswordAuthenticationToken实例 ，这里的参数user就是我们要更新的用户信息
+    UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(user,
+        authentication.getCredentials());
+    auth.setDetails(authentication.getDetails());
+//4.重新设置SecurityContextImpl对象的Authentication
+    securityContextImpl.setAuthentication(auth);
   }
 }

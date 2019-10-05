@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.zuoyu.model.Delivery;
 import org.zuoyu.model.Review;
 import org.zuoyu.model.Suggest;
 import org.zuoyu.model.User;
@@ -59,17 +58,17 @@ public class AdminCriteriaController {
 
 
   @ApiOperation(value = "审核申请处理", notes = "注意：若返回状态码为500，表示服务器异常导致的反馈失败", response = Result.class,
-      consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, ignoreJsonView = true)
+      consumes = MediaType.MULTIPART_FORM_DATA_VALUE, ignoreJsonView = true)
   @ApiImplicitParams(
       {@ApiImplicitParam(name = "userId", value = "账户ID", required = true, dataTypeClass = String.class),
           @ApiImplicitParam(name = "isPass", value = "是否通过申请", required = true, dataTypeClass = boolean.class),
-          @ApiImplicitParam(name = "reviewMessage", value = "如果未通过申请，原因说明", required = false, dataTypeClass = String.class)}
+          @ApiImplicitParam(name = "reviewMessage", value = "如果未通过申请，原因说明", dataTypeClass = String.class)}
   )
-  @PutMapping(path = "/deal/{userId}")
+  @PutMapping(path = "/deal/{userId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   public ResponseEntity<Result> dealWithCriteria(@PathVariable String userId, boolean isPass,
       @RequestParam(required = false) String reviewMessage) {
     int i;
-    if (reviewMessage.isEmpty()) {
+    if (reviewMessage == null || reviewMessage.trim().isEmpty()) {
       i = iCriteriaService.dealWithCriteria(userId, isPass);
     } else {
       i = iCriteriaService.dealWithCriteria(userId, isPass, reviewMessage);

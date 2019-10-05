@@ -98,6 +98,7 @@ create table if not exists TB_SUGGEST
     SUGGEST_ID      varchar(40) not null comment '建议反馈的唯一标识',
     SUGGEST_USER_ID varchar(40) null comment '建议反馈-建议者的安全用户唯一标识',
     SUGGEST_CONTENT text        not null comment '建议反馈-反馈内容',
+    SUGGEST_DATE             datetime    null comment '建议反馈-反馈时间',
     constraint TB_SUGGEST_SUGGEST_ID_uindex
         unique (SUGGEST_ID),
     constraint TB_SUGGEST_TB_USER_USER_ID_fk

@@ -1,5 +1,6 @@
 package org.zuoyu.service.impl;
 
+import java.util.Date;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.zuoyu.dao.SuggestMapper;
@@ -35,6 +36,6 @@ public class SuggestServiceImpl implements ISuggestService {
       User user = UserUtil.currentUser();
       suggest.setSuggestUserId(user.getUserId());
     }
-    return suggestMapper.insert(suggest);
+    return suggestMapper.insert(suggest.setSuggestDate(new Date()));
   }
 }

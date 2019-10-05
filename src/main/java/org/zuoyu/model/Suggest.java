@@ -3,6 +3,7 @@ package org.zuoyu.model;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.*;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -40,6 +41,13 @@ public class Suggest implements Serializable {
     @Column(name = "`SUGGEST_CONTENT`")
     @ApiModelProperty(value="suggestContent建议反馈-反馈内容")
     private String suggestContent;
+
+    /**
+     * 建议反馈-反馈时间
+     */
+    @Column(name = "`SUGGEST_DATE`")
+    @ApiModelProperty(value="suggestDate建议反馈-反馈时间")
+    private Date suggestDate;
 
     private static final long serialVersionUID = 1L;
 

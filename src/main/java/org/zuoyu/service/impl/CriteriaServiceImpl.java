@@ -48,7 +48,7 @@ public class CriteriaServiceImpl implements ICriteriaService {
   @Override
   @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class,
       CustomException.class})
-  public int applicationCriteria(UserInfo userInfo, MultipartFile multipartFile)
+  public User applicationCriteria(UserInfo userInfo, MultipartFile multipartFile)
       throws IOException {
     User user = UserUtil.currentUser();
     String userInfoId = UUIDGenerated.obtain();
@@ -69,7 +69,7 @@ public class CriteriaServiceImpl implements ICriteriaService {
     if (updateUser < 1) {
       throw new CustomException("修改账户审核状态失败");
     }
-    return 1;
+    return user;
   }
 
   @Override
@@ -100,7 +100,7 @@ public class CriteriaServiceImpl implements ICriteriaService {
     if (updateUser < 1) {
       throw new CustomException("更新用户信息失败");
     }
-    return 0;
+    return 1;
   }
 
   @Override

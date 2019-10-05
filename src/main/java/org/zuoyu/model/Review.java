@@ -1,5 +1,6 @@
 package org.zuoyu.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
@@ -34,6 +35,7 @@ public class Review implements Serializable {
    */
   @Column(name = "`REVIEW_DATE`")
   @ApiModelProperty(value = "reviewDate审核信息-审核日期")
+  @JsonFormat(pattern="yyyy年MM月dd日 HH:mm:ss",timezone="GMT+8")
   private Date reviewDate;
   /**
    * 审核信息-审核是否已通过
