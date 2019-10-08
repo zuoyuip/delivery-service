@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +30,6 @@ import org.zuoyu.model.UserInfo;
 import org.zuoyu.service.ICriteriaService;
 import org.zuoyu.service.IDeliveryService;
 import org.zuoyu.service.ISuggestService;
-import org.zuoyu.service.IVerificationCodeService;
 import org.zuoyu.util.Result;
 
 /**
@@ -50,14 +48,12 @@ public class MeController {
   private final IDeliveryService iDeliveryService;
   private final ISuggestService iSuggestService;
   private final ICriteriaService iCriteriaService;
-  private final IVerificationCodeService iVerificationCodeService;
 
   public MeController(IDeliveryService iDeliveryService, ISuggestService iSuggestService,
-      ICriteriaService iCriteriaService, IVerificationCodeService iVerificationCodeService) {
+      ICriteriaService iCriteriaService) {
     this.iDeliveryService = iDeliveryService;
     this.iSuggestService = iSuggestService;
     this.iCriteriaService = iCriteriaService;
-    this.iVerificationCodeService = iVerificationCodeService;
   }
 
   @ApiOperation(value = "根据当前用户的唯一标识获取其发布的所有包裹信息", notes = "注意：若返回状态码为204,表示没有该包裹信息；若返回状态码为500,表示服务器异常",
@@ -141,7 +137,7 @@ public class MeController {
   @ApiImplicitParam(name = "reviewId", value = "审核申请信息实例的唯一标识", required = true, dataTypeClass = String.class)
   @GetMapping(path = "/review/{reviewId}")
   @PreAuthorize("authenticated")
-  public ResponseEntity<Review> getReviewByUser(@PathVariable String reviewId){
+  public ResponseEntity<Review> getReviewByUser(@PathVariable String reviewId) {
     Review review = iCriteriaService.findReviewById(reviewId);
     if (review == null) {
       return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
@@ -166,9 +162,4 @@ public class MeController {
     securityContextImpl.setAuthentication(auth);
   }
 
-  @GetMapping("/sendVerificationCode")
-  public ResponseEntity<Result> sendVerificationCode(){
-    String verificationCode = iVerificationCodeService.creatVerificationCode();
-    return ResponseEntity.ok(Result.detail("发送成功!", verificationCode));
-  }
 }

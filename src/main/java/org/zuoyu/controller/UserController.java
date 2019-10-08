@@ -191,4 +191,10 @@ public class UserController {
     return ResponseEntity.ok(Result.message("关闭成功!"));
   }
 
+  @GetMapping("/sendVerificationCode")
+  public ResponseEntity<Result> sendVerificationCode(){
+    String verificationCode = iVerificationCodeService.creatVerificationCode();
+    return ResponseEntity.ok(Result.detail("发送成功!", verificationCode));
+  }
+
 }
