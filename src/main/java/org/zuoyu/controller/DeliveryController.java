@@ -94,6 +94,10 @@ public class DeliveryController {
   @PutMapping(path = "/transaction/{deliveryId}")
   public ResponseEntity<Result> transactionDelivery(Authentication authentication,
       @PathVariable String deliveryId) {
+    if (deliveryId == null || "".equals(deliveryId.trim()) || deliveryId.trim().isEmpty()){
+      return ResponseEntity.status(HttpStatus.FORBIDDEN)
+          .body(Result.message("程序出错，请联系管理员"));
+    }
     User user = (User) authentication.getPrincipal();
     if (user == null) {
       return ResponseEntity.status(HttpStatus.FORBIDDEN)

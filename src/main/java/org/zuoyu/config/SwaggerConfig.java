@@ -30,10 +30,11 @@ public class SwaggerConfig {
 
   private ApiInfo apiInfo() {
     return new ApiInfoBuilder()
-        .title("测试swagger2构建API文档")
-        .description("简单优雅的restful风格的API文档")
+        .title("微信小程序后端API文档")
+        .description("微信小程序包裹信息平台接口说明")
         .termsOfServiceUrl("http://www.zuoyu.top")
         .contact(new Contact("zuoyu", "www.zuoyu.top", "zuoyuip@qq.com"))
+        .license("© 2019 zuoyu.top 版权所有 · 豫ICP备19014153号-1")
         .version("1.0.0")
         .build();
   }

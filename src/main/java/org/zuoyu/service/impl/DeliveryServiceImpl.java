@@ -3,6 +3,9 @@ package org.zuoyu.service.impl;
 import java.util.Date;
 import java.util.List;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+import org.zuoyu.exception.CustomException;
 import org.zuoyu.manager.DeliveryManager;
 import org.zuoyu.model.Delivery;
 import org.zuoyu.service.IDeliveryService;
@@ -72,9 +75,10 @@ public class DeliveryServiceImpl implements IDeliveryService {
   }
 
   @Override
+  @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class,
+      CustomException.class})
   public int transactionDelivery(String deliveryId, String deliveryDeliveryUserId) {
-    if (deliveryId == null || "".equals(deliveryId.trim()) || deliveryId.trim().isEmpty()
-        || deliveryDeliveryUserId == null || "".equals(deliveryDeliveryUserId.trim())
+    if (deliveryDeliveryUserId == null || "".equals(deliveryDeliveryUserId.trim())
         || deliveryDeliveryUserId.trim().isEmpty()) {
       return 0;
     }

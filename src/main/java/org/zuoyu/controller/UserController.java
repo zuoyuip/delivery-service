@@ -12,11 +12,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.zuoyu.model.User;
+import org.zuoyu.model.UserInfo;
+import org.zuoyu.service.ICriteriaService;
 import org.zuoyu.service.IUserService;
 import org.zuoyu.util.Result;
 import org.zuoyu.util.UserUtil;
@@ -35,9 +38,11 @@ import org.zuoyu.util.UserUtil;
 public class UserController {
 
   private final IUserService iUserService;
+  private final ICriteriaService iCriteriaService;
 
-  public UserController(IUserService iUserService) {
+  public UserController(IUserService iUserService, ICriteriaService iCriteriaService) {
     this.iUserService = iUserService;
+    this.iCriteriaService = iCriteriaService;
   }
 
   @ApiOperation(value = "根据传入的安全用户实例信息进行注册", notes = "注意：返回500表示服务器异常导致注册失败", response = Result.class,
@@ -149,6 +154,21 @@ public class UserController {
           .body(Result.message("手机号修改失败，请联系管理员"));
     }
     return ResponseEntity.ok(Result.message("手机号修改成功，请重新登录"));
+  }
+
+  @ApiOperation(value = "根据唯一标识获取对应的用户详情信息", notes = "注意：若返回状态码为204,表示没有该用户详情信息；若返回状态码为500,表示服务器异常",
+      response = UserInfo.class, ignoreJsonView = true)
+  @ApiImplicitParam(name = "userInfoId", value = "用户详情信息实例的唯一标识", required = true, dataTypeClass = String.class)
+  @GetMapping(path = "userInfo/{userInfoId}")
+  public ResponseEntity<UserInfo> getUserInfoById(@PathVariable String userInfoId) {
+    if (paramIsNull(userInfoId)){
+      return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+    UserInfo userInfo = iCriteriaService.findUserInfoById(userInfoId);
+    if (userInfo == null) {
+      return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+    return ResponseEntity.ok(userInfo);
   }
 
   private boolean paramIsNull(String s) {
