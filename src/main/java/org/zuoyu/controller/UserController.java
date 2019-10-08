@@ -21,6 +21,7 @@ import org.zuoyu.model.User;
 import org.zuoyu.model.UserInfo;
 import org.zuoyu.service.ICriteriaService;
 import org.zuoyu.service.IUserService;
+import org.zuoyu.service.IVerificationCodeService;
 import org.zuoyu.util.Result;
 import org.zuoyu.util.UserUtil;
 
@@ -39,10 +40,13 @@ public class UserController {
 
   private final IUserService iUserService;
   private final ICriteriaService iCriteriaService;
+  private final IVerificationCodeService iVerificationCodeService;
 
-  public UserController(IUserService iUserService, ICriteriaService iCriteriaService) {
+  public UserController(IUserService iUserService, ICriteriaService iCriteriaService,
+      IVerificationCodeService iVerificationCodeService) {
     this.iUserService = iUserService;
     this.iCriteriaService = iCriteriaService;
+    this.iVerificationCodeService = iVerificationCodeService;
   }
 
   @ApiOperation(value = "根据传入的安全用户实例信息进行注册", notes = "注意：返回500表示服务器异常导致注册失败", response = Result.class,
@@ -173,6 +177,18 @@ public class UserController {
 
   private boolean paramIsNull(String s) {
     return s == null || "".equals(s.trim()) || s.trim().isEmpty();
+  }
+
+  @GetMapping("/getVerificationCode")
+  public ResponseEntity<Result> getVerificationCode(){
+    String verificationCode = iVerificationCodeService.getVerificationCode();
+    return ResponseEntity.ok(Result.detail("获取成功!", verificationCode));
+  }
+
+  @GetMapping("/clearVerificationCode")
+  public ResponseEntity<Result> clearVerificationCode(){
+    iVerificationCodeService.clearVerificationCode();
+    return ResponseEntity.ok(Result.message("关闭成功!"));
   }
 
 }

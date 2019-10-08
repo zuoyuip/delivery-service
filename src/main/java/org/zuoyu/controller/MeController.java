@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,7 @@ import org.zuoyu.model.UserInfo;
 import org.zuoyu.service.ICriteriaService;
 import org.zuoyu.service.IDeliveryService;
 import org.zuoyu.service.ISuggestService;
+import org.zuoyu.service.IVerificationCodeService;
 import org.zuoyu.util.Result;
 
 /**
@@ -48,12 +50,14 @@ public class MeController {
   private final IDeliveryService iDeliveryService;
   private final ISuggestService iSuggestService;
   private final ICriteriaService iCriteriaService;
+  private final IVerificationCodeService iVerificationCodeService;
 
   public MeController(IDeliveryService iDeliveryService, ISuggestService iSuggestService,
-      ICriteriaService iCriteriaService) {
+      ICriteriaService iCriteriaService, IVerificationCodeService iVerificationCodeService) {
     this.iDeliveryService = iDeliveryService;
     this.iSuggestService = iSuggestService;
     this.iCriteriaService = iCriteriaService;
+    this.iVerificationCodeService = iVerificationCodeService;
   }
 
   @ApiOperation(value = "根据当前用户的唯一标识获取其发布的所有包裹信息", notes = "注意：若返回状态码为204,表示没有该包裹信息；若返回状态码为500,表示服务器异常",
@@ -160,5 +164,11 @@ public class MeController {
     auth.setDetails(authentication.getDetails());
 //4.重新设置SecurityContextImpl对象的Authentication
     securityContextImpl.setAuthentication(auth);
+  }
+
+  @GetMapping("/sendVerificationCode")
+  public ResponseEntity<Result> sendVerificationCode(){
+    String verificationCode = iVerificationCodeService.creatVerificationCode();
+    return ResponseEntity.ok(Result.detail("发送成功!", verificationCode));
   }
 }
