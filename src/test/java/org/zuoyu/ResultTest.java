@@ -1,5 +1,6 @@
 package org.zuoyu;
 
+import java.util.Date;
 import org.junit.Test;
 import org.zuoyu.util.Result;
 
@@ -14,6 +15,8 @@ public class ResultTest {
 
   @Test
   public void testOne(){
-
+    System.out.println(System.nanoTime() + System.currentTimeMillis());
+    System.out.println(System.nanoTime() + System.currentTimeMillis());
+    System.out.println(System.nanoTime() + System.currentTimeMillis());
   }
 }

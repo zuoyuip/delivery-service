@@ -101,9 +101,10 @@ public class User implements UserDetails {
   private String reviewId;
 
   public User(String userId, String userPhone, String userPassword, Boolean userIsValid,
-      Boolean userIsEnabled, Boolean userIsAccountNonExpired, Boolean userIsCredentialsNonExpired,
-      Boolean userIsAccountNonLocked, Boolean userIsByReview, Boolean userIsSubmitReview,
-      String userInfoId, String reviewId) {
+      Boolean userIsEnabled, Boolean userIsAccountNonExpired,
+      Boolean userIsCredentialsNonExpired, Boolean userIsAccountNonLocked,
+      Boolean userIsByReview, Boolean userIsSubmitReview, String userInfoId,
+      String reviewId) {
     this.userId = userId;
     this.userPhone = userPhone;
     this.userPassword = userPassword;

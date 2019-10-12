@@ -148,17 +148,21 @@ public class Delivery implements Serializable {
   @ApiModelProperty(value = "deliveryStatus包裹信息-包裹是否被接单")
   private Boolean deliveryStatus;
 
-  public Delivery(String deliveryId, String deliveryName, String deliveryCode,
-      String deliveryUserName, String deliveryUserSex, String deliveryAddress,
+  public Delivery(String deliveryId, String deliveryOrderCode, String deliveryName,
+      String deliveryCode, String deliveryUserName, String deliveryUserPhone,
+      String deliveryUserSex, String deliveryAddress, String deliveryGoalFloor,
       String deliveryGoalAddress, String deliveryWeight, String deliveryReward,
       String deliveryRemark, Date deliveryDate, String deliveryUserId,
       String deliveryDeliveryUserId, Boolean deliveryStatus) {
     this.deliveryId = deliveryId;
+    this.deliveryOrderCode = deliveryOrderCode;
     this.deliveryName = deliveryName;
     this.deliveryCode = deliveryCode;
     this.deliveryUserName = deliveryUserName;
+    this.deliveryUserPhone = deliveryUserPhone;
     this.deliveryUserSex = deliveryUserSex;
     this.deliveryAddress = deliveryAddress;
+    this.deliveryGoalFloor = deliveryGoalFloor;
     this.deliveryGoalAddress = deliveryGoalAddress;
     this.deliveryWeight = deliveryWeight;
     this.deliveryReward = deliveryReward;

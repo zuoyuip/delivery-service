@@ -77,11 +77,12 @@ public class UserInfo implements Serializable {
   @ApiModelProperty(value = "userInfoThumbPhotoUrl用户信息-审核缩略图片")
   private String userInfoThumbPhotoUrl;
 
-  public UserInfo(String userInfoId, String userInfoName, String userInfoCollege,
-      String userInfoSubject, String userInfoClass, String userInfoStudentNumber,
-      String userInfoPhotoUrl, String userInfoThumbPhotoUrl) {
+  public UserInfo(String userInfoId, String userInfoName, String userInfoSex,
+      String userInfoCollege, String userInfoSubject, String userInfoClass,
+      String userInfoStudentNumber, String userInfoPhotoUrl, String userInfoThumbPhotoUrl) {
     this.userInfoId = userInfoId;
     this.userInfoName = userInfoName;
+    this.userInfoSex = userInfoSex;
     this.userInfoCollege = userInfoCollege;
     this.userInfoSubject = userInfoSubject;
     this.userInfoClass = userInfoClass;

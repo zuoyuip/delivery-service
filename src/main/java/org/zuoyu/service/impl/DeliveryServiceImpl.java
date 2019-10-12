@@ -70,7 +70,9 @@ public class DeliveryServiceImpl implements IDeliveryService {
     if (delivery == null) {
       return 0;
     }
-    delivery.setDeliveryDate(new Date()).setDeliveryStatus(false);
+    long orderCode = System.currentTimeMillis() + System.currentTimeMillis();
+    delivery.setDeliveryDate(new Date()).setDeliveryStatus(false).setDeliveryOrderCode(
+        Long.toString(orderCode));
     return deliveryManager.insertDelivery(delivery);
   }
 

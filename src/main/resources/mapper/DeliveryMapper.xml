@@ -28,6 +28,7 @@
   </resultMap>
   <select id="listDeliveryIntroduction" resultType="org.zuoyu.model.Delivery">
     SELECT DELIVERY_ID,
+           DELIVERY_ORDER_CODE,
            DELIVERY_NAME,
            DELIVERY_USER_SEX,
            DELIVERY_ADDRESS,

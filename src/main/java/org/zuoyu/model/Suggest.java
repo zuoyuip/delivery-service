@@ -51,10 +51,12 @@ public class Suggest implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public Suggest(String suggestId, String suggestUserId, String suggestContent) {
+    public Suggest(String suggestId, String suggestUserId, String suggestContent,
+        Date suggestDate) {
         this.suggestId = suggestId;
         this.suggestUserId = suggestUserId;
         this.suggestContent = suggestContent;
+        this.suggestDate = suggestDate;
     }
 
     public Suggest() {
