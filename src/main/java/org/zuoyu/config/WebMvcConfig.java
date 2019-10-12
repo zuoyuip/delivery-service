@@ -1,6 +1,12 @@
 package org.zuoyu.config;
 
+import com.aliyuncs.DefaultAcsClient;
+import com.aliyuncs.IAcsClient;
+import com.aliyuncs.profile.DefaultProfile;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Scope;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
@@ -15,6 +21,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupp
  **/
 public class WebMvcConfig extends WebMvcConfigurationSupport {
 
+  @Value("${aliyunSms.AccessKeyId}")
+  private String accessKeyId;
+
+  @Value("${aliyunSms.AccessKeySecret}")
+  private String accessKeySecret;
 
 
   /**
@@ -44,5 +55,12 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
     registry.addResourceHandler("/webjars/**")
         .addResourceLocations("classpath:/META-INF/resources/webjars/");
     super.addResourceHandlers(registry);
+  }
+
+  @Bean
+  @Scope(value = ConfigurableBeanFactory.SCOPE_SINGLETON)
+  public IAcsClient iAcsClient(){
+    DefaultProfile profile = DefaultProfile.getProfile("cn-hangzhou", accessKeyId, accessKeySecret);
+    return new DefaultAcsClient(profile);
   }
 }

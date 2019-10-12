@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
+import java.util.regex.Pattern;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.zuoyu.exception.CustomException;
+import org.zuoyu.manager.SendSmsManager;
 import org.zuoyu.model.User;
 import org.zuoyu.model.UserInfo;
 import org.zuoyu.service.ICriteriaService;
@@ -38,15 +41,31 @@ import org.zuoyu.util.UserUtil;
 @RequestMapping(path = "/user", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class UserController {
 
+  private static final Pattern PATTERN = Pattern.compile("^[-+]?[\\d]*$");
+
   private final IUserService iUserService;
   private final ICriteriaService iCriteriaService;
   private final IVerificationCodeService iVerificationCodeService;
+  private final SendSmsManager sendSmsManager;
 
   public UserController(IUserService iUserService, ICriteriaService iCriteriaService,
-      IVerificationCodeService iVerificationCodeService) {
+      IVerificationCodeService iVerificationCodeService, SendSmsManager sendSmsManager) {
     this.iUserService = iUserService;
     this.iCriteriaService = iCriteriaService;
     this.iVerificationCodeService = iVerificationCodeService;
+    this.sendSmsManager = sendSmsManager;
+  }
+
+  private void verificationCode(String verifyCode) {
+    boolean isPresenceVerificationCode = iVerificationCodeService.isPresence();
+    if (!isPresenceVerificationCode) {
+      throw new CustomException("无效验证码或验证码已过时", 403);
+    }
+    String verificationCode = iVerificationCodeService.getVerificationCode();
+    if (!verifyCode.equals(verificationCode)) {
+      throw new CustomException("验证码错误", 403);
+    }
+    iVerificationCodeService.clearVerificationCode();
   }
 
   @ApiOperation(value = "根据传入的安全用户实例信息进行注册", notes = "注意：返回500表示服务器异常导致注册失败", response = Result.class,
@@ -63,6 +82,7 @@ public class UserController {
     if (user == null) {
       return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Result.message("请填写注册信息"));
     }
+    verificationCode(verifyCode);
     boolean isPresence = iUserService.isPresenceByUserPhone(user.getUserPhone());
     if (isPresence) {
       return ResponseEntity.status(HttpStatus.CREATED).body(Result.message("账户已存在！"));
@@ -89,6 +109,7 @@ public class UserController {
   }
 
 
+
   @ApiOperation(value = "修改密码", notes = "注意：若返回状态码为500，表示服务器异常导致的反馈失败", response = Result.class,
       consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, ignoreJsonView = true)
   @ApiImplicitParams(
@@ -109,6 +130,7 @@ public class UserController {
     if (paramIsNull(passWord)) {
       return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Result.message("请输入密码"));
     }
+    verificationCode(verifyCode);
     if (!iUserService.isPresenceByUserPhone(userPhone)) {
       return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Result.message("该账户不存在"));
     }
@@ -144,6 +166,7 @@ public class UserController {
     if (paramIsNull(passWord)) {
       return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Result.message("请输入原密码"));
     }
+    verificationCode(verifyCode);
     if (!iUserService.verifyUser(passWord)) {
       return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Result.message("原密码错误"));
     }
@@ -165,7 +188,7 @@ public class UserController {
   @ApiImplicitParam(name = "userInfoId", value = "用户详情信息实例的唯一标识", required = true, dataTypeClass = String.class)
   @GetMapping(path = "userInfo/{userInfoId}")
   public ResponseEntity<UserInfo> getUserInfoById(@PathVariable String userInfoId) {
-    if (paramIsNull(userInfoId)){
+    if (paramIsNull(userInfoId)) {
       return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
     UserInfo userInfo = iCriteriaService.findUserInfoById(userInfoId);
@@ -179,22 +202,65 @@ public class UserController {
     return s == null || "".equals(s.trim()) || s.trim().isEmpty();
   }
 
-  @GetMapping("/getVerificationCode")
-  public ResponseEntity<Result> getVerificationCode(){
-    String verificationCode = iVerificationCodeService.getVerificationCode();
-    return ResponseEntity.ok(Result.detail("获取成功!", verificationCode));
+  private void examinePhone(String phoneNumbers) {
+    boolean isNumeric = PATTERN.matcher(phoneNumbers).matches();
+    int phoneNumberDigits = 11;
+    if (!isNumeric || phoneNumbers.length() != phoneNumberDigits) {
+      throw new CustomException("请输入正确的手机号", 403);
+    }
   }
 
-  @GetMapping("/clearVerificationCode")
-  public ResponseEntity<Result> clearVerificationCode(){
-    iVerificationCodeService.clearVerificationCode();
-    return ResponseEntity.ok(Result.message("关闭成功!"));
+  private ResponseEntity<Result> smsResult(String response) {
+    if (response == null) {
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+          .body(Result.message("服务器内部错误"));
+    }
+    String success = "OK";
+    if (response.contains(success)) {
+      return ResponseEntity.ok(Result.message("短信发送成功"));
+    }
+    String permits = "isv.BUSINESS_LIMIT_CONTROL";
+    if (response.contains(permits)) {
+      return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Result.message("您的操作太频繁，请稍候"));
+    }
+    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Result.message("短信发送失败"));
+
   }
 
-  @GetMapping("/sendVerificationCode")
-  public ResponseEntity<Result> sendVerificationCode(){
+
+  @ApiOperation(value = "获取注册验证码", notes = "注意：若返回状态码为500,表示服务器异常",
+      response = Result.class, ignoreJsonView = true)
+  @ApiImplicitParam(name = "phoneNumbers", value = "用户手机号码", required = true, dataTypeClass = String.class)
+  @GetMapping("/sendVerificationCode/register/{phoneNumbers}")
+  public ResponseEntity<Result> sendVerificationRegisterCode(@PathVariable String phoneNumbers) {
+    examinePhone(phoneNumbers);
     String verificationCode = iVerificationCodeService.creatVerificationCode();
-    return ResponseEntity.ok(Result.detail("发送成功!", verificationCode));
+    String response = sendSmsManager.registerCode(phoneNumbers, verificationCode);
+    return smsResult(response);
+
+  }
+
+  @ApiOperation(value = "获取重置验证码", notes = "注意：若返回状态码为500,表示服务器异常",
+      response = Result.class, ignoreJsonView = true)
+  @ApiImplicitParam(name = "phoneNumbers", value = "用户手机号码", required = true, dataTypeClass = String.class)
+  @GetMapping("/sendVerificationCode/forget/{phoneNumbers}")
+  public ResponseEntity<Result> sendVerificationForgetCode(@PathVariable String phoneNumbers) {
+    examinePhone(phoneNumbers);
+    String verificationCode = iVerificationCodeService.creatVerificationCode();
+    String response = sendSmsManager.forgetUser(phoneNumbers, verificationCode);
+    return smsResult(response);
+  }
+
+  @PreAuthorize("authenticated")
+  @ApiOperation(value = "获取修改账户验证码", notes = "注意：若返回状态码为500,表示服务器异常",
+      response = Result.class, ignoreJsonView = true)
+  @ApiImplicitParam(name = "phoneNumbers", value = "用户手机号码", required = true, dataTypeClass = String.class)
+  @GetMapping("/sendVerificationCode/modify/{phoneNumbers}")
+  public ResponseEntity<Result> sendVerificationModifyCode(@PathVariable String phoneNumbers) {
+    examinePhone(phoneNumbers);
+    String verificationCode = iVerificationCodeService.creatVerificationCode();
+    String response = sendSmsManager.modifyUser(phoneNumbers, verificationCode);
+    return smsResult(response);
   }
 
 }

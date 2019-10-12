@@ -63,6 +63,7 @@ alter table TB_USER
 create table if not exists TB_DELIVERY
 (
     DELIVERY_ID               varchar(40) not null comment '包裹信息-唯一标识',
+    DELIVERY_ORDER_CODE       varchar(20) comment '包裹信息-订单编号',
     DELIVERY_NAME             varchar(20) not null comment '包裹信息-快递名称',
     DELIVERY_CODE             varchar(20) not null comment '包裹信息-快递取货号',
     DELIVERY_USER_NAME        varchar(20) not null comment '包裹信息-包裹的收货人名字',

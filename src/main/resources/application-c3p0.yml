@@ -43,3 +43,7 @@ c3p0:
     preferredTestQuery: NULL
     #    用来配置测试空闲连接的间隔时间，单位秒。测试方式还是上面的两种之一，因为它保证连接池会每隔一定时间对空闲连接进行一次测试，从而保证有效的空闲连接能每隔一定时间访问一次数据库，为0则不测试。Default：0
     idleConnectionTestPeriod: 0
+
+aliyunSms:
+  AccessKeyId: LTAI4FtgWcUVjfZxn1NC3MNQ
+  AccessKeySecret: B3azMRx37L6hDd0jPUTIJDi70GtsMk
