@@ -65,7 +65,7 @@ public class UserController {
     if (!verifyCode.equals(verificationCode)) {
       throw new CustomException("验证码错误", 403);
     }
-    iVerificationCodeService.clearVerificationCode();
+//    iVerificationCodeService.clearVerificationCode();
   }
 
   @ApiOperation(value = "根据传入的安全用户实例信息进行注册", notes = "注意：返回500表示服务器异常导致注册失败", response = Result.class,

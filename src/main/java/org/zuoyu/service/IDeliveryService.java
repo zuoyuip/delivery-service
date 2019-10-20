@@ -43,6 +43,14 @@ public interface IDeliveryService {
   List<Delivery> listDelivery();
 
   /**
+   * 根据唯一标识符获取订单的状态
+   *
+   * @param deliveryId - 唯一标识符
+   * @return - 状态
+   */
+  boolean selectStatusByDeliveryId(String deliveryId);
+
+  /**
    * 获取指定用户发布的所有包裹
    *
    * @param deliveryUserId - 用户ID
@@ -87,6 +95,7 @@ public interface IDeliveryService {
 
   /**
    * 根据唯一标识符对包裹信息进行取消
+   *
    * @param deliveryId - 包裹信息唯一标识符
    * @return - 是否成功
    */

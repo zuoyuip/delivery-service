@@ -1,7 +1,9 @@
 package org.zuoyu.service.impl;
 
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,6 +11,7 @@ import org.zuoyu.exception.CustomException;
 import org.zuoyu.manager.DeliveryManager;
 import org.zuoyu.model.Delivery;
 import org.zuoyu.service.IDeliveryService;
+import org.zuoyu.service.IRedisService;
 
 /**
  * 包裹业务服务实现.
@@ -18,33 +21,40 @@ import org.zuoyu.service.IDeliveryService;
  * @create 2019-08-15 11:57
  **/
 @Service
-public class DeliveryServiceImpl implements IDeliveryService {
+class DeliveryServiceImpl implements IDeliveryService {
 
   private final DeliveryManager deliveryManager;
+  private final IRedisService iRedisService;
 
-  public DeliveryServiceImpl(
-      DeliveryManager deliveryManager) {
+  DeliveryServiceImpl(
+      DeliveryManager deliveryManager, IRedisService iRedisService) {
     this.deliveryManager = deliveryManager;
+    this.iRedisService = iRedisService;
   }
 
   @Override
   public List<Delivery> selectDeliveryAll() {
-    return deliveryManager.selectDeliveryAll();
+    return this.sortDeliveries(deliveryManager.selectDeliveryAll());
   }
 
   @Override
   public List<Delivery> selectDeliveryNotReceive() {
-    return deliveryManager.selectDeliveryNotReceive();
+    return this.sortDeliveries(deliveryManager.selectDeliveryNotReceive());
   }
 
   @Override
   public List<Delivery> selectDeliveryReceive() {
-    return deliveryManager.selectDeliveryReceive();
+    return this.sortDeliveries(deliveryManager.selectDeliveryReceive());
   }
 
   @Override
   public List<Delivery> listDelivery() {
-    return deliveryManager.listDelivery();
+    return this.sortDeliveries(deliveryManager.listDelivery());
+  }
+
+  @Override
+  public boolean selectStatusByDeliveryId(String deliveryId) {
+    return deliveryManager.selectStatusByDeliveryId(deliveryId);
   }
 
   @Override
@@ -53,7 +63,7 @@ public class DeliveryServiceImpl implements IDeliveryService {
         .isEmpty()) {
       return null;
     }
-    return deliveryManager.deliveriesMe(deliveryUserId);
+    return this.sortDeliveries(deliveryManager.deliveriesMe(deliveryUserId));
   }
 
   @Override
@@ -62,7 +72,7 @@ public class DeliveryServiceImpl implements IDeliveryService {
         || deliveryDeliveryUserId.trim().isEmpty()) {
       return null;
     }
-    return deliveryManager.deliveriesDeliveryMe(deliveryDeliveryUserId);
+    return this.sortDeliveries(deliveryManager.deliveriesDeliveryMe(deliveryDeliveryUserId));
   }
 
   @Override
@@ -84,8 +94,14 @@ public class DeliveryServiceImpl implements IDeliveryService {
         || deliveryDeliveryUserId.trim().isEmpty()) {
       return 0;
     }
+    iRedisService.setKeyValue(deliveryId, true);
     Delivery delivery = new Delivery().setDeliveryId(deliveryId).setDeliveryStatus(true)
         .setDeliveryDeliveryUserId(deliveryDeliveryUserId);
+    try {
+      TimeUnit.MILLISECONDS.sleep(1000);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
     return deliveryManager.transactionDelivery(delivery);
   }
 
@@ -106,5 +122,12 @@ public class DeliveryServiceImpl implements IDeliveryService {
     return deliveryManager.updateDelivery(delivery);
   }
 
+  private List<Delivery> sortDeliveries(List<Delivery> deliveries) {
+    if (deliveries == null || deliveries.isEmpty()) {
+      return null;
+    }
+    deliveries.sort(Comparator.comparing(Delivery::getDeliveryDate));
+    return deliveries;
+  }
 
 }

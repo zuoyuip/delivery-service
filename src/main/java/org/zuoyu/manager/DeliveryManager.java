@@ -74,6 +74,17 @@ public class DeliveryManager {
   }
 
   /**
+   * 根据唯一标识符获取订单的状态
+   *
+   * @param deliveryId - 唯一标识符
+   * @return - 状态
+   */
+  @Cacheable
+  public boolean selectStatusByDeliveryId(String deliveryId) {
+    return deliveryMapper.selectStatusByDeliveryId(deliveryId);
+  }
+
+  /**
    * 获取指定用户发布的所有包裹
    *
    * @param deliveryUserId - 用户ID
@@ -130,7 +141,7 @@ public class DeliveryManager {
    * @return - 成功更改的个数
    */
   @CacheEvict(allEntries = true, condition = "#result > 0")
-  public int updateDelivery(Delivery delivery){
+  public int updateDelivery(Delivery delivery) {
     return deliveryMapper.updateByPrimaryKeySelective(delivery);
   }
 

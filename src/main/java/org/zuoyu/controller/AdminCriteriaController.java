@@ -84,7 +84,7 @@ public class AdminCriteriaController {
   @GetMapping(path = "/allSuggest")
   public ResponseEntity<List<Suggest>> selectSuggest() {
     List<Suggest> suggests = iSuggestService.selectAll();
-    if (suggests.isEmpty()) {
+    if (suggests == null) {
       return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
     return ResponseEntity.ok(suggests);

@@ -1,5 +1,6 @@
 package org.zuoyu.service.impl;
 
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import org.springframework.stereotype.Service;
@@ -17,17 +18,22 @@ import org.zuoyu.util.UserUtil;
  * @create 2019-09-17 10:06
  **/
 @Service
-public class SuggestServiceImpl implements ISuggestService {
+class SuggestServiceImpl implements ISuggestService {
 
   private final SuggestMapper suggestMapper;
 
-  public SuggestServiceImpl(SuggestMapper suggestMapper) {
+  SuggestServiceImpl(SuggestMapper suggestMapper) {
     this.suggestMapper = suggestMapper;
   }
 
   @Override
   public List<Suggest> selectAll() {
-    return suggestMapper.selectAll();
+    List<Suggest> suggests = suggestMapper.selectAll();
+    if (suggests == null || suggests.isEmpty()){
+      return null;
+    }
+    suggests.sort(Comparator.comparing(Suggest::getSuggestDate));
+    return suggests;
   }
 
   @Override

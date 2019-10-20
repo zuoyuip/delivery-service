@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.zuoyu.model.Delivery;
 import org.zuoyu.model.User;
 import org.zuoyu.service.IDeliveryService;
+import org.zuoyu.service.IRedisService;
 import org.zuoyu.util.Result;
 import org.zuoyu.util.UserUtil;
 
@@ -37,9 +38,12 @@ import org.zuoyu.util.UserUtil;
 public class DeliveryController {
 
   private final IDeliveryService iDeliveryService;
+  private final IRedisService iRedisService;
 
-  public DeliveryController(IDeliveryService iDeliveryService) {
+  public DeliveryController(IDeliveryService iDeliveryService,
+      IRedisService iRedisService) {
     this.iDeliveryService = iDeliveryService;
+    this.iRedisService = iRedisService;
   }
 
   @ApiOperation(value = "获取未被接单的包裹信息(只有简介信息，涉及重要私密信息不显示)",
@@ -47,7 +51,7 @@ public class DeliveryController {
   @GetMapping
   public ResponseEntity<List<Delivery>> selectAll() {
     List<Delivery> deliveries = iDeliveryService.listDelivery();
-    if (deliveries.isEmpty()) {
+    if (deliveries == null) {
       return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
     return ResponseEntity.ok(deliveries);
@@ -94,9 +98,17 @@ public class DeliveryController {
   @PutMapping(path = "/transaction/{deliveryId}")
   public ResponseEntity<Result> transactionDelivery(Authentication authentication,
       @PathVariable String deliveryId) {
-    if (deliveryId == null || "".equals(deliveryId.trim()) || deliveryId.trim().isEmpty()){
+    if (deliveryId == null || "".equals(deliveryId.trim()) || deliveryId.trim().isEmpty()) {
       return ResponseEntity.status(HttpStatus.FORBIDDEN)
           .body(Result.message("程序出错，请联系管理员"));
+    }
+    if (iDeliveryService.selectStatusByDeliveryId(deliveryId)) {
+      return ResponseEntity.status(HttpStatus.FORBIDDEN)
+          .body(Result.message("该订单已被抢走"));
+    }
+    if (iRedisService.isExists(deliveryId)) {
+      return ResponseEntity.status(HttpStatus.FORBIDDEN)
+          .body(Result.message("您慢了一步"));
     }
     User user = (User) authentication.getPrincipal();
     if (user == null) {
@@ -106,6 +118,7 @@ public class DeliveryController {
     String mySelfUserId = user.getUserId();
     int i = iDeliveryService.transactionDelivery(deliveryId, mySelfUserId);
     if (i < 1) {
+      iRedisService.deleteKey(deliveryId);
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
           .body(Result.message("订单接受失败"));
     }
@@ -117,7 +130,7 @@ public class DeliveryController {
   @ApiImplicitParam(name = "deliveryId", value = "包裹信息实例的唯一标识", required = true, dataTypeClass = String.class)
   @DeleteMapping(path = "{deliveryId}")
   @PreAuthorize("authenticated")
-  public ResponseEntity<Result> cancelDelivery(@PathVariable String deliveryId){
+  public ResponseEntity<Result> cancelDelivery(@PathVariable String deliveryId) {
     int i = iDeliveryService.cancelDeliveryById(deliveryId);
     if (i < 1) {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

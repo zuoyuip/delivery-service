@@ -20,7 +20,7 @@ import org.zuoyu.service.IVerificationCodeService;
  **/
 @Service
 @Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.INTERFACES)
-public class VerificationCodeServiceImpl implements IVerificationCodeService {
+class VerificationCodeServiceImpl implements IVerificationCodeService {
 
 
   private ScheduledExecutorService executorService;

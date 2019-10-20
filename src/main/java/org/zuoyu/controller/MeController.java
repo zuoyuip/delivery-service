@@ -63,7 +63,7 @@ public class MeController {
   @GetMapping("/deliveryUser/{deliveryUserId}")
   public ResponseEntity<List<Delivery>> listMeDelivery(@PathVariable String deliveryUserId) {
     List<Delivery> deliveries = iDeliveryService.deliveriesMe(deliveryUserId);
-    if (deliveries.size() < 1) {
+    if (deliveries == null) {
       return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
     return ResponseEntity.ok(deliveries);
@@ -77,7 +77,7 @@ public class MeController {
   public ResponseEntity<List<Delivery>> listMeDeliveriesDelivery(
       @PathVariable String deliveryDeliveryUserId) {
     List<Delivery> deliveries = iDeliveryService.deliveriesDeliveryMe(deliveryDeliveryUserId);
-    if (deliveries.size() < 1) {
+    if (deliveries == null) {
       return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
     return ResponseEntity.ok(deliveries);

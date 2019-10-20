@@ -78,6 +78,13 @@ public class Delivery implements Serializable {
   private String deliveryUserSex;
 
   /**
+   * 包裹信息-包裹收货人性别
+   */
+  @Column(name = "`DELIVERY_SEX_IMAGE_URL`")
+  @ApiModelProperty(value = "deliverySexImageUrl包裹信息-包裹收货人性别图片地址")
+  private String deliverySexImageUrl;
+
+  /**
    * 包裹信息-包裹所在地址
    */
   @Column(name = "`DELIVERY_ADDRESS`")

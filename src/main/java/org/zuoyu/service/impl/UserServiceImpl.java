@@ -19,14 +19,14 @@ import tk.mybatis.mapper.entity.Example;
  * @create 2019-08-10 18:00
  **/
 @Service
-public class UserServiceImpl implements IUserService {
+class UserServiceImpl implements IUserService {
 
   private final UserMapper userMapper;
 
   private final PasswordEncoder passwordEncoder = PasswordEncoderFactories
       .createDelegatingPasswordEncoder();
 
-  public UserServiceImpl(UserMapper userMapper) {
+  UserServiceImpl(UserMapper userMapper) {
     this.userMapper = userMapper;
   }
 
@@ -100,7 +100,7 @@ public class UserServiceImpl implements IUserService {
     if (passWord == null || "".equals(passWord.trim()) || passWord.trim().isEmpty()) {
       return false;
     }
-    if (!UserUtil.isAuthenticated()){
+    if (!UserUtil.isAuthenticated()) {
       throw new CustomException("当前用户未登录");
     }
     User user = UserUtil.currentUser();

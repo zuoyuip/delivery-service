@@ -39,7 +39,7 @@ public class AdminDeliveryController {
   @GetMapping(path = "/all")
   public ResponseEntity<List<Delivery>> selectDeliveryAll() {
     List<Delivery> deliveries = iDeliveryService.selectDeliveryAll();
-    if (deliveries.isEmpty()) {
+    if (deliveries == null) {
       return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
     return ResponseEntity.ok(deliveries);
@@ -51,7 +51,7 @@ public class AdminDeliveryController {
   @GetMapping(path = "/notReceive")
   public ResponseEntity<List<Delivery>> selectDeliveryNotReceive() {
     List<Delivery> deliveries = iDeliveryService.selectDeliveryAll();
-    if (deliveries.isEmpty()) {
+    if (deliveries == null) {
       return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
     return ResponseEntity.ok(deliveries);
@@ -63,7 +63,7 @@ public class AdminDeliveryController {
   @GetMapping(path = "/receive")
   public ResponseEntity<List<Delivery>> selectDeliveryReceive() {
     List<Delivery> deliveries = iDeliveryService.selectDeliveryAll();
-    if (deliveries.isEmpty()) {
+    if (deliveries == null) {
       return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
     return ResponseEntity.ok(deliveries);

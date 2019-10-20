@@ -3,7 +3,6 @@ package org.zuoyu.service.impl;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,7 +28,7 @@ import tk.mybatis.mapper.entity.Example;
  * @create 2019-09-17 16:59
  **/
 @Service
-public class CriteriaServiceImpl implements ICriteriaService {
+class CriteriaServiceImpl implements ICriteriaService {
 
 
   private final UserMapper userMapper;
@@ -37,7 +36,7 @@ public class CriteriaServiceImpl implements ICriteriaService {
   private final ReviewMapper reviewMapper;
   private final UserInfoMapper userInfoMapper;
 
-  public CriteriaServiceImpl(UserMapper userMapper, CriteriaManager criteriaManager,
+  CriteriaServiceImpl(UserMapper userMapper, CriteriaManager criteriaManager,
       ReviewMapper reviewMapper, UserInfoMapper userInfoMapper) {
     this.userMapper = userMapper;
     this.criteriaManager = criteriaManager;

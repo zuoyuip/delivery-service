@@ -14,6 +14,7 @@
       <arg column="DELIVERY_USER_NAME" javaType="java.lang.String" jdbcType="VARCHAR"/>
       <arg column="DELIVERY_USER_PHONE" javaType="java.lang.String" jdbcType="VARCHAR"/>
       <arg column="DELIVERY_USER_SEX" javaType="java.lang.String" jdbcType="VARCHAR"/>
+      <arg column="DELIVERY_SEX_IMAGE_URL" javaType="java.lang.String" jdbcType="VARCHAR"/>
       <arg column="DELIVERY_ADDRESS" javaType="java.lang.String" jdbcType="VARCHAR"/>
       <arg column="DELIVERY_GOAL_FLOOR" javaType="java.lang.String" jdbcType="VARCHAR"/>
       <arg column="DELIVERY_GOAL_ADDRESS" javaType="java.lang.String" jdbcType="VARCHAR"/>
@@ -31,6 +32,7 @@
            DELIVERY_ORDER_CODE,
            DELIVERY_NAME,
            DELIVERY_USER_SEX,
+           DELIVERY_SEX_IMAGE_URL,
            DELIVERY_ADDRESS,
            DELIVERY_GOAL_FLOOR,
            DELIVERY_GOAL_ADDRESS,
@@ -42,5 +44,10 @@
            DELIVERY_STATUS
     FROM TB_DELIVERY
     WHERE DELIVERY_STATUS = 0
+  </select>
+  <select id="selectStatusByDeliveryId" resultType="java.lang.Boolean">
+    SELECT DELIVERY_STATUS
+    FROM TB_DELIVERY
+    WHERE DELIVERY_ID = #{deliveryId}
   </select>
 </mapper>
