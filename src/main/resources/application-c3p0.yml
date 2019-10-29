@@ -1,7 +1,7 @@
 c3p0:
   datasource:
     driverClass: com.mysql.jdbc.Driver
-    jdbcUrl: jdbc:mysql://xxx.xxx.xx.xx:3306/DELIVERY
+    jdbcUrl: jdbc:mysql://127.0.0.1:3306/DELIVERY
     user: root
     password: xxxxxx
 
