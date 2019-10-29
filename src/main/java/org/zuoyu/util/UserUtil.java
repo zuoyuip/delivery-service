@@ -4,8 +4,10 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.zuoyu.exception.CustomException;
 import org.zuoyu.model.User;
+import org.zuoyu.service.IUserService;
 
 /**
  * User的用户工具类.
@@ -14,9 +16,13 @@ import org.zuoyu.model.User;
  * @program delivery-service
  * @create 2019-09-17 17:07
  **/
+@Component
 public class UserUtil {
 
-  private UserUtil() {
+  private final IUserService iUserService;
+
+  private UserUtil(IUserService iUserService) {
+    this.iUserService = iUserService;
   }
 
   /**
@@ -24,7 +30,7 @@ public class UserUtil {
    *
    * @return - 当前用户
    */
-  public static User currentUser() {
+  public User currentUser() {
     SecurityContext securityContext = SecurityContextHolder.getContext();
     Authentication authentication = securityContext.getAuthentication();
     if (authentication == null) {
@@ -34,7 +40,7 @@ public class UserUtil {
     if (user == null) {
       throw new CustomException("无法获取该用户");
     }
-    return user;
+    return iUserService.getUserById(user.getUserId());
   }
 
   /**
@@ -42,7 +48,7 @@ public class UserUtil {
    *
    * @return - true/false
    */
-  public static boolean isAuthenticated() {
+  public boolean isAuthenticated() {
     SecurityContext securityContext = SecurityContextHolder.getContext();
     Authentication authentication = securityContext.getAuthentication();
     return !(authentication instanceof AnonymousAuthenticationToken);

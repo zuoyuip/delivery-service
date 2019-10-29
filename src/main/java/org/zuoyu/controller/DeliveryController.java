@@ -40,11 +40,13 @@ public class DeliveryController {
 
   private final IDeliveryService iDeliveryService;
   private final IRedisService iRedisService;
+  private final UserUtil userUtil;
 
   public DeliveryController(IDeliveryService iDeliveryService,
-      IRedisService iRedisService) {
+      IRedisService iRedisService, UserUtil userUtil) {
     this.iDeliveryService = iDeliveryService;
     this.iRedisService = iRedisService;
+    this.userUtil = userUtil;
   }
 
   @ApiOperation(value = "获取未被接单的包裹信息(只有简介信息，涉及重要私密信息不显示)",
@@ -68,7 +70,7 @@ public class DeliveryController {
     if (delivery == null) {
       return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Result.message("请填写快递信息"));
     }
-    User user = UserUtil.currentUser();
+    User user = userUtil.currentUser();
     int i = iDeliveryService.insertDelivery(delivery.setDeliveryUserId(user.getUserId()));
     if (i < 1) {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Result.message("添加失败"));

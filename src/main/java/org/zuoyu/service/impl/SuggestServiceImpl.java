@@ -21,9 +21,11 @@ import org.zuoyu.util.UserUtil;
 class SuggestServiceImpl implements ISuggestService {
 
   private final SuggestMapper suggestMapper;
+  private final UserUtil userUtil;
 
-  SuggestServiceImpl(SuggestMapper suggestMapper) {
+  SuggestServiceImpl(SuggestMapper suggestMapper, UserUtil userUtil) {
     this.suggestMapper = suggestMapper;
+    this.userUtil = userUtil;
   }
 
   @Override
@@ -38,8 +40,8 @@ class SuggestServiceImpl implements ISuggestService {
 
   @Override
   public int addSuggest(Suggest suggest) {
-    if (UserUtil.isAuthenticated()) {
-      User user = UserUtil.currentUser();
+    if (userUtil.isAuthenticated()) {
+      User user = userUtil.currentUser();
       suggest.setSuggestUserId(user.getUserId());
     }
     return suggestMapper.insert(suggest.setSuggestDate(new Date()));

@@ -47,13 +47,16 @@ public class UserController {
   private final ICriteriaService iCriteriaService;
   private final IVerificationCodeService iVerificationCodeService;
   private final SendSmsManager sendSmsManager;
+  private final UserUtil userUtil;
 
   public UserController(IUserService iUserService, ICriteriaService iCriteriaService,
-      IVerificationCodeService iVerificationCodeService, SendSmsManager sendSmsManager) {
+      IVerificationCodeService iVerificationCodeService, SendSmsManager sendSmsManager,
+      UserUtil userUtil) {
     this.iUserService = iUserService;
     this.iCriteriaService = iCriteriaService;
     this.iVerificationCodeService = iVerificationCodeService;
     this.sendSmsManager = sendSmsManager;
+    this.userUtil = userUtil;
   }
 
   private void verificationCode(String userPhone, String verifyCode) {
@@ -104,8 +107,8 @@ public class UserController {
   @ApiOperation(value = "获取当前的安全用户", notes = "该方法仅适用客户端")
   @PreAuthorize("isAuthenticated()")
   @GetMapping(path = "/authentication")
-  public ResponseEntity<Authentication> getCurrentUser(Authentication authentication) {
-    return ResponseEntity.ok(authentication);
+  public ResponseEntity<User> getCurrentUser() {
+    return ResponseEntity.ok(userUtil.currentUser());
   }
 
 
@@ -172,7 +175,7 @@ public class UserController {
     if (iUserService.isPresenceByUserPhone(newUserPhone)) {
       return ResponseEntity.status(HttpStatus.CREATED).body(Result.message("该手机号已存在！"));
     }
-    User user = UserUtil.currentUser();
+    User user = userUtil.currentUser();
     user.setUserPhone(newUserPhone);
     int i = iUserService.updateUserById(user, false);
     if (i < 1) {

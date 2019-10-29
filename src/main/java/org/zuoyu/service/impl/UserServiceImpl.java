@@ -1,6 +1,10 @@
 package org.zuoyu.service.impl;
 
 import java.util.List;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -8,7 +12,6 @@ import org.zuoyu.dao.UserMapper;
 import org.zuoyu.exception.CustomException;
 import org.zuoyu.model.User;
 import org.zuoyu.service.IUserService;
-import org.zuoyu.util.UserUtil;
 import tk.mybatis.mapper.entity.Example;
 
 /**
@@ -100,12 +103,12 @@ class UserServiceImpl implements IUserService {
     if (passWord == null || "".equals(passWord.trim()) || passWord.trim().isEmpty()) {
       return false;
     }
-    if (!UserUtil.isAuthenticated()) {
+    SecurityContext securityContext = SecurityContextHolder.getContext();
+    Authentication authentication = securityContext.getAuthentication();
+    if (authentication instanceof AnonymousAuthenticationToken) {
       throw new CustomException("当前用户未登录");
     }
-    User user = UserUtil.currentUser();
-    System.out.println(user);
-    System.out.println(passWord);
+    User user = (User) authentication.getPrincipal();
     return passwordEncoder.matches(passWord, user.getPassword());
   }
 

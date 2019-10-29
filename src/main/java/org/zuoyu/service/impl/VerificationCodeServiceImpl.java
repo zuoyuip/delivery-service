@@ -1,9 +1,6 @@
 package org.zuoyu.service.impl;
 
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
-import org.springframework.web.context.WebApplicationContext;
 import org.zuoyu.service.IRedisService;
 import org.zuoyu.service.IVerificationCodeService;
 
@@ -15,7 +12,6 @@ import org.zuoyu.service.IVerificationCodeService;
  * @create 2019-10-08 14:43
  **/
 @Service
-@Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.INTERFACES)
 class VerificationCodeServiceImpl implements IVerificationCodeService {
 
   private final IRedisService iRedisService;

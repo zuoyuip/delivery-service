@@ -35,13 +35,15 @@ class CriteriaServiceImpl implements ICriteriaService {
   private final CriteriaManager criteriaManager;
   private final ReviewMapper reviewMapper;
   private final UserInfoMapper userInfoMapper;
+  private final UserUtil userUtil;
 
   CriteriaServiceImpl(UserMapper userMapper, CriteriaManager criteriaManager,
-      ReviewMapper reviewMapper, UserInfoMapper userInfoMapper) {
+      ReviewMapper reviewMapper, UserInfoMapper userInfoMapper, UserUtil userUtil) {
     this.userMapper = userMapper;
     this.criteriaManager = criteriaManager;
     this.reviewMapper = reviewMapper;
     this.userInfoMapper = userInfoMapper;
+    this.userUtil = userUtil;
   }
 
   @Override
@@ -49,7 +51,7 @@ class CriteriaServiceImpl implements ICriteriaService {
       CustomException.class})
   public User applicationCriteria(UserInfo userInfo, MultipartFile multipartFile)
       throws IOException {
-    User user = UserUtil.currentUser();
+    User user = userUtil.currentUser();
     String userInfoId = UUIDGenerated.obtain();
     String reviewId = UUIDGenerated.obtain();
     Review review = new Review().setReviewIsBy(false).setReviewDate(new Date())
