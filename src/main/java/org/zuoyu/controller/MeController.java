@@ -122,7 +122,6 @@ public class MeController {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
             .body(Result.message("服务器内部错误，请联系管理员"));
       }
-      updateAuth(request, user);
     } catch (IOException e) {
       e.printStackTrace();
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -145,6 +144,7 @@ public class MeController {
     return ResponseEntity.ok(review);
   }
 
+  //如果使用Jwt就不需要它了
   private void updateAuth(HttpServletRequest request, User user) {
     if (user == null) {
       return;
