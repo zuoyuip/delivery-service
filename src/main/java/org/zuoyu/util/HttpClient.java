@@ -55,41 +55,35 @@ import org.apache.http.util.EntityUtils;
  **/
 public class HttpClient {
 
+
   /**
    * 连接池最大连接数
    */
   private static final int MAX_TOTAL_CONNECTIONS = 4000;
-
   /**
    * 设置每个路由上的默认连接个数
    */
   private static final int DEFAULT_MAX_PER_ROUTE = 200;
-
   /**
    * 请求的请求超时时间 单位：毫秒
    */
   private static final int REQUEST_CONNECTION_TIMEOUT = 8 * 1000;
-
   /**
    * 请求的等待数据超时时间 单位：毫秒
    */
   private static final int REQUEST_SOCKET_TIMEOUT = 8 * 1000;
-
   /**
    * 请求的连接超时时间 单位：毫秒
    */
   private static final int REQUEST_CONNECTION_REQUEST_TIMEOUT = 5 * 1000;
-
   /**
    * 连接闲置多久后需要重新检测 单位：毫秒
    */
   private static final int VALIDATE_AFTER_IN_ACTIVITY = 2 * 1000;
-
   /**
    * 关闭Socket时，要么发送完所有数据，要么等待多少秒后，就关闭连接，此时socket.close()是阻塞的　单位秒
    */
   private static final int SOCKET_CONFIG_SO_LINGER = 60;
-
   /**
    * 接收数据的等待超时时间,即读超时时间，单位ms
    */
@@ -103,6 +97,8 @@ public class HttpClient {
    */
   private static volatile CloseableHttpClient httpClient = null;
 
+  private HttpClient() {
+  }
 
   /**
    * get请求方式

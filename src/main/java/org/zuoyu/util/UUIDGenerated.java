@@ -10,6 +10,7 @@ import tk.mybatis.mapper.genid.GenId;
  **/
 public class UUIDGenerated implements GenId<String> {
 
+
   @Override
   public String genId(String table, String column) {
     return UUID.randomUUID().toString().replaceAll("-", "");

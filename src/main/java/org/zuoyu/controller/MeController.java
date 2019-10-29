@@ -59,7 +59,7 @@ public class MeController {
   @ApiOperation(value = "根据当前用户的唯一标识获取其发布的所有包裹信息", notes = "注意：若返回状态码为204,表示没有该包裹信息；若返回状态码为500,表示服务器异常",
       response = Delivery.class, ignoreJsonView = true)
   @ApiImplicitParam(name = "deliveryUserId", value = "当前用户的唯一标识", required = true, dataTypeClass = String.class)
-  @PreAuthorize("authenticated")
+  @PreAuthorize("isAuthenticated()")
   @GetMapping("/deliveryUser/{deliveryUserId}")
   public ResponseEntity<List<Delivery>> listMeDelivery(@PathVariable String deliveryUserId) {
     List<Delivery> deliveries = iDeliveryService.deliveriesMe(deliveryUserId);
@@ -72,7 +72,7 @@ public class MeController {
   @ApiOperation(value = "根据当前用户的唯一标识获取其接收的所有包裹信息", notes = "注意：若返回状态码为204,表示没有该包裹信息；若返回状态码为500,表示服务器异常",
       response = Delivery.class, ignoreJsonView = true)
   @ApiImplicitParam(name = "deliveryDeliveryUserId", value = "当前用户的唯一标识", required = true, dataTypeClass = String.class)
-  @PreAuthorize("authenticated")
+  @PreAuthorize("isAuthenticated()")
   @GetMapping("/deliveryWorker/{deliveryDeliveryUserId}")
   public ResponseEntity<List<Delivery>> listMeDeliveriesDelivery(
       @PathVariable String deliveryDeliveryUserId) {
@@ -106,7 +106,7 @@ public class MeController {
       {@ApiImplicitParam(name = "userInfo", value = "用户详细信息", required = true, dataTypeClass = UserInfo.class),
           @ApiImplicitParam(name = "multipartFile", value = "证件照片", required = true, dataTypeClass = MultipartFile.class)}
   )
-  @PreAuthorize("authenticated")
+  @PreAuthorize("isAuthenticated()")
   @PostMapping("/submitCriteria")
   public ResponseEntity<Result> submitCriteria(UserInfo userInfo,
       @RequestParam("file") MultipartFile multipartFile, HttpServletRequest request) {
@@ -136,7 +136,7 @@ public class MeController {
       response = Review.class, ignoreJsonView = true)
   @ApiImplicitParam(name = "reviewId", value = "审核申请信息实例的唯一标识", required = true, dataTypeClass = String.class)
   @GetMapping(path = "/review/{reviewId}")
-  @PreAuthorize("authenticated")
+  @PreAuthorize("isAuthenticated()")
   public ResponseEntity<Review> getReviewByUser(@PathVariable String reviewId) {
     Review review = iCriteriaService.findReviewById(reviewId);
     if (review == null) {

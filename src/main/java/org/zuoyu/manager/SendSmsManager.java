@@ -99,7 +99,7 @@ public class SendSmsManager {
     commonRequest.setAction("SendSms");
     commonRequest.setRegionId("cn-hangzhou");
     commonRequest.putQueryParameter("PhoneNumbers", phoneNumbers);
-    commonRequest.putQueryParameter("SignName", "zuoyu网");
+    commonRequest.putQueryParameter("SignName", "顺便取");
     commonRequest.putQueryParameter("TemplateCode", templateCode);
     commonRequest.putQueryParameter("TemplateParam", templateParam);
     CommonResponse commonResponse = acsClient.getCommonResponse(commonRequest);

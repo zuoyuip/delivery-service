@@ -1,14 +1,10 @@
 package org.zuoyu.service.impl;
 
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.TimeUnit;
-import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.WebApplicationContext;
+import org.zuoyu.service.IRedisService;
 import org.zuoyu.service.IVerificationCodeService;
 
 /**
@@ -22,49 +18,41 @@ import org.zuoyu.service.IVerificationCodeService;
 @Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.INTERFACES)
 class VerificationCodeServiceImpl implements IVerificationCodeService {
 
+  private final IRedisService iRedisService;
 
-  private ScheduledExecutorService executorService;
-
-  /**
-   * 验证码
-   */
-  private String verificationCode;
+  public VerificationCodeServiceImpl(
+      IRedisService iRedisService) {
+    this.iRedisService = iRedisService;
+  }
 
 
   @Override
-  public boolean isPresence() {
-    return this.verificationCode != null
-        && !"".equals(this.verificationCode)
-        && !this.verificationCode.isEmpty();
+  public boolean isPresence(String userPhone) {
+    return iRedisService.isExists(userPhone);
   }
 
   @Override
-  public String creatVerificationCode() {
-    if (isPresence()) {
-      return this.verificationCode;
-    }
-    double math = Math.random();
-    this.verificationCode = Double.toString(math).substring(2, 8);
-    ThreadFactory threadFactory = new BasicThreadFactory.Builder()
-        .namingPattern("timerTask-%d").daemon(true).build();
-    this.executorService = new ScheduledThreadPoolExecutor(1, threadFactory);
-//    只执行一次
-    this.executorService.schedule(this::clearVerificationCode, 300, TimeUnit.SECONDS);
-    return this.verificationCode;
+  public String creatVerificationCode(String userPhone) {
+
+    String verificationCode = Double.toString(Math.random()).substring(2, 8);
+    iRedisService.setKeyValueTimeout(userPhone, verificationCode);
+
+//    ThreadFactory threadFactory = new BasicThreadFactory.Builder()
+//        .namingPattern("timerTask-%d").daemon(true).build();
+//    this.executorService = new ScheduledThreadPoolExecutor(1, threadFactory);
+////    只执行一次
+//    this.executorService.schedule(this::clearVerificationCode, 300, TimeUnit.SECONDS);
+    return verificationCode;
   }
 
   @Override
-  public String getVerificationCode() {
-    return this.verificationCode;
+  public String getVerificationCode(String userPhone) {
+    return (String) iRedisService.getValueByKey(userPhone);
   }
 
   @Override
-  public void clearVerificationCode() {
-    this.verificationCode = null;
-    if (this.executorService.isShutdown()) {
-      return;
-    }
-    this.executorService.shutdown();
+  public void clearVerificationCode(String userPhone) {
+    iRedisService.deleteKey(userPhone);
   }
 
 }

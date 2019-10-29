@@ -1,12 +1,16 @@
 package org.zuoyu.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.Collection;
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,6 +26,9 @@ import tk.mybatis.mapper.annotation.KeySql;
 @Data
 @Accessors(chain = true)
 @Table(name = "`TB_USER`")
+@NoArgsConstructor
+@AllArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class User implements UserDetails {
 
   private static final long serialVersionUID = 1L;
@@ -45,6 +52,7 @@ public class User implements UserDetails {
   @Column(name = "`USER_PASSWORD`")
   @ApiModelProperty(value = "userPassword安全用户的密码")
   private String userPassword;
+
   /**
    * 该安全用户帐号是否已注册
    */
@@ -100,30 +108,8 @@ public class User implements UserDetails {
   @ApiModelProperty(value = "reviewId该帐号对应的审核信息唯一标识")
   private String reviewId;
 
-  public User(String userId, String userPhone, String userPassword, Boolean userIsValid,
-      Boolean userIsEnabled, Boolean userIsAccountNonExpired,
-      Boolean userIsCredentialsNonExpired, Boolean userIsAccountNonLocked,
-      Boolean userIsByReview, Boolean userIsSubmitReview, String userInfoId,
-      String reviewId) {
-    this.userId = userId;
-    this.userPhone = userPhone;
-    this.userPassword = userPassword;
-    this.userIsValid = userIsValid;
-    this.userIsEnabled = userIsEnabled;
-    this.userIsAccountNonExpired = userIsAccountNonExpired;
-    this.userIsCredentialsNonExpired = userIsCredentialsNonExpired;
-    this.userIsAccountNonLocked = userIsAccountNonLocked;
-    this.userIsByReview = userIsByReview;
-    this.userIsSubmitReview = userIsSubmitReview;
-    this.userInfoId = userInfoId;
-    this.reviewId = reviewId;
-  }
 
-  public User() {
-    super();
-  }
-
-
+  @JsonIgnore
   @Override
   @ApiModelProperty(hidden = true)
   public Collection<? extends GrantedAuthority> getAuthorities() {

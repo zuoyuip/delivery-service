@@ -62,7 +62,7 @@ public class DeliveryController {
       consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, ignoreJsonView = true)
   @ApiImplicitParam(name = "Delivery.Class", value = "包裹信息实例", required = true, dataTypeClass = Delivery.class)
   @PostMapping
-  @PreAuthorize("authenticated")
+  @PreAuthorize("isAuthenticated()")
   public ResponseEntity<Result> addDelivery(Delivery delivery) {
     if (delivery == null) {
       return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Result.message("请填写快递信息"));
@@ -78,7 +78,7 @@ public class DeliveryController {
   @ApiOperation(value = "根据唯一标识获取对应的包裹信息", notes = "注意：若返回状态码为204,表示没有该包裹信息；若返回状态码为500,表示服务器异常",
       response = Delivery.class, ignoreJsonView = true)
   @ApiImplicitParam(name = "deliveryId", value = "包裹信息实例的唯一标识", required = true, dataTypeClass = String.class)
-  @PreAuthorize("authenticated")
+  @PreAuthorize("isAuthenticated()")
   @GetMapping(path = "/{deliveryId}")
   public ResponseEntity<Delivery> getDeliveryById(@PathVariable String deliveryId) {
     Delivery delivery = iDeliveryService.getDeliveryById(deliveryId);
@@ -94,7 +94,7 @@ public class DeliveryController {
   @ApiOperation(value = "根据包裹信息唯一标识接受该订单", notes = "若返回状态码为500,表示服务器异常",
       response = Result.class, ignoreJsonView = true)
   @ApiImplicitParam(name = "deliveryId", value = "包裹信息实例的唯一标识", required = true, dataTypeClass = String.class)
-  @PreAuthorize("authenticated")
+  @PreAuthorize("isAuthenticated()")
   @PutMapping(path = "/transaction/{deliveryId}")
   public ResponseEntity<Result> transactionDelivery(Authentication authentication,
       @PathVariable String deliveryId) {
@@ -129,7 +129,7 @@ public class DeliveryController {
       response = Result.class, ignoreJsonView = true)
   @ApiImplicitParam(name = "deliveryId", value = "包裹信息实例的唯一标识", required = true, dataTypeClass = String.class)
   @DeleteMapping(path = "{deliveryId}")
-  @PreAuthorize("authenticated")
+  @PreAuthorize("isAuthenticated()")
   public ResponseEntity<Result> cancelDelivery(@PathVariable String deliveryId) {
     int i = iDeliveryService.cancelDeliveryById(deliveryId);
     if (i < 1) {

@@ -30,4 +30,18 @@ public interface IRedisService {
    * @param value - V
    */
   void setKeyValue(String key, Object value);
+
+  /**
+   * 设置指定key，过期时间5分钟
+   * @param key - K
+   * @param value - V
+   */
+  void setKeyValueTimeout(String key, Object value);
+
+  /**
+   * 根据Key获取指定值
+   * @param key - K
+   * @return value - V
+   */
+  Object getValueByKey(String key);
 }

@@ -56,12 +56,12 @@ public class UserController {
     this.sendSmsManager = sendSmsManager;
   }
 
-  private void verificationCode(String verifyCode) {
-    boolean isPresenceVerificationCode = iVerificationCodeService.isPresence();
+  private void verificationCode(String userPhone, String verifyCode) {
+    boolean isPresenceVerificationCode = iVerificationCodeService.isPresence(userPhone);
     if (!isPresenceVerificationCode) {
       throw new CustomException("无效验证码或验证码已过时", 403);
     }
-    String verificationCode = iVerificationCodeService.getVerificationCode();
+    String verificationCode = iVerificationCodeService.getVerificationCode(userPhone);
     if (!verifyCode.equals(verificationCode)) {
       throw new CustomException("验证码错误", 403);
     }
@@ -82,7 +82,7 @@ public class UserController {
     if (user == null) {
       return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Result.message("请填写注册信息"));
     }
-    verificationCode(verifyCode);
+    verificationCode(user.getUserPhone(), verifyCode);
     boolean isPresence = iUserService.isPresenceByUserPhone(user.getUserPhone());
     if (isPresence) {
       return ResponseEntity.status(HttpStatus.CREATED).body(Result.message("账户已存在！"));
@@ -102,12 +102,11 @@ public class UserController {
   }
 
   @ApiOperation(value = "获取当前的安全用户", notes = "该方法仅适用客户端")
-  @PreAuthorize("authenticated")
+  @PreAuthorize("isAuthenticated()")
   @GetMapping(path = "/authentication")
   public ResponseEntity<Authentication> getCurrentUser(Authentication authentication) {
     return ResponseEntity.ok(authentication);
   }
-
 
 
   @ApiOperation(value = "修改密码", notes = "注意：若返回状态码为500，表示服务器异常导致的反馈失败", response = Result.class,
@@ -130,7 +129,7 @@ public class UserController {
     if (paramIsNull(passWord)) {
       return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Result.message("请输入密码"));
     }
-    verificationCode(verifyCode);
+    verificationCode(userPhone, verifyCode);
     if (!iUserService.isPresenceByUserPhone(userPhone)) {
       return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Result.message("该账户不存在"));
     }
@@ -152,7 +151,7 @@ public class UserController {
           @ApiImplicitParam(name = "verifyCode", value = "验证码", required = true, dataTypeClass = String.class),
           @ApiImplicitParam(name = "passWord", value = "原密码", required = true, dataTypeClass = String.class)}
   )
-  @PreAuthorize("authenticated")
+  @PreAuthorize("isAuthenticated()")
   @PostMapping(path = "/modifyUser")
   public ResponseEntity<Result> modifyUser(@RequestParam("newUserPhone") String newUserPhone,
       @RequestParam("verifyCode") String verifyCode,
@@ -166,7 +165,7 @@ public class UserController {
     if (paramIsNull(passWord)) {
       return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Result.message("请输入原密码"));
     }
-    verificationCode(verifyCode);
+    verificationCode(newUserPhone, verifyCode);
     if (!iUserService.verifyUser(passWord)) {
       return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Result.message("原密码错误"));
     }
@@ -234,7 +233,7 @@ public class UserController {
   @GetMapping("/sendVerificationCode/register/{phoneNumbers}")
   public ResponseEntity<Result> sendVerificationRegisterCode(@PathVariable String phoneNumbers) {
     examinePhone(phoneNumbers);
-    String verificationCode = iVerificationCodeService.creatVerificationCode();
+    String verificationCode = iVerificationCodeService.creatVerificationCode(phoneNumbers);
     String response = sendSmsManager.registerCode(phoneNumbers, verificationCode);
     return smsResult(response);
 
@@ -246,19 +245,19 @@ public class UserController {
   @GetMapping("/sendVerificationCode/forget/{phoneNumbers}")
   public ResponseEntity<Result> sendVerificationForgetCode(@PathVariable String phoneNumbers) {
     examinePhone(phoneNumbers);
-    String verificationCode = iVerificationCodeService.creatVerificationCode();
+    String verificationCode = iVerificationCodeService.creatVerificationCode(phoneNumbers);
     String response = sendSmsManager.forgetUser(phoneNumbers, verificationCode);
     return smsResult(response);
   }
 
-  @PreAuthorize("authenticated")
+  @PreAuthorize("isAuthenticated()")
   @ApiOperation(value = "获取修改账户验证码", notes = "注意：若返回状态码为500,表示服务器异常",
       response = Result.class, ignoreJsonView = true)
   @ApiImplicitParam(name = "phoneNumbers", value = "用户手机号码", required = true, dataTypeClass = String.class)
   @GetMapping("/sendVerificationCode/modify/{phoneNumbers}")
   public ResponseEntity<Result> sendVerificationModifyCode(@PathVariable String phoneNumbers) {
     examinePhone(phoneNumbers);
-    String verificationCode = iVerificationCodeService.creatVerificationCode();
+    String verificationCode = iVerificationCodeService.creatVerificationCode(phoneNumbers);
     String response = sendSmsManager.modifyUser(phoneNumbers, verificationCode);
     return smsResult(response);
   }

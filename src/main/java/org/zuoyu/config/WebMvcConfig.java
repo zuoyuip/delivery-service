@@ -13,6 +13,7 @@ import org.springframework.web.multipart.support.StandardServletMultipartResolve
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+import org.zuoyu.security.constants.JwtConstants;
 
 /**
  * Web的配置.
@@ -33,13 +34,15 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
    */
   @Override
   public void addCorsMappings(CorsRegistry registry) {
-    registry
-        .addMapping("/**")
-        .allowedMethods(CorsConfiguration.ALL)
-        .allowCredentials(true)
+    registry.addMapping("/**")
         .allowedHeaders(CorsConfiguration.ALL)
+        .allowedMethods(CorsConfiguration.ALL)
         .allowedOrigins(CorsConfiguration.ALL)
+        .allowCredentials(true)
+        //暴露header中的属性给客户端应用程序，否则无法获取token
+        .exposedHeaders(JwtConstants.TOKEN_HEADER)
         .maxAge(3600L);
+    super.addCorsMappings(registry);
   }
 
   @Bean

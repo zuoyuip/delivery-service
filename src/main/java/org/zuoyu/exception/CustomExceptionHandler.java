@@ -88,11 +88,11 @@ public class CustomExceptionHandler {
    */
   private ResponseEntity<Result> exceptionFormat(String message) {
     log.error("errorMessage is : " + message);
-    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Result.message(message));
+    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Result.message("服务器异常"));
   }
 
   private ResponseEntity<Result> exceptionFormat(int code, String message) {
     log.error("errorCode is : " + code + "\t" + "errorMessage is : " + message);
-    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Result.message(message));
+    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Result.message("服务器异常"));
   }
 }

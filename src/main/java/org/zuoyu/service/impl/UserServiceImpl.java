@@ -104,6 +104,8 @@ class UserServiceImpl implements IUserService {
       throw new CustomException("当前用户未登录");
     }
     User user = UserUtil.currentUser();
+    System.out.println(user);
+    System.out.println(passWord);
     return passwordEncoder.matches(passWord, user.getPassword());
   }
 }

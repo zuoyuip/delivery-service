@@ -1,5 +1,6 @@
 package org.zuoyu.service.impl;
 
+import java.util.concurrent.TimeUnit;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.zuoyu.service.IRedisService;
@@ -37,4 +38,17 @@ class RedisServiceImpl implements IRedisService {
   public void setKeyValue(String key, Object value) {
     redisTemplate.opsForValue().set(key, value);
   }
+
+
+  @Override
+  public void setKeyValueTimeout(String key, Object value) {
+    redisTemplate.opsForValue().set(key, value, 300L, TimeUnit.SECONDS);
+  }
+
+  @Override
+  public Object getValueByKey(String key) {
+    return redisTemplate.opsForValue().get(key);
+  }
+
+
 }
