@@ -1,9 +1,9 @@
 c3p0:
   datasource:
     driverClass: com.mysql.jdbc.Driver
-    jdbcUrl: jdbc:mysql://154.221.18.239:3306/DELIVERY
+    jdbcUrl: jdbc:mysql://xxx.xxx.xx.xx:3306/DELIVERY
     user: root
-    password: lyxzuoyu
+    password: xxxxxx
 
     #      连接池管理
     #      初始化时获取三个连接，取值应在minPoolSize与maxPoolSize之间。Default：3(规范值：20，可根据系统链路总体性能进行更改)
@@ -45,5 +45,5 @@ c3p0:
     idleConnectionTestPeriod: 0
 
 aliyunSms:
-  AccessKeyId: LTAI4FtgWcUVjfZxn1NC3MNQ
-  AccessKeySecret: B3azMRx37L6hDd0jPUTIJDi70GtsMk
+  AccessKeyId: xxxxxx
+  AccessKeySecret: xxxxxx
