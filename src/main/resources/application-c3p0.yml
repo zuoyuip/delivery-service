@@ -45,5 +45,5 @@ c3p0:
     idleConnectionTestPeriod: 0
 
 aliyunSms:
-  AccessKeyId: LTAI4FtgWcUVjfZxn1NC3MNQ
-  AccessKeySecret: B3azMRx37L6hDd0jPUTIJDi70GtsMk
+  AccessKeyId: xxxxxx
+  AccessKeySecret: xxxxxx
