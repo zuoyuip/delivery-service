@@ -155,4 +155,16 @@ public class DeliveryManager {
   public int transactionDelivery(Delivery delivery) {
     return deliveryMapper.updateByPrimaryKeySelective(delivery);
   }
+
+
+  /**
+   * 清空未接受的列表
+   */
+  @CacheEvict(allEntries = true)
+  public void cancelDeliveries() {
+    Example example = new Example(Delivery.class);
+    example.createCriteria().andEqualTo("deliveryStatus", false);
+    Delivery delivery = new Delivery().setDeliveryStatus(true);
+    deliveryMapper.updateByExampleSelective(delivery, example);
+  }
 }

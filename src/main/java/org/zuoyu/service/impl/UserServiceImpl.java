@@ -108,4 +108,10 @@ class UserServiceImpl implements IUserService {
     System.out.println(passWord);
     return passwordEncoder.matches(passWord, user.getPassword());
   }
+
+  @Override
+  public int prohibitUser(String userId) {
+    User user = new User().setUserId(userId).setUserIsAccountNonLocked(false);
+    return userMapper.updateByPrimaryKeySelective(user);
+  }
 }

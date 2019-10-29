@@ -19,6 +19,7 @@ import org.zuoyu.model.Review;
 import org.zuoyu.model.Suggest;
 import org.zuoyu.model.User;
 import org.zuoyu.model.UserInfo;
+import org.zuoyu.model.vo.CriteriaModel;
 import org.zuoyu.service.ICriteriaService;
 import org.zuoyu.service.ISuggestService;
 import org.zuoyu.util.Result;
@@ -48,8 +49,8 @@ public class AdminCriteriaController {
   @ApiOperation(value = "获取所有待审核的用户列表",
       notes = "注意：若返回状态码为204，表示没有信息", response = User.class, ignoreJsonView = true)
   @GetMapping(path = "/wait")
-  public ResponseEntity<List<User>> selectWaitCriteria() {
-    List<User> users = iCriteriaService.waitCriteria();
+  public ResponseEntity<List<CriteriaModel>> selectWaitCriteria() {
+    List<CriteriaModel> users = iCriteriaService.waitCriteria();
     if (users.isEmpty()) {
       return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

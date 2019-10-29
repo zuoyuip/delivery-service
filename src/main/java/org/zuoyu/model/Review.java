@@ -35,7 +35,7 @@ public class Review implements Serializable {
    */
   @Column(name = "`REVIEW_DATE`")
   @ApiModelProperty(value = "reviewDate审核信息-审核日期")
-  @JsonFormat(pattern="yyyy年MM月dd日 HH:mm:ss",timezone="GMT+8")
+  @JsonFormat(pattern = "yyyy年MM月dd日 HH:mm:ss", timezone = "GMT+8")
   private Date reviewDate;
   /**
    * 审核信息-审核是否已通过

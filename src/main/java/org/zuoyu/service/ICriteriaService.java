@@ -6,6 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.zuoyu.model.Review;
 import org.zuoyu.model.User;
 import org.zuoyu.model.UserInfo;
+import org.zuoyu.model.vo.CriteriaModel;
 
 /**
  * 审核服务. 审核状态制定： userInfoId为null； userIsByReview为false； userIsSubmitReview为false ————该用户为从未提交审核。
@@ -36,7 +37,7 @@ public interface ICriteriaService {
    *
    * @return - 待审核用户
    */
-  List<User> waitCriteria();
+  List<CriteriaModel> waitCriteria();
 
 
   /**

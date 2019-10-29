@@ -50,7 +50,7 @@ public class AdminDeliveryController {
       notes = "注意：若返回状态码为204，表示没有信息", response = Delivery.class, ignoreJsonView = true)
   @GetMapping(path = "/notReceive")
   public ResponseEntity<List<Delivery>> selectDeliveryNotReceive() {
-    List<Delivery> deliveries = iDeliveryService.selectDeliveryAll();
+    List<Delivery> deliveries = iDeliveryService.selectDeliveryNotReceive();
     if (deliveries == null) {
       return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
@@ -62,7 +62,7 @@ public class AdminDeliveryController {
       notes = "注意：若返回状态码为204，表示没有信息", response = Delivery.class, ignoreJsonView = true)
   @GetMapping(path = "/receive")
   public ResponseEntity<List<Delivery>> selectDeliveryReceive() {
-    List<Delivery> deliveries = iDeliveryService.selectDeliveryAll();
+    List<Delivery> deliveries = iDeliveryService.selectDeliveryReceive();
     if (deliveries == null) {
       return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

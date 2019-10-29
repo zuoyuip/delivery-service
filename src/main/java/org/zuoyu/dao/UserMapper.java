@@ -1,8 +1,10 @@
 package org.zuoyu.dao;
 
+import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import org.zuoyu.model.User;
+import org.zuoyu.model.vo.CriteriaModel;
 import tk.mybatis.mapper.common.Mapper;
 
 
@@ -18,4 +20,10 @@ public interface UserMapper extends Mapper<User> {
    * @return - 数据数量
    */
   int countByUserPhone(@Param("userPhone")String userPhone);
+
+  /**
+   * 待审核的用户信息
+   * @return - 用户信息
+   */
+  List<CriteriaModel> selectWaitCriteria();
 }

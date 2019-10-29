@@ -1,5 +1,6 @@
 package org.zuoyu.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
@@ -46,6 +47,7 @@ public class Suggest implements Serializable {
      * 建议反馈-反馈时间
      */
     @Column(name = "`SUGGEST_DATE`")
+    @JsonFormat(pattern = "yyyy年MM月dd日 HH:mm:ss", timezone = "GMT+8")
     @ApiModelProperty(value="suggestDate建议反馈-反馈时间")
     private Date suggestDate;
 

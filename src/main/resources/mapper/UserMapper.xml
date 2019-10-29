@@ -1,27 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.zuoyu.dao.UserMapper">
   <resultMap id="BaseResultMap" type="org.zuoyu.model.User">
     <!--
       WARNING - @mbg.generated
     -->
     <constructor>
-      <arg column="USER_ID" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="USER_PHONE" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="USER_PASSWORD" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="USER_IS_VALID" javaType="java.lang.Boolean" jdbcType="BIT" />
-      <arg column="USER_IS_ENABLED" javaType="java.lang.Boolean" jdbcType="BIT" />
-      <arg column="USER_IS_ACCOUNT_NON_EXPIRED" javaType="java.lang.Boolean" jdbcType="BIT" />
-      <arg column="USER_IS_CREDENTIALS_NON_EXPIRED" javaType="java.lang.Boolean" jdbcType="BIT" />
-      <arg column="USER_IS_ACCOUNT_NON_LOCKED" javaType="java.lang.Boolean" jdbcType="BIT" />
-      <arg column="USER_IS_BY_REVIEW" javaType="java.lang.Boolean" jdbcType="BIT" />
-      <arg column="USER_IS_SUBMIT_REVIEW" javaType="java.lang.Boolean" jdbcType="BIT" />
-      <arg column="USER_INFO_ID" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="REVIEW_ID" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="USER_ID" javaType="java.lang.String" jdbcType="VARCHAR"/>
+      <arg column="USER_PHONE" javaType="java.lang.String" jdbcType="VARCHAR"/>
+      <arg column="USER_PASSWORD" javaType="java.lang.String" jdbcType="VARCHAR"/>
+      <arg column="USER_IS_VALID" javaType="java.lang.Boolean" jdbcType="BIT"/>
+      <arg column="USER_IS_ENABLED" javaType="java.lang.Boolean" jdbcType="BIT"/>
+      <arg column="USER_IS_ACCOUNT_NON_EXPIRED" javaType="java.lang.Boolean" jdbcType="BIT"/>
+      <arg column="USER_IS_CREDENTIALS_NON_EXPIRED" javaType="java.lang.Boolean" jdbcType="BIT"/>
+      <arg column="USER_IS_ACCOUNT_NON_LOCKED" javaType="java.lang.Boolean" jdbcType="BIT"/>
+      <arg column="USER_IS_BY_REVIEW" javaType="java.lang.Boolean" jdbcType="BIT"/>
+      <arg column="USER_IS_SUBMIT_REVIEW" javaType="java.lang.Boolean" jdbcType="BIT"/>
+      <arg column="USER_INFO_ID" javaType="java.lang.String" jdbcType="VARCHAR"/>
+      <arg column="REVIEW_ID" javaType="java.lang.String" jdbcType="VARCHAR"/>
     </constructor>
   </resultMap>
 
+  <resultMap id="CriteriaModel" type="org.zuoyu.model.vo.CriteriaModel">
+    <id column="USER_ID" jdbcType="VARCHAR" javaType="java.lang.String" property="userId"/>
+    <result column="USER_INFO_ID" jdbcType="VARCHAR" javaType="java.lang.String"
+      property="userInfoId"/>
+    <result column="REVIEW_ID" jdbcType="VARCHAR" javaType="java.lang.String" property="reviewId"/>
+    <result column="USER_INFO_NAME" jdbcType="VARCHAR" javaType="java.lang.String"
+      property="userName"/>
+    <result column="USER_PHONE" jdbcType="VARCHAR" javaType="java.lang.String"
+      property="userPhone"/>
+    <result column="REVIEW_DATE" jdbcType="TIMESTAMP" javaType="java.util.Date"
+      property="criteriaTime"/>
+    <result column="USER_INFO_SEX" jdbcType="VARCHAR" javaType="java.lang.String"
+      property="sex"/>
+    <result column="USER_INFO_COLLEGE" jdbcType="VARCHAR" javaType="java.lang.String"
+      property="college"/>
+    <result column="USER_INFO_SUBJECT" jdbcType="VARCHAR" javaType="java.lang.String"
+      property="subject"/>
+    <result column="USER_INFO_CLASS" jdbcType="VARCHAR" javaType="java.lang.String"
+      property="userClass"/>
+    <result column="USER_INFO_STUDENT_NUMBER" jdbcType="VARCHAR" javaType="java.lang.String"
+      property="studentNumber"/>
+    <result column="USER_INFO_PHOTO_URL" jdbcType="VARCHAR" javaType="java.lang.String"
+      property="photoUrl"/>
+    <result column="USER_INFO_THUMB_PHOTO_URL" jdbcType="VARCHAR" javaType="java.lang.String"
+      property="thumbPhotoUrl"/>
+  </resultMap>
+
   <select id="countByUserPhone" parameterType="java.lang.String" resultType="java.lang.Integer">
-    SELECT COUNT(TB_USER.USER_PHONE) FROM TB_USER WHERE TB_USER.USER_PHONE = #{userPhone}
+    SELECT COUNT(TB_USER.USER_PHONE)
+    FROM TB_USER
+    WHERE TB_USER.USER_PHONE = #{userPhone}
   </select>
+
+  <select id="selectWaitCriteria" resultMap="CriteriaModel">
+    SELECT TU.USER_ID,
+           TUI.USER_INFO_ID,
+           TR.REVIEW_ID,
+           TUI.USER_INFO_NAME,
+           TU.USER_PHONE,
+           TR.REVIEW_DATE,
+           TUI.USER_INFO_SEX,
+           TUI.USER_INFO_COLLEGE,
+           TUI.USER_INFO_SUBJECT,
+           TUI.USER_INFO_CLASS,
+           TUI.USER_INFO_STUDENT_NUMBER,
+           TUI.USER_INFO_PHOTO_URL,
+           TUI.USER_INFO_THUMB_PHOTO_URL
+    FROM TB_USER TU,
+         TB_USER_INFO TUI,
+         TB_REVIEW TR
+    WHERE TU.USER_INFO_ID IS NOT NULL
+      AND TU.USER_IS_BY_REVIEW = 0
+      AND TU.USER_IS_SUBMIT_REVIEW = 1
+      AND TUI.USER_INFO_ID = TU.USER_INFO_ID
+      AND TR.REVIEW_ID = TU.REVIEW_ID;
+  </select>
+
+
 </mapper>

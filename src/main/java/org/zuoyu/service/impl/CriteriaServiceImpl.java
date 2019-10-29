@@ -15,10 +15,10 @@ import org.zuoyu.manager.CriteriaManager;
 import org.zuoyu.model.Review;
 import org.zuoyu.model.User;
 import org.zuoyu.model.UserInfo;
+import org.zuoyu.model.vo.CriteriaModel;
 import org.zuoyu.service.ICriteriaService;
 import org.zuoyu.util.UUIDGenerated;
 import org.zuoyu.util.UserUtil;
-import tk.mybatis.mapper.entity.Example;
 
 /**
  * 审核的服务实现.
@@ -72,11 +72,8 @@ class CriteriaServiceImpl implements ICriteriaService {
   }
 
   @Override
-  public List<User> waitCriteria() {
-    Example example = new Example(User.class);
-    example.createCriteria().andIsNotNull("userInfoId").andEqualTo("userIsByReview", false)
-        .andEqualTo("userIsSubmitReview", true);
-    return userMapper.selectByExample(example);
+  public List<CriteriaModel> waitCriteria() {
+    return userMapper.selectWaitCriteria();
   }
 
   @Override

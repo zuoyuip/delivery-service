@@ -1,17 +1,22 @@
 package org.zuoyu.service.impl;
 
+import com.aliyuncs.exceptions.ClientException;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.zuoyu.exception.CustomException;
 import org.zuoyu.manager.DeliveryManager;
+import org.zuoyu.manager.SendSmsManager;
 import org.zuoyu.model.Delivery;
+import org.zuoyu.model.User;
+import org.zuoyu.model.UserInfo;
+import org.zuoyu.service.ICriteriaService;
 import org.zuoyu.service.IDeliveryService;
 import org.zuoyu.service.IRedisService;
+import org.zuoyu.service.IUserService;
 
 /**
  * 包裹业务服务实现.
@@ -25,11 +30,19 @@ class DeliveryServiceImpl implements IDeliveryService {
 
   private final DeliveryManager deliveryManager;
   private final IRedisService iRedisService;
+  private final SendSmsManager sendSmsManager;
+  private final IUserService iUserService;
+  private final ICriteriaService iCriteriaService;
 
   DeliveryServiceImpl(
-      DeliveryManager deliveryManager, IRedisService iRedisService) {
+      DeliveryManager deliveryManager, IRedisService iRedisService,
+      SendSmsManager sendSmsManager,
+      IUserService iUserService, ICriteriaService iCriteriaService) {
     this.deliveryManager = deliveryManager;
     this.iRedisService = iRedisService;
+    this.sendSmsManager = sendSmsManager;
+    this.iUserService = iUserService;
+    this.iCriteriaService = iCriteriaService;
   }
 
   @Override
@@ -89,20 +102,26 @@ class DeliveryServiceImpl implements IDeliveryService {
   @Override
   @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class,
       CustomException.class})
-  public int transactionDelivery(String deliveryId, String deliveryDeliveryUserId) {
+  public String transactionDelivery(String deliveryId, String deliveryDeliveryUserId)
+      throws ClientException {
     if (deliveryDeliveryUserId == null || "".equals(deliveryDeliveryUserId.trim())
         || deliveryDeliveryUserId.trim().isEmpty()) {
-      return 0;
+      return null;
     }
     iRedisService.setKeyValue(deliveryId, true);
-    Delivery delivery = new Delivery().setDeliveryId(deliveryId).setDeliveryStatus(true)
+    Delivery delivery = this.getDeliveryById(deliveryId).setDeliveryStatus(true)
         .setDeliveryDeliveryUserId(deliveryDeliveryUserId);
-    try {
-      TimeUnit.MILLISECONDS.sleep(1000);
-    } catch (InterruptedException e) {
-      e.printStackTrace();
+//    发布者
+    User user = iUserService.getUserById(delivery.getDeliveryUserId());
+//    代领者
+    User deliveryUser = iUserService.getUserById(deliveryDeliveryUserId);
+    UserInfo userInfo = iCriteriaService.findUserInfoById(deliveryUser.getUserInfoId());
+    int i = deliveryManager.transactionDelivery(delivery);
+    if (i < 0) {
+      throw new CustomException("服务器内部错误！");
     }
-    return deliveryManager.transactionDelivery(delivery);
+    return sendSmsManager
+        .transaction(user.getUserPhone(), userInfo, deliveryUser.getUserPhone());
   }
 
   @Override
@@ -120,6 +139,11 @@ class DeliveryServiceImpl implements IDeliveryService {
     }
     Delivery delivery = new Delivery().setDeliveryId(deliveryId).setDeliveryStatus(true);
     return deliveryManager.updateDelivery(delivery);
+  }
+
+  @Override
+  public void cancelDeliveries() {
+    deliveryManager.cancelDeliveries();
   }
 
   private List<Delivery> sortDeliveries(List<Delivery> deliveries) {

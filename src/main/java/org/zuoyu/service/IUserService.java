@@ -68,4 +68,11 @@ public interface IUserService {
    * @return - true/false
    */
   boolean verifyUser(String passWord);
+
+  /**
+   * 禁用用户
+   * @param userId - 用户Id
+   * @return -
+   */
+  int prohibitUser(String userId);
 }

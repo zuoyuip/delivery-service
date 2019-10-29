@@ -1,5 +1,6 @@
 package org.zuoyu.controller;
 
+import com.aliyuncs.exceptions.ClientException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -116,13 +117,26 @@ public class DeliveryController {
           .body(Result.message("无法获取当前账户"));
     }
     String mySelfUserId = user.getUserId();
-    int i = iDeliveryService.transactionDelivery(deliveryId, mySelfUserId);
-    if (i < 1) {
-      iRedisService.deleteKey(deliveryId);
-      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-          .body(Result.message("订单接受失败"));
+    String response = null;
+    try {
+      response = iDeliveryService.transactionDelivery(deliveryId, mySelfUserId);
+    } catch (ClientException e) {
+      e.printStackTrace();
     }
-    return ResponseEntity.ok(Result.message("订单接受成功"));
+    iRedisService.deleteKey(deliveryId);
+    if (response == null) {
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+          .body(Result.message("服务器内部错误"));
+    }
+    String success = "OK";
+    if (response.contains(success)) {
+      return ResponseEntity.ok(Result.message("订单接受成功"));
+    }
+    String permits = "isv.BUSINESS_LIMIT_CONTROL";
+    if (response.contains(permits)) {
+      return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Result.message("您的操作太频繁，请稍候"));
+    }
+    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Result.message("短信发送失败"));
   }
 
   @ApiOperation(value = "根据包裹信息唯一标识取消该订单", notes = "若返回状态码为500,表示服务器异常",
@@ -138,4 +152,5 @@ public class DeliveryController {
     }
     return ResponseEntity.ok(Result.message("订单取消成功"));
   }
+
 }

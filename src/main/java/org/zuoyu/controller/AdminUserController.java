@@ -10,10 +10,12 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.zuoyu.model.User;
 import org.zuoyu.service.IUserService;
+import org.zuoyu.util.Result;
 
 /**
  * 管理员对账户的操作.
@@ -51,5 +53,17 @@ public class AdminUserController {
       return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
     return ResponseEntity.ok(user);
+  }
+
+  @ApiOperation(value = "根据唯一标识禁用该用户", notes = "注意：若返回状态码为500,表示服务器异常",
+      response = Result.class, ignoreJsonView = true)
+  @ApiImplicitParam(name = "userId", value = "账户信息实例的唯一标识", required = true, dataTypeClass = String.class)
+  @PutMapping(path = "/prohibit/{userId}")
+  public ResponseEntity<Result> prohibitUser(@PathVariable String userId){
+    int i = iUserService.prohibitUser(userId);
+    if (i < 1){
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Result.message("禁用失败"));
+    }
+    return ResponseEntity.ok(Result.message("禁用成功"));
   }
 }

@@ -1,5 +1,6 @@
 package org.zuoyu.service;
 
+import com.aliyuncs.exceptions.ClientException;
 import java.util.List;
 import org.zuoyu.model.Delivery;
 
@@ -81,8 +82,9 @@ public interface IDeliveryService {
    * @param deliveryId - 包裹的唯一标识
    * @param deliveryDeliveryUserId - 接单工作者的唯一标识
    * @return - 成功达成交接的个数
+   * @throws ClientException
    */
-  int transactionDelivery(String deliveryId, String deliveryDeliveryUserId);
+  String transactionDelivery(String deliveryId, String deliveryDeliveryUserId) throws ClientException;
 
 
   /**
@@ -100,4 +102,9 @@ public interface IDeliveryService {
    * @return - 是否成功
    */
   int cancelDeliveryById(String deliveryId);
+
+  /**
+   * 清空未接受的列表
+   */
+  void cancelDeliveries();
 }
