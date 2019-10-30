@@ -44,4 +44,9 @@ public interface IRedisService {
    * @return value - V
    */
   Object getValueByKey(String key);
+
+  /**
+   * 清空所有缓存
+   */
+  void clearAll();
 }

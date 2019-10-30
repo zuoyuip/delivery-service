@@ -1,5 +1,6 @@
 package org.zuoyu.service.impl;
 
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -48,6 +49,12 @@ class RedisServiceImpl implements IRedisService {
   @Override
   public Object getValueByKey(String key) {
     return redisTemplate.opsForValue().get(key);
+  }
+
+  @Override
+  public void clearAll() {
+    Set<String> keys = redisTemplate.keys("*");
+    redisTemplate.delete(keys);
   }
 
 

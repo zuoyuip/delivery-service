@@ -5,6 +5,7 @@ import com.aliyuncs.CommonResponse;
 import com.aliyuncs.IAcsClient;
 import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.http.MethodType;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.zuoyu.model.UserInfo;
 
@@ -15,6 +16,7 @@ import org.zuoyu.model.UserInfo;
  * @program delivery-service
  * @create 2019-10-09 16:43
  **/
+@Slf4j
 @Component
 public class SendSmsManager {
 
@@ -104,7 +106,9 @@ public class SendSmsManager {
     commonRequest.putQueryParameter("TemplateCode", templateCode);
     commonRequest.putQueryParameter("TemplateParam", templateParam);
     CommonResponse commonResponse = acsClient.getCommonResponse(commonRequest);
-    return commonResponse.getData();
+    String response = commonResponse.getData();
+    log.info("phone:" + phoneNumbers + "\t" + response);
+    return response;
   }
 
 }
