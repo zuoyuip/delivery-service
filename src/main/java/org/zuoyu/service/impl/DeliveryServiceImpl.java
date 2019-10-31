@@ -142,8 +142,8 @@ class DeliveryServiceImpl implements IDeliveryService {
   }
 
   @Override
-  public void cancelDeliveries() {
-    deliveryManager.cancelDeliveries();
+  public void clearAllDeliveries() {
+    deliveryManager.clearAllDeliveries();
   }
 
   private List<Delivery> sortDeliveries(List<Delivery> deliveries) {

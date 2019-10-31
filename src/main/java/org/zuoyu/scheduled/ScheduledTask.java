@@ -1,9 +1,9 @@
 package org.zuoyu.scheduled;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.zuoyu.service.IDeliveryService;
-import org.zuoyu.service.IRedisService;
 
 /**
  * 定时任务.
@@ -13,20 +13,18 @@ import org.zuoyu.service.IRedisService;
  * @create 2019-10-29 14:34
  **/
 @Component
+@Slf4j
 public class ScheduledTask {
 
   private final IDeliveryService iDeliveryService;
-  private final IRedisService iRedisService;
 
-  public ScheduledTask(IDeliveryService iDeliveryService,
-      IRedisService iRedisService) {
+  public ScheduledTask(IDeliveryService iDeliveryService) {
     this.iDeliveryService = iDeliveryService;
-    this.iRedisService = iRedisService;
   }
 
-  @Scheduled(cron = "0 0 0 * * ? *")
+  @Scheduled(cron = "0 0 0 * * ?")
   public void updateExpressStatus() {
-    iRedisService.clearAll();
-    iDeliveryService.cancelDeliveries();
+    log.info("------执行------clearAllDeliveries------");
+    iDeliveryService.clearAllDeliveries();
   }
 }

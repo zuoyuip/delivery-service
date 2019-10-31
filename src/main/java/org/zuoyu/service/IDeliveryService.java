@@ -106,5 +106,5 @@ public interface IDeliveryService {
   /**
    * 清空未接受的列表
    */
-  void cancelDeliveries();
+  void clearAllDeliveries();
 }

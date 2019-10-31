@@ -25,4 +25,10 @@ public interface DeliveryMapper extends Mapper<Delivery> {
    * @return - 状态
    */
   boolean selectStatusByDeliveryId(@Param("deliveryId")String deliveryId);
+
+
+  /**
+   * 清空所有包裹
+   */
+  void clearAllDeliveries();
 }

@@ -45,9 +45,14 @@
     FROM TB_DELIVERY
     WHERE DELIVERY_STATUS = 0
   </select>
+
   <select id="selectStatusByDeliveryId" resultType="java.lang.Boolean">
     SELECT DELIVERY_STATUS
     FROM TB_DELIVERY
     WHERE DELIVERY_ID = #{deliveryId}
   </select>
+
+  <update id="clearAllDeliveries">
+    UPDATE TB_DELIVERY SET DELIVERY_STATUS = 1 WHERE DELIVERY_STATUS = 0
+  </update>
 </mapper>

@@ -7,6 +7,7 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.EnableMBeanExport;
 import org.springframework.context.annotation.Import;
 import org.springframework.jmx.support.RegistrationPolicy;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.zuoyu.config.C3P0DataSource;
 import org.zuoyu.config.CacheConfig;
@@ -21,6 +22,7 @@ import tk.mybatis.spring.annotation.MapperScan;
  */
 @EnableSwagger2
 @EnableCaching
+@EnableScheduling
 @EnableTransactionManagement
 @SpringBootApplication
 @MapperScan(basePackages = "org.zuoyu.dao")
