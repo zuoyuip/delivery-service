@@ -70,15 +70,31 @@ public class SendSmsManager {
    */
   public String transaction(String phoneNumbers, UserInfo userInfo, String userPhone)
       throws ClientException {
+    String official = "官方团队";
     if (userInfo == null) {
       return null;
     }
+    if (official.equals(userInfo.getUserInfoSex())) {
+      return officialTransaction(phoneNumbers, userInfo, userPhone);
+    }
+    return ordinaryTransaction(phoneNumbers, userInfo, userPhone);
+  }
+
+  private String ordinaryTransaction(String phoneNumbers, UserInfo userInfo, String userPhone)
+      throws ClientException {
     String templateParam = "{ \"college\": \"" + userInfo.getUserInfoCollege()
         + "\",\"subject\": \"" + userInfo.getUserInfoSubject()
         + "\", \"class\": \"" + userInfo.getUserInfoClass()
         + "\",\"name\": \"" + userInfo.getUserInfoName()
         + "\",\"phone\": \"" + userPhone + "\"}";
     return smsTemplate(phoneNumbers, "SMS_175120731", templateParam);
+  }
+
+  private String officialTransaction(String phoneNumbers, UserInfo userInfo, String userPhone)
+      throws ClientException {
+    String templateParam = "{ \"name\": \"" + userInfo.getUserInfoName()
+        + "\",\"phone\": \"" + userPhone + "\"}";
+    return smsTemplate(phoneNumbers, "SMS_176935977", templateParam);
   }
 
   private String verificationCodeTemplate(String templateCode, String phoneNumbers, String code) {
