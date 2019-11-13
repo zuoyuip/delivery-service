@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -49,6 +50,7 @@ public class AdminCriteriaController {
   @ApiOperation(value = "获取所有待审核的用户列表",
       notes = "注意：若返回状态码为204，表示没有信息", response = User.class, ignoreJsonView = true)
   @GetMapping(path = "/wait")
+  @PreAuthorize("isAuthenticated()")
   public ResponseEntity<List<CriteriaModel>> selectWaitCriteria() {
     List<CriteriaModel> users = iCriteriaService.waitCriteria();
     if (users.isEmpty()) {
@@ -66,6 +68,7 @@ public class AdminCriteriaController {
           @ApiImplicitParam(name = "reviewMessage", value = "如果未通过申请，原因说明", dataTypeClass = String.class)}
   )
   @PutMapping(path = "/deal/{userId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+  @PreAuthorize("isAuthenticated()")
   public ResponseEntity<Result> dealWithCriteria(@PathVariable String userId, boolean isPass,
       @RequestParam(required = false) String reviewMessage) {
     int i;
@@ -83,6 +86,7 @@ public class AdminCriteriaController {
   @ApiOperation(value = "获取所有建议反馈列表",
       notes = "注意：若返回状态码为204，表示没有信息", response = Suggest.class, ignoreJsonView = true)
   @GetMapping(path = "/allSuggest")
+  @PreAuthorize("isAuthenticated()")
   public ResponseEntity<List<Suggest>> selectSuggest() {
     List<Suggest> suggests = iSuggestService.selectAll();
     if (suggests == null) {
@@ -96,6 +100,7 @@ public class AdminCriteriaController {
       response = Review.class, ignoreJsonView = true)
   @ApiImplicitParam(name = "reviewId", value = "审核申请信息实例的唯一标识", required = true, dataTypeClass = String.class)
   @GetMapping(path = "wait/{reviewId}")
+  @PreAuthorize("isAuthenticated()")
   public ResponseEntity<Review> getReviewById(@PathVariable String reviewId) {
     Review review = iCriteriaService.findReviewById(reviewId);
     if (review == null) {
@@ -108,6 +113,7 @@ public class AdminCriteriaController {
       response = UserInfo.class, ignoreJsonView = true)
   @ApiImplicitParam(name = "userInfoId", value = "用户详情信息实例的唯一标识", required = true, dataTypeClass = String.class)
   @GetMapping(path = "userInfo/{userInfoId}")
+  @PreAuthorize("isAuthenticated()")
   public ResponseEntity<UserInfo> getUserInfoById(@PathVariable String userInfoId) {
     UserInfo userInfo = iCriteriaService.findUserInfoById(userInfoId);
     if (userInfo == null) {

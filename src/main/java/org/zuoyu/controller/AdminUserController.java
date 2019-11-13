@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -38,6 +39,7 @@ public class AdminUserController {
 
   @ApiOperation(value = "获取所有安全账户", notes = "该方法不可轻易调用", response = User.class, ignoreJsonView = true)
   @GetMapping(path = "/all")
+  @PreAuthorize("isAuthenticated()")
   public ResponseEntity<List<User>> selectAll() {
     List<User> users = iUserService.listUser();
     return ResponseEntity.ok(users);
@@ -47,6 +49,7 @@ public class AdminUserController {
       response = User.class, ignoreJsonView = true)
   @ApiImplicitParam(name = "userId", value = "账户信息实例的唯一标识", required = true, dataTypeClass = String.class)
   @GetMapping(path = "/{userId}")
+  @PreAuthorize("isAuthenticated()")
   public ResponseEntity<User> selectUserById(@PathVariable String userId) {
     User user = iUserService.getUserById(userId);
     if (user == null) {
@@ -59,6 +62,7 @@ public class AdminUserController {
       response = Result.class, ignoreJsonView = true)
   @ApiImplicitParam(name = "userId", value = "账户信息实例的唯一标识", required = true, dataTypeClass = String.class)
   @PutMapping(path = "/prohibit/{userId}")
+  @PreAuthorize("isAuthenticated()")
   public ResponseEntity<Result> prohibitUser(@PathVariable String userId){
     int i = iUserService.prohibitUser(userId);
     if (i < 1){

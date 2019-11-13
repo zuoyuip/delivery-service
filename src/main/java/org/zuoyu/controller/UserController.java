@@ -11,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -99,6 +98,7 @@ public class UserController {
 
   @ApiOperation(value = "获取所有安全账户", notes = "该方法不可轻易调用", response = User.class, ignoreJsonView = true)
   @GetMapping
+  @PreAuthorize("isAuthenticated()")
   public ResponseEntity<List<User>> selectAll() {
     List<User> users = iUserService.listUser();
     return ResponseEntity.ok(users);

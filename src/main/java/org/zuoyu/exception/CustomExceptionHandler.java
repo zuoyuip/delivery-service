@@ -23,7 +23,8 @@ public class CustomExceptionHandler {
    */
   @ExceptionHandler(CustomException.class)
   public ResponseEntity<Result> handlerCustomException(CustomException e) {
-    return exceptionFormat(e.getCode(), e.getMessage());
+    log.error("errorCode is : " + e.getCode() + "\t" + "errorMessage is : " + e.getMsg());
+    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Result.message(e.getMsg()));
   }
 
   /**

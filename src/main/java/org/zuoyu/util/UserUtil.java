@@ -40,7 +40,11 @@ public class UserUtil {
     if (user == null) {
       throw new CustomException("无法获取该用户");
     }
-    return iUserService.getUserById(user.getUserId());
+    User currentUser = iUserService.getUserById(user.getUserId());
+    if (!currentUser.getUserIsAccountNonLocked()) {
+      throw new CustomException("您的账户已被锁定");
+    }
+    return currentUser;
   }
 
   /**

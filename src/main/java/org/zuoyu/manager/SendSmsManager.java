@@ -82,12 +82,11 @@ public class SendSmsManager {
 
   private String ordinaryTransaction(String phoneNumbers, UserInfo userInfo, String userPhone)
       throws ClientException {
-    String templateParam = "{ \"college\": \"" + userInfo.getUserInfoCollege()
-        + "\",\"subject\": \"" + userInfo.getUserInfoSubject()
+    String templateParam = "{ \"subject\": \"" + userInfo.getUserInfoSubject()
         + "\", \"class\": \"" + userInfo.getUserInfoClass()
-        + "\",\"name\": \"" + userInfo.getUserInfoName()
+        + "\",\"college\": \"" + userInfo.getUserInfoCollege()
         + "\",\"phone\": \"" + userPhone + "\"}";
-    return smsTemplate(phoneNumbers, "SMS_175120731", templateParam);
+    return smsTemplate(phoneNumbers, "SMS_177247157", templateParam);
   }
 
   private String officialTransaction(String phoneNumbers, UserInfo userInfo, String userPhone)

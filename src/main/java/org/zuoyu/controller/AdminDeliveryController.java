@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,6 +38,7 @@ public class AdminDeliveryController {
   @ApiOperation(value = "获取所有的包裹信息",
       notes = "注意：若返回状态码为204，表示没有信息", response = Delivery.class, ignoreJsonView = true)
   @GetMapping(path = "/all")
+  @PreAuthorize("isAuthenticated()")
   public ResponseEntity<List<Delivery>> selectDeliveryAll() {
     List<Delivery> deliveries = iDeliveryService.selectDeliveryAll();
     if (deliveries == null) {
@@ -49,6 +51,7 @@ public class AdminDeliveryController {
   @ApiOperation(value = "获取所有未被领取的包裹信息",
       notes = "注意：若返回状态码为204，表示没有信息", response = Delivery.class, ignoreJsonView = true)
   @GetMapping(path = "/notReceive")
+  @PreAuthorize("isAuthenticated()")
   public ResponseEntity<List<Delivery>> selectDeliveryNotReceive() {
     List<Delivery> deliveries = iDeliveryService.selectDeliveryNotReceive();
     if (deliveries == null) {
@@ -61,6 +64,7 @@ public class AdminDeliveryController {
   @ApiOperation(value = "获取所有已经被领取的包裹信息",
       notes = "注意：若返回状态码为204，表示没有信息", response = Delivery.class, ignoreJsonView = true)
   @GetMapping(path = "/receive")
+  @PreAuthorize("isAuthenticated()")
   public ResponseEntity<List<Delivery>> selectDeliveryReceive() {
     List<Delivery> deliveries = iDeliveryService.selectDeliveryReceive();
     if (deliveries == null) {
