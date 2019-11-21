@@ -21,6 +21,7 @@ public class SwaggerConfig {
   public Docket restApi() {
     return new Docket(DocumentationType.SWAGGER_2)
         .apiInfo(apiInfo())
+        .enable(false)
         .select()
         .apis(RequestHandlerSelectors
             .basePackage("org.zuoyu.controller"))

@@ -80,8 +80,3 @@ fdfs:
     height: 150
   tracker-list:            #TrackerList参数,支持多个
     - 127.0.0.1:22122
-  pool:
-    #从池中借出的对象的最大数目（配置为-1表示不限制）
-    max-total: -1
-    #获取连接时的最大等待毫秒数(默认配置为5秒)
-    max-wait-millis: 5000
