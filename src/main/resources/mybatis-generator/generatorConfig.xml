@@ -67,30 +67,30 @@
 
     <!-- targetPackage：生成的实体类所在的包 -->
     <!-- targetProject：生成的实体类所在的硬盘位置 -->
-    <javaModelGenerator targetPackage="org.zuoyu.model"
-      targetProject="${project}">
-      <!-- 是否允许子包 -->
-      <property name="enableSubPackages" value="false"/>
-      <!-- 是否对modal添加构造函数 -->
-      <property name="constructorBased" value="true"/>
-      <!-- 是否清理从数据库中查询出的字符串左右两边的空白字符 -->
-      <property name="trimStrings" value="true"/>
-      <!-- 建立modal对象是否不可改变 即生成的modal对象不会有setter方法，只有构造方法 -->
-      <property name="immutable" value="false"/>
+    <javaModelGenerator targetPackage="${modelTargetPackage}"
+                        targetProject="${project}">
+        <!-- 是否允许子包 -->
+        <property name="enableSubPackages" value="false"/>
+        <!-- 是否对modal添加构造函数 -->
+        <property name="constructorBased" value="true"/>
+        <!-- 是否清理从数据库中查询出的字符串左右两边的空白字符 -->
+        <property name="trimStrings" value="true"/>
+        <!-- 建立modal对象是否不可改变 即生成的modal对象不会有setter方法，只有构造方法 -->
+        <property name="immutable" value="false"/>
     </javaModelGenerator>
 
     <!-- targetPackage 和 targetProject：生成的 mapper 文件的包和位置 -->
     <sqlMapGenerator targetPackage="mapper"
-      targetProject="${resources}">
-      <!-- 针对数据库的一个配置，是否把 schema 作为字包名 -->
-      <property name="enableSubPackages" value="false"/>
+                     targetProject="${resources}">
+        <!-- 针对数据库的一个配置，是否把 schema 作为字包名 -->
+        <property name="enableSubPackages" value="false"/>
     </sqlMapGenerator>
 
     <!-- targetPackage 和 targetProject：生成的 interface 文件的包和位置 -->
-    <javaClientGenerator type="XMLMAPPER" targetPackage="org.zuoyu.dao"
-      targetProject="${project}">
-      <!-- 针对 oracle 数据库的一个配置，是否把 schema 作为字包名 -->
-      <property name="enableSubPackages" value="false"/>
+    <javaClientGenerator type="XMLMAPPER" targetPackage="${daoTargetPackage}"
+                         targetProject="${project}">
+        <!-- 针对 oracle 数据库的一个配置，是否把 schema 作为字包名 -->
+        <property name="enableSubPackages" value="false"/>
     </javaClientGenerator>
 
 
