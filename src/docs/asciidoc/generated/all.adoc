@@ -1,0 +1,2570 @@
+= 微信小程序后端API文档
+
+
+[[_overview]]
+== 概览
+微信小程序包裹信息平台接口说明
+
+
+=== 版本信息
+[%hardbreaks]
+__版本__ : 1.0.0
+
+
+=== 联系方式
+[%hardbreaks]
+__名字__ : zuoyu
+__邮箱__ : zuoyuip@foxmail.com
+
+
+=== 许可信息
+[%hardbreaks]
+__许可证__ : © 2019 zuoyu.top 版权所有 · 豫ICP备19014153号-1
+__服务条款__ : https://www.zuoyu.top
+
+
+=== URI scheme
+[%hardbreaks]
+__域名__ : 127.0.0.1:8080
+__基础路径__ : /delivery
+
+
+=== 标签
+
+* AdminCriteriaAPI : Admin Criteria Controller
+* AdminDeliveryAPI : Admin Delivery Controller
+* AdminUserAPI : Admin User Controller
+* deliveryAPI : Delivery Controller
+* meAPI : Me Controller
+* userAPI : User Controller
+
+
+
+
+[[_paths]]
+== 路径
+
+[[_selectsuggestusingget]]
+=== 获取所有建议反馈列表
+....
+GET /admin/criteria/allSuggest
+....
+
+
+==== 说明
+注意：若返回状态码为204，表示没有信息
+
+
+==== 响应
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|<<_suggest,Suggest>>
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+==== 生成
+
+* `application/json;charset=UTF-8`
+
+
+==== 标签
+
+* AdminCriteriaAPI
+
+
+==== HTTP请求示例
+
+===== 请求 path
+----
+/admin/criteria/allSuggest
+----
+
+
+==== HTTP响应示例
+
+===== 响应 200
+[source,json]
+----
+{
+  "suggestContent" : "string",
+  "suggestDate" : "string",
+  "suggestId" : "string",
+  "suggestUserId" : "string"
+}
+----
+
+
+[[_dealwithcriteriausingput]]
+=== 审核申请处理
+....
+PUT /admin/criteria/deal/{userId}
+....
+
+
+==== 说明
+注意：若返回状态码为500，表示服务器异常导致的反馈失败
+
+
+==== 参数
+
+[options="header", cols=".^2,.^3,.^9,.^4"]
+|===
+|类型|名称|说明|类型
+|**Path**|**userId** +
+__必填__|账户ID|string
+|**Query**|**isPass** +
+__必填__|是否通过申请|string
+|**Query**|**reviewMessage** +
+__可选__|如果未通过申请，原因说明|string
+|===
+
+
+==== 响应
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|<<_result,Result>>
+|**201**|Created|无内容
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+==== 消耗
+
+* `multipart/form-data`
+
+
+==== 生成
+
+* `application/json;charset=UTF-8`
+
+
+==== 标签
+
+* AdminCriteriaAPI
+
+
+==== HTTP请求示例
+
+===== 请求 path
+----
+/admin/criteria/deal/string
+----
+
+
+===== 请求 query
+[source,json]
+----
+{
+  "isPass" : "string",
+  "reviewMessage" : "string"
+}
+----
+
+
+==== HTTP响应示例
+
+===== 响应 200
+[source,json]
+----
+{
+  "data" : "object",
+  "message" : "string"
+}
+----
+
+
+[[_getuserinfobyidusingget]]
+=== 根据唯一标识获取对应的用户详情信息
+....
+GET /admin/criteria/userInfo/{userInfoId}
+....
+
+
+==== 说明
+注意：若返回状态码为204,表示没有该用户详情信息；若返回状态码为500,表示服务器异常
+
+
+==== 参数
+
+[options="header", cols=".^2,.^3,.^9,.^4"]
+|===
+|类型|名称|说明|类型
+|**Path**|**userInfoId** +
+__必填__|用户详情信息实例的唯一标识|string
+|===
+
+
+==== 响应
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|<<_userinfo,UserInfo>>
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+==== 生成
+
+* `application/json;charset=UTF-8`
+
+
+==== 标签
+
+* AdminCriteriaAPI
+
+
+==== HTTP请求示例
+
+===== 请求 path
+----
+/admin/criteria/userInfo/string
+----
+
+
+==== HTTP响应示例
+
+===== 响应 200
+[source,json]
+----
+{
+  "userInfoClass" : "string",
+  "userInfoCollege" : "string",
+  "userInfoId" : "string",
+  "userInfoName" : "string",
+  "userInfoPhotoUrl" : "string",
+  "userInfoSex" : "string",
+  "userInfoStudentNumber" : "string",
+  "userInfoSubject" : "string",
+  "userInfoThumbPhotoUrl" : "string"
+}
+----
+
+
+[[_selectwaitcriteriausingget]]
+=== 获取所有待审核的用户列表
+....
+GET /admin/criteria/wait
+....
+
+
+==== 说明
+注意：若返回状态码为204，表示没有信息
+
+
+==== 响应
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|<<_user,User>>
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+==== 生成
+
+* `application/json;charset=UTF-8`
+
+
+==== 标签
+
+* AdminCriteriaAPI
+
+
+==== HTTP请求示例
+
+===== 请求 path
+----
+/admin/criteria/wait
+----
+
+
+==== HTTP响应示例
+
+===== 响应 200
+[source,json]
+----
+{
+  "reviewId" : "string",
+  "userId" : "string",
+  "userInfoId" : "string",
+  "userIsAccountNonExpired" : true,
+  "userIsAccountNonLocked" : true,
+  "userIsByReview" : true,
+  "userIsCredentialsNonExpired" : true,
+  "userIsEnabled" : true,
+  "userIsSubmitReview" : true,
+  "userIsValid" : true,
+  "userPassword" : "string",
+  "userPhone" : "string"
+}
+----
+
+
+[[_getreviewbyidusingget]]
+=== 根据唯一标识获取对应的审核申请信息
+....
+GET /admin/criteria/wait/{reviewId}
+....
+
+
+==== 说明
+注意：若返回状态码为204,表示没有该审核申请信息；若返回状态码为500,表示服务器异常
+
+
+==== 参数
+
+[options="header", cols=".^2,.^3,.^9,.^4"]
+|===
+|类型|名称|说明|类型
+|**Path**|**reviewId** +
+__必填__|审核申请信息实例的唯一标识|string
+|===
+
+
+==== 响应
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|<<_review,Review>>
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+==== 生成
+
+* `application/json;charset=UTF-8`
+
+
+==== 标签
+
+* AdminCriteriaAPI
+
+
+==== HTTP请求示例
+
+===== 请求 path
+----
+/admin/criteria/wait/string
+----
+
+
+==== HTTP响应示例
+
+===== 响应 200
+[source,json]
+----
+{
+  "reviewDate" : "string",
+  "reviewId" : "string",
+  "reviewIsBy" : true,
+  "reviewMessage" : "string",
+  "userId" : "string"
+}
+----
+
+
+[[_selectdeliveryallusingget]]
+=== 获取所有的包裹信息
+....
+GET /admin/delivery/all
+....
+
+
+==== 说明
+注意：若返回状态码为204，表示没有信息
+
+
+==== 响应
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|<<_delivery,Delivery>>
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+==== 生成
+
+* `application/json;charset=UTF-8`
+
+
+==== 标签
+
+* AdminDeliveryAPI
+
+
+==== HTTP请求示例
+
+===== 请求 path
+----
+/admin/delivery/all
+----
+
+
+==== HTTP响应示例
+
+===== 响应 200
+[source,json]
+----
+{
+  "deliveryAddress" : "string",
+  "deliveryCode" : "string",
+  "deliveryDate" : "string",
+  "deliveryDeliveryUserId" : "string",
+  "deliveryGoalAddress" : "string",
+  "deliveryGoalFloor" : "string",
+  "deliveryId" : "string",
+  "deliveryName" : "string",
+  "deliveryOrderCode" : "string",
+  "deliveryRemark" : "string",
+  "deliveryReward" : "string",
+  "deliverySexImageUrl" : "string",
+  "deliveryStatus" : true,
+  "deliveryUserId" : "string",
+  "deliveryUserName" : "string",
+  "deliveryUserPhone" : "string",
+  "deliveryUserSex" : "string",
+  "deliveryWeight" : "string"
+}
+----
+
+
+[[_selectdeliverynotreceiveusingget]]
+=== 获取所有未被领取的包裹信息
+....
+GET /admin/delivery/notReceive
+....
+
+
+==== 说明
+注意：若返回状态码为204，表示没有信息
+
+
+==== 响应
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|<<_delivery,Delivery>>
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+==== 生成
+
+* `application/json;charset=UTF-8`
+
+
+==== 标签
+
+* AdminDeliveryAPI
+
+
+==== HTTP请求示例
+
+===== 请求 path
+----
+/admin/delivery/notReceive
+----
+
+
+==== HTTP响应示例
+
+===== 响应 200
+[source,json]
+----
+{
+  "deliveryAddress" : "string",
+  "deliveryCode" : "string",
+  "deliveryDate" : "string",
+  "deliveryDeliveryUserId" : "string",
+  "deliveryGoalAddress" : "string",
+  "deliveryGoalFloor" : "string",
+  "deliveryId" : "string",
+  "deliveryName" : "string",
+  "deliveryOrderCode" : "string",
+  "deliveryRemark" : "string",
+  "deliveryReward" : "string",
+  "deliverySexImageUrl" : "string",
+  "deliveryStatus" : true,
+  "deliveryUserId" : "string",
+  "deliveryUserName" : "string",
+  "deliveryUserPhone" : "string",
+  "deliveryUserSex" : "string",
+  "deliveryWeight" : "string"
+}
+----
+
+
+[[_selectdeliveryreceiveusingget]]
+=== 获取所有已经被领取的包裹信息
+....
+GET /admin/delivery/receive
+....
+
+
+==== 说明
+注意：若返回状态码为204，表示没有信息
+
+
+==== 响应
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|<<_delivery,Delivery>>
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+==== 生成
+
+* `application/json;charset=UTF-8`
+
+
+==== 标签
+
+* AdminDeliveryAPI
+
+
+==== HTTP请求示例
+
+===== 请求 path
+----
+/admin/delivery/receive
+----
+
+
+==== HTTP响应示例
+
+===== 响应 200
+[source,json]
+----
+{
+  "deliveryAddress" : "string",
+  "deliveryCode" : "string",
+  "deliveryDate" : "string",
+  "deliveryDeliveryUserId" : "string",
+  "deliveryGoalAddress" : "string",
+  "deliveryGoalFloor" : "string",
+  "deliveryId" : "string",
+  "deliveryName" : "string",
+  "deliveryOrderCode" : "string",
+  "deliveryRemark" : "string",
+  "deliveryReward" : "string",
+  "deliverySexImageUrl" : "string",
+  "deliveryStatus" : true,
+  "deliveryUserId" : "string",
+  "deliveryUserName" : "string",
+  "deliveryUserPhone" : "string",
+  "deliveryUserSex" : "string",
+  "deliveryWeight" : "string"
+}
+----
+
+
+[[_selectallusingget]]
+=== 获取所有安全账户
+....
+GET /admin/user/all
+....
+
+
+==== 说明
+该方法不可轻易调用
+
+
+==== 响应
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|<<_user,User>>
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+==== 生成
+
+* `application/json;charset=UTF-8`
+
+
+==== 标签
+
+* AdminUserAPI
+
+
+==== HTTP请求示例
+
+===== 请求 path
+----
+/admin/user/all
+----
+
+
+==== HTTP响应示例
+
+===== 响应 200
+[source,json]
+----
+{
+  "reviewId" : "string",
+  "userId" : "string",
+  "userInfoId" : "string",
+  "userIsAccountNonExpired" : true,
+  "userIsAccountNonLocked" : true,
+  "userIsByReview" : true,
+  "userIsCredentialsNonExpired" : true,
+  "userIsEnabled" : true,
+  "userIsSubmitReview" : true,
+  "userIsValid" : true,
+  "userPassword" : "string",
+  "userPhone" : "string"
+}
+----
+
+
+[[_prohibituserusingput]]
+=== 根据唯一标识禁用该用户
+....
+PUT /admin/user/prohibit/{userId}
+....
+
+
+==== 说明
+注意：若返回状态码为500,表示服务器异常
+
+
+==== 参数
+
+[options="header", cols=".^2,.^3,.^9,.^4"]
+|===
+|类型|名称|说明|类型
+|**Path**|**userId** +
+__必填__|账户信息实例的唯一标识|string
+|===
+
+
+==== 响应
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|<<_result,Result>>
+|**201**|Created|无内容
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+==== 消耗
+
+* `application/json`
+
+
+==== 生成
+
+* `application/json;charset=UTF-8`
+
+
+==== 标签
+
+* AdminUserAPI
+
+
+==== HTTP请求示例
+
+===== 请求 path
+----
+/admin/user/prohibit/string
+----
+
+
+==== HTTP响应示例
+
+===== 响应 200
+[source,json]
+----
+{
+  "data" : "object",
+  "message" : "string"
+}
+----
+
+
+[[_selectuserbyidusingget]]
+=== 根据唯一标识获取对应的账户信息
+....
+GET /admin/user/{userId}
+....
+
+
+==== 说明
+注意：若返回状态码为204,表示没有该账户信息；若返回状态码为500,表示服务器异常
+
+
+==== 参数
+
+[options="header", cols=".^2,.^3,.^9,.^4"]
+|===
+|类型|名称|说明|类型
+|**Path**|**userId** +
+__必填__|账户信息实例的唯一标识|string
+|===
+
+
+==== 响应
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|<<_user,User>>
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+==== 生成
+
+* `application/json;charset=UTF-8`
+
+
+==== 标签
+
+* AdminUserAPI
+
+
+==== HTTP请求示例
+
+===== 请求 path
+----
+/admin/user/string
+----
+
+
+==== HTTP响应示例
+
+===== 响应 200
+[source,json]
+----
+{
+  "reviewId" : "string",
+  "userId" : "string",
+  "userInfoId" : "string",
+  "userIsAccountNonExpired" : true,
+  "userIsAccountNonLocked" : true,
+  "userIsByReview" : true,
+  "userIsCredentialsNonExpired" : true,
+  "userIsEnabled" : true,
+  "userIsSubmitReview" : true,
+  "userIsValid" : true,
+  "userPassword" : "string",
+  "userPhone" : "string"
+}
+----
+
+
+[[_adddeliveryusingpost]]
+=== 添加包裹信息
+....
+POST /delivery
+....
+
+
+==== 说明
+注意：若返回状态码为500，表示服务器异常导致的添加失败
+
+
+==== 参数
+
+[options="header", cols=".^2,.^3,.^9,.^4"]
+|===
+|类型|名称|说明|类型
+|**Query**|**deliveryAddress** +
+__可选__|deliveryAddress包裹信息-包裹所在地址|string
+|**Query**|**deliveryCode** +
+__可选__|deliveryCode包裹信息-快递取货号|string
+|**Query**|**deliveryDate** +
+__可选__|deliveryDate包裹信息-日期|string (date-time)
+|**Query**|**deliveryDeliveryUserId** +
+__可选__|deliveryDeliveryUserId包裹信息-包裹工作者的安全用户唯一标识|string
+|**Query**|**deliveryGoalAddress** +
+__可选__|deliveryGoalAddress包裹信息-包裹要送达的地址|string
+|**Query**|**deliveryGoalFloor** +
+__可选__|deliveryGoalFloor包裹信息-包裹要送达的楼号|string
+|**Query**|**deliveryId** +
+__可选__|deliveryId包裹信息-唯一标识|string
+|**Query**|**deliveryName** +
+__可选__|deliveryName包裹信息-快递名称|string
+|**Query**|**deliveryOrderCode** +
+__可选__|deliveryOrderCode包裹信息-订单编号|string
+|**Query**|**deliveryRemark** +
+__可选__|deliveryRemark包裹信息-备注|string
+|**Query**|**deliveryReward** +
+__可选__|deliveryReward包裹信息-包裹的赏金|string
+|**Query**|**deliverySexImageUrl** +
+__可选__|deliverySexImageUrl包裹信息-包裹收货人性别图片地址|string
+|**Query**|**deliveryStatus** +
+__可选__|deliveryStatus包裹信息-包裹是否被接单|boolean
+|**Query**|**deliveryUserId** +
+__可选__|deliveryUserId包裹信息-发布者的安全用户唯一标识|string
+|**Query**|**deliveryUserName** +
+__可选__|deliveryUserName包裹信息-包裹的收货人名字|string
+|**Query**|**deliveryUserPhone** +
+__可选__|deliveryUserPhone包裹信息-包裹的收货人手机号|string
+|**Query**|**deliveryUserSex** +
+__可选__|deliveryUserSex包裹信息-包裹收货人性别|string
+|**Query**|**deliveryWeight** +
+__可选__|deliveryWeight包裹信息-包裹重量|string
+|===
+
+
+==== 响应
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|<<_result,Result>>
+|**201**|Created|无内容
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+==== 消耗
+
+* `application/json`
+* `application/x-www-form-urlencoded`
+
+
+==== 生成
+
+* `application/json;charset=UTF-8`
+
+
+==== 标签
+
+* deliveryAPI
+
+
+==== HTTP请求示例
+
+===== 请求 path
+----
+/delivery
+----
+
+
+===== 请求 query
+[source,json]
+----
+{
+  "deliveryAddress" : "string",
+  "deliveryCode" : "string",
+  "deliveryDate" : "string",
+  "deliveryDeliveryUserId" : "string",
+  "deliveryGoalAddress" : "string",
+  "deliveryGoalFloor" : "string",
+  "deliveryId" : "string",
+  "deliveryName" : "string",
+  "deliveryOrderCode" : "string",
+  "deliveryRemark" : "string",
+  "deliveryReward" : "string",
+  "deliverySexImageUrl" : "string",
+  "deliveryStatus" : true,
+  "deliveryUserId" : "string",
+  "deliveryUserName" : "string",
+  "deliveryUserPhone" : "string",
+  "deliveryUserSex" : "string",
+  "deliveryWeight" : "string"
+}
+----
+
+
+==== HTTP响应示例
+
+===== 响应 200
+[source,json]
+----
+{
+  "data" : "object",
+  "message" : "string"
+}
+----
+
+
+[[_selectallusingget_1]]
+=== 获取未被接单的包裹信息(只有简介信息，涉及重要私密信息不显示)
+....
+GET /delivery
+....
+
+
+==== 说明
+注意：若返回状态码为204，表示没有信息
+
+
+==== 响应
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|<<_delivery,Delivery>>
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+==== 生成
+
+* `application/json;charset=UTF-8`
+
+
+==== 标签
+
+* deliveryAPI
+
+
+==== HTTP请求示例
+
+===== 请求 path
+----
+/delivery
+----
+
+
+==== HTTP响应示例
+
+===== 响应 200
+[source,json]
+----
+{
+  "deliveryAddress" : "string",
+  "deliveryCode" : "string",
+  "deliveryDate" : "string",
+  "deliveryDeliveryUserId" : "string",
+  "deliveryGoalAddress" : "string",
+  "deliveryGoalFloor" : "string",
+  "deliveryId" : "string",
+  "deliveryName" : "string",
+  "deliveryOrderCode" : "string",
+  "deliveryRemark" : "string",
+  "deliveryReward" : "string",
+  "deliverySexImageUrl" : "string",
+  "deliveryStatus" : true,
+  "deliveryUserId" : "string",
+  "deliveryUserName" : "string",
+  "deliveryUserPhone" : "string",
+  "deliveryUserSex" : "string",
+  "deliveryWeight" : "string"
+}
+----
+
+
+[[_transactiondeliveryusingput]]
+=== 根据包裹信息唯一标识接受该订单
+....
+PUT /delivery/transaction/{deliveryId}
+....
+
+
+==== 说明
+若返回状态码为500,表示服务器异常
+
+
+==== 参数
+
+[options="header", cols=".^2,.^3,.^9,.^4"]
+|===
+|类型|名称|说明|类型
+|**Path**|**deliveryId** +
+__必填__|包裹信息实例的唯一标识|string
+|**Query**|**authenticated** +
+__可选__||boolean
+|**Query**|**authorities[0].authority** +
+__可选__||string
+|**Query**|**credentials** +
+__可选__||object
+|**Query**|**details** +
+__可选__||object
+|**Query**|**principal** +
+__可选__||object
+|===
+
+
+==== 响应
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|<<_result,Result>>
+|**201**|Created|无内容
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+==== 消耗
+
+* `application/json`
+
+
+==== 生成
+
+* `application/json;charset=UTF-8`
+
+
+==== 标签
+
+* deliveryAPI
+
+
+==== HTTP请求示例
+
+===== 请求 path
+----
+/delivery/transaction/string
+----
+
+
+===== 请求 query
+[source,json]
+----
+{
+  "authenticated" : true,
+  "authorities[0].authority" : "string",
+  "credentials" : "object",
+  "details" : "object",
+  "principal" : "object"
+}
+----
+
+
+==== HTTP响应示例
+
+===== 响应 200
+[source,json]
+----
+{
+  "data" : "object",
+  "message" : "string"
+}
+----
+
+
+[[_getdeliverybyidusingget]]
+=== 根据唯一标识获取对应的包裹信息
+....
+GET /delivery/{deliveryId}
+....
+
+
+==== 说明
+注意：若返回状态码为204,表示没有该包裹信息；若返回状态码为500,表示服务器异常
+
+
+==== 参数
+
+[options="header", cols=".^2,.^3,.^9,.^4"]
+|===
+|类型|名称|说明|类型
+|**Path**|**deliveryId** +
+__必填__|包裹信息实例的唯一标识|string
+|===
+
+
+==== 响应
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|<<_delivery,Delivery>>
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+==== 生成
+
+* `application/json;charset=UTF-8`
+
+
+==== 标签
+
+* deliveryAPI
+
+
+==== HTTP请求示例
+
+===== 请求 path
+----
+/delivery/string
+----
+
+
+==== HTTP响应示例
+
+===== 响应 200
+[source,json]
+----
+{
+  "deliveryAddress" : "string",
+  "deliveryCode" : "string",
+  "deliveryDate" : "string",
+  "deliveryDeliveryUserId" : "string",
+  "deliveryGoalAddress" : "string",
+  "deliveryGoalFloor" : "string",
+  "deliveryId" : "string",
+  "deliveryName" : "string",
+  "deliveryOrderCode" : "string",
+  "deliveryRemark" : "string",
+  "deliveryReward" : "string",
+  "deliverySexImageUrl" : "string",
+  "deliveryStatus" : true,
+  "deliveryUserId" : "string",
+  "deliveryUserName" : "string",
+  "deliveryUserPhone" : "string",
+  "deliveryUserSex" : "string",
+  "deliveryWeight" : "string"
+}
+----
+
+
+[[_canceldeliveryusingdelete]]
+=== 根据包裹信息唯一标识取消该订单
+....
+DELETE /delivery/{deliveryId}
+....
+
+
+==== 说明
+若返回状态码为500,表示服务器异常
+
+
+==== 参数
+
+[options="header", cols=".^2,.^3,.^9,.^4"]
+|===
+|类型|名称|说明|类型
+|**Path**|**deliveryId** +
+__必填__|包裹信息实例的唯一标识|string
+|===
+
+
+==== 响应
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|<<_result,Result>>
+|**204**|No Content|无内容
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|===
+
+
+==== 生成
+
+* `application/json;charset=UTF-8`
+
+
+==== 标签
+
+* deliveryAPI
+
+
+==== HTTP请求示例
+
+===== 请求 path
+----
+/delivery/string
+----
+
+
+==== HTTP响应示例
+
+===== 响应 200
+[source,json]
+----
+{
+  "data" : "object",
+  "message" : "string"
+}
+----
+
+
+[[_listmedeliveryusingget]]
+=== 根据当前用户的唯一标识获取其发布的所有包裹信息
+....
+GET /me/deliveryUser/{deliveryUserId}
+....
+
+
+==== 说明
+注意：若返回状态码为204,表示没有该包裹信息；若返回状态码为500,表示服务器异常
+
+
+==== 参数
+
+[options="header", cols=".^2,.^3,.^9,.^4"]
+|===
+|类型|名称|说明|类型
+|**Path**|**deliveryUserId** +
+__必填__|当前用户的唯一标识|string
+|===
+
+
+==== 响应
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|<<_delivery,Delivery>>
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+==== 生成
+
+* `application/json;charset=UTF-8`
+
+
+==== 标签
+
+* meAPI
+
+
+==== HTTP请求示例
+
+===== 请求 path
+----
+/me/deliveryUser/string
+----
+
+
+==== HTTP响应示例
+
+===== 响应 200
+[source,json]
+----
+{
+  "deliveryAddress" : "string",
+  "deliveryCode" : "string",
+  "deliveryDate" : "string",
+  "deliveryDeliveryUserId" : "string",
+  "deliveryGoalAddress" : "string",
+  "deliveryGoalFloor" : "string",
+  "deliveryId" : "string",
+  "deliveryName" : "string",
+  "deliveryOrderCode" : "string",
+  "deliveryRemark" : "string",
+  "deliveryReward" : "string",
+  "deliverySexImageUrl" : "string",
+  "deliveryStatus" : true,
+  "deliveryUserId" : "string",
+  "deliveryUserName" : "string",
+  "deliveryUserPhone" : "string",
+  "deliveryUserSex" : "string",
+  "deliveryWeight" : "string"
+}
+----
+
+
+[[_listmedeliveriesdeliveryusingget]]
+=== 根据当前用户的唯一标识获取其接收的所有包裹信息
+....
+GET /me/deliveryWorker/{deliveryDeliveryUserId}
+....
+
+
+==== 说明
+注意：若返回状态码为204,表示没有该包裹信息；若返回状态码为500,表示服务器异常
+
+
+==== 参数
+
+[options="header", cols=".^2,.^3,.^9,.^4"]
+|===
+|类型|名称|说明|类型
+|**Path**|**deliveryDeliveryUserId** +
+__必填__|当前用户的唯一标识|string
+|===
+
+
+==== 响应
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|<<_delivery,Delivery>>
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+==== 生成
+
+* `application/json;charset=UTF-8`
+
+
+==== 标签
+
+* meAPI
+
+
+==== HTTP请求示例
+
+===== 请求 path
+----
+/me/deliveryWorker/string
+----
+
+
+==== HTTP响应示例
+
+===== 响应 200
+[source,json]
+----
+{
+  "deliveryAddress" : "string",
+  "deliveryCode" : "string",
+  "deliveryDate" : "string",
+  "deliveryDeliveryUserId" : "string",
+  "deliveryGoalAddress" : "string",
+  "deliveryGoalFloor" : "string",
+  "deliveryId" : "string",
+  "deliveryName" : "string",
+  "deliveryOrderCode" : "string",
+  "deliveryRemark" : "string",
+  "deliveryReward" : "string",
+  "deliverySexImageUrl" : "string",
+  "deliveryStatus" : true,
+  "deliveryUserId" : "string",
+  "deliveryUserName" : "string",
+  "deliveryUserPhone" : "string",
+  "deliveryUserSex" : "string",
+  "deliveryWeight" : "string"
+}
+----
+
+
+[[_getreviewbyuserusingget]]
+=== 根据唯一标识获取对应的审核申请信息
+....
+GET /me/review/{reviewId}
+....
+
+
+==== 说明
+注意：若返回状态码为204,表示没有该审核申请信息；若返回状态码为500,表示服务器异常
+
+
+==== 参数
+
+[options="header", cols=".^2,.^3,.^9,.^4"]
+|===
+|类型|名称|说明|类型
+|**Path**|**reviewId** +
+__必填__|审核申请信息实例的唯一标识|string
+|===
+
+
+==== 响应
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|<<_review,Review>>
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+==== 生成
+
+* `application/json;charset=UTF-8`
+
+
+==== 标签
+
+* meAPI
+
+
+==== HTTP请求示例
+
+===== 请求 path
+----
+/me/review/string
+----
+
+
+==== HTTP响应示例
+
+===== 响应 200
+[source,json]
+----
+{
+  "reviewDate" : "string",
+  "reviewId" : "string",
+  "reviewIsBy" : true,
+  "reviewMessage" : "string",
+  "userId" : "string"
+}
+----
+
+
+[[_submitcriteriausingpost]]
+=== 审核申请
+....
+POST /me/submitCriteria
+....
+
+
+==== 说明
+注意：若返回状态码为500，表示服务器异常导致的反馈失败
+
+
+==== 参数
+
+[options="header", cols=".^2,.^3,.^9,.^4"]
+|===
+|类型|名称|说明|类型
+|**Query**|**userInfoClass** +
+__可选__|userInfoClass用户信息-班级|string
+|**Query**|**userInfoCollege** +
+__可选__|userInfoCollege用户信息-学院|string
+|**Query**|**userInfoId** +
+__可选__|userInfoId用户信息的唯一标识|string
+|**Query**|**userInfoName** +
+__可选__|userInfoName用户信息—名字|string
+|**Query**|**userInfoPhotoUrl** +
+__可选__|userInfoPhotoUrl用户信息-审核图片|string
+|**Query**|**userInfoSex** +
+__可选__|userInfoSex用户信息—性别|string
+|**Query**|**userInfoStudentNumber** +
+__可选__|userInfoStudentNumber用户信息-学号|string
+|**Query**|**userInfoSubject** +
+__可选__|userInfoSubject用户信息-专业|string
+|**Query**|**userInfoThumbPhotoUrl** +
+__可选__|userInfoThumbPhotoUrl用户信息-审核缩略图片|string
+|**FormData**|**file** +
+__必填__|file|file
+|===
+
+
+==== 响应
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|<<_result,Result>>
+|**201**|Created|无内容
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+==== 消耗
+
+* `multipart/form-data`
+* `application/x-www-form-urlencoded`
+
+
+==== 生成
+
+* `application/json;charset=UTF-8`
+
+
+==== 标签
+
+* meAPI
+
+
+==== HTTP请求示例
+
+===== 请求 path
+----
+/me/submitCriteria
+----
+
+
+===== 请求 query
+[source,json]
+----
+{
+  "userInfoClass" : "string",
+  "userInfoCollege" : "string",
+  "userInfoId" : "string",
+  "userInfoName" : "string",
+  "userInfoPhotoUrl" : "string",
+  "userInfoSex" : "string",
+  "userInfoStudentNumber" : "string",
+  "userInfoSubject" : "string",
+  "userInfoThumbPhotoUrl" : "string"
+}
+----
+
+
+===== 请求 formData
+[source,json]
+----
+"file"
+----
+
+
+==== HTTP响应示例
+
+===== 响应 200
+[source,json]
+----
+{
+  "data" : "object",
+  "message" : "string"
+}
+----
+
+
+[[_addsuggestusingpost]]
+=== 建议反馈
+....
+POST /me/suggest
+....
+
+
+==== 说明
+注意：若返回状态码为500，表示服务器异常导致的反馈失败
+
+
+==== 参数
+
+[options="header", cols=".^2,.^3,.^9,.^4"]
+|===
+|类型|名称|说明|类型
+|**Query**|**suggestContent** +
+__可选__|suggestContent建议反馈-反馈内容|string
+|**Query**|**suggestDate** +
+__可选__|suggestDate建议反馈-反馈时间|string (date-time)
+|**Query**|**suggestId** +
+__可选__|suggestId建议反馈的唯一标识|string
+|**Query**|**suggestUserId** +
+__可选__|suggestUserId建议反馈-建议者的安全用户唯一标识|string
+|===
+
+
+==== 响应
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|<<_result,Result>>
+|**201**|Created|无内容
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+==== 消耗
+
+* `application/json`
+* `application/x-www-form-urlencoded`
+
+
+==== 生成
+
+* `application/json;charset=UTF-8`
+
+
+==== 标签
+
+* meAPI
+
+
+==== HTTP请求示例
+
+===== 请求 path
+----
+/me/suggest
+----
+
+
+===== 请求 query
+[source,json]
+----
+{
+  "suggestContent" : "string",
+  "suggestDate" : "string",
+  "suggestId" : "string",
+  "suggestUserId" : "string"
+}
+----
+
+
+==== HTTP响应示例
+
+===== 响应 200
+[source,json]
+----
+{
+  "data" : "object",
+  "message" : "string"
+}
+----
+
+
+[[_registerusingpost]]
+=== 根据传入的安全用户实例信息进行注册
+....
+POST /user
+....
+
+
+==== 说明
+注意：返回500表示服务器异常导致注册失败
+
+
+==== 参数
+
+[options="header", cols=".^2,.^3,.^9,.^4"]
+|===
+|类型|名称|说明|类型
+|**FormData**|**authorities[0].authority** +
+__可选__||string
+|**FormData**|**reviewId** +
+__可选__|reviewId该帐号对应的审核信息唯一标识|string
+|**FormData**|**userId** +
+__可选__|userId安全用户唯一标识|string
+|**FormData**|**userInfoId** +
+__可选__|userInfoId该帐号对应用户信息的唯一标识|string
+|**FormData**|**userIsAccountNonExpired** +
+__可选__|userIsAccountNonExpired该安全用户帐号是否未过期|boolean
+|**FormData**|**userIsAccountNonLocked** +
+__可选__|userIsAccountNonLocked该安全用户帐号是否未锁定|boolean
+|**FormData**|**userIsByReview** +
+__可选__|userIsByReview该安全用户帐号是否已通过审核|boolean
+|**FormData**|**userIsCredentialsNonExpired** +
+__可选__|userIsCredentialsNonExpired该安全用户帐号凭证是否未过期|boolean
+|**FormData**|**userIsEnabled** +
+__可选__|userIsEnabled该安全用户帐号是否启用|boolean
+|**FormData**|**userIsSubmitReview** +
+__可选__|userIsSubmitReview该安全用户账户是否已提交用户审核|boolean
+|**FormData**|**userIsValid** +
+__可选__|userIsValid该安全用户帐号是否已注册|boolean
+|**FormData**|**userPassword** +
+__可选__|userPassword安全用户的密码|string
+|**FormData**|**userPhone** +
+__可选__|userPhone安全用户帐号（手机号）|string
+|**FormData**|**verifyCode** +
+__必填__|验证码|string
+|===
+
+
+==== 响应
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|<<_result,Result>>
+|**201**|Created|无内容
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+==== 消耗
+
+* `application/x-www-form-urlencoded`
+
+
+==== 生成
+
+* `application/json;charset=UTF-8`
+
+
+==== 标签
+
+* userAPI
+
+
+==== HTTP请求示例
+
+===== 请求 path
+----
+/user
+----
+
+
+===== 请求 formData
+[source,json]
+----
+"string"
+----
+
+
+==== HTTP响应示例
+
+===== 响应 200
+[source,json]
+----
+{
+  "data" : "object",
+  "message" : "string"
+}
+----
+
+
+[[_selectallusingget_2]]
+=== 获取所有安全账户
+....
+GET /user
+....
+
+
+==== 说明
+该方法不可轻易调用
+
+
+==== 响应
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|<<_user,User>>
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+==== 生成
+
+* `application/json;charset=UTF-8`
+
+
+==== 标签
+
+* userAPI
+
+
+==== HTTP请求示例
+
+===== 请求 path
+----
+/user
+----
+
+
+==== HTTP响应示例
+
+===== 响应 200
+[source,json]
+----
+{
+  "reviewId" : "string",
+  "userId" : "string",
+  "userInfoId" : "string",
+  "userIsAccountNonExpired" : true,
+  "userIsAccountNonLocked" : true,
+  "userIsByReview" : true,
+  "userIsCredentialsNonExpired" : true,
+  "userIsEnabled" : true,
+  "userIsSubmitReview" : true,
+  "userIsValid" : true,
+  "userPassword" : "string",
+  "userPhone" : "string"
+}
+----
+
+
+[[_getcurrentuserusingget]]
+=== 获取当前的安全用户
+....
+GET /user/authentication
+....
+
+
+==== 说明
+该方法仅适用客户端
+
+
+==== 响应
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|<<_user,User>>
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+==== 生成
+
+* `application/json;charset=UTF-8`
+
+
+==== 标签
+
+* userAPI
+
+
+==== HTTP请求示例
+
+===== 请求 path
+----
+/user/authentication
+----
+
+
+==== HTTP响应示例
+
+===== 响应 200
+[source,json]
+----
+{
+  "reviewId" : "string",
+  "userId" : "string",
+  "userInfoId" : "string",
+  "userIsAccountNonExpired" : true,
+  "userIsAccountNonLocked" : true,
+  "userIsByReview" : true,
+  "userIsCredentialsNonExpired" : true,
+  "userIsEnabled" : true,
+  "userIsSubmitReview" : true,
+  "userIsValid" : true,
+  "userPassword" : "string",
+  "userPhone" : "string"
+}
+----
+
+
+[[_forgetuserusingpost]]
+=== 修改密码
+....
+POST /user/forgetUser
+....
+
+
+==== 说明
+注意：若返回状态码为500，表示服务器异常导致的反馈失败
+
+
+==== 参数
+
+[options="header", cols=".^2,.^3,.^9,.^4"]
+|===
+|类型|名称|说明|类型
+|**Query**|**passWord** +
+__必填__|密码|string
+|**Query**|**userPhone** +
+__必填__|账户的手机号|string
+|**Query**|**verifyCode** +
+__必填__|验证码|string
+|===
+
+
+==== 响应
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|<<_result,Result>>
+|**201**|Created|无内容
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+==== 消耗
+
+* `application/json`
+* `application/x-www-form-urlencoded`
+
+
+==== 生成
+
+* `application/json;charset=UTF-8`
+
+
+==== 标签
+
+* userAPI
+
+
+==== HTTP请求示例
+
+===== 请求 path
+----
+/user/forgetUser
+----
+
+
+===== 请求 query
+[source,json]
+----
+{
+  "passWord" : "string",
+  "userPhone" : "string",
+  "verifyCode" : "string"
+}
+----
+
+
+==== HTTP响应示例
+
+===== 响应 200
+[source,json]
+----
+{
+  "data" : "object",
+  "message" : "string"
+}
+----
+
+
+[[_modifyuserusingpost]]
+=== 修改手机号
+....
+POST /user/modifyUser
+....
+
+
+==== 说明
+注意：若返回状态码为500，表示服务器异常导致的反馈失败
+
+
+==== 参数
+
+[options="header", cols=".^2,.^3,.^9,.^4"]
+|===
+|类型|名称|说明|类型
+|**Query**|**newUserPhone** +
+__必填__|要更改为的手机号|string
+|**Query**|**passWord** +
+__必填__|原密码|string
+|**Query**|**verifyCode** +
+__必填__|验证码|string
+|===
+
+
+==== 响应
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|<<_result,Result>>
+|**201**|Created|无内容
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+==== 消耗
+
+* `application/json`
+* `application/x-www-form-urlencoded`
+
+
+==== 生成
+
+* `application/json;charset=UTF-8`
+
+
+==== 标签
+
+* userAPI
+
+
+==== HTTP请求示例
+
+===== 请求 path
+----
+/user/modifyUser
+----
+
+
+===== 请求 query
+[source,json]
+----
+{
+  "newUserPhone" : "string",
+  "passWord" : "string",
+  "verifyCode" : "string"
+}
+----
+
+
+==== HTTP响应示例
+
+===== 响应 200
+[source,json]
+----
+{
+  "data" : "object",
+  "message" : "string"
+}
+----
+
+
+[[_sendverificationforgetcodeusingget]]
+=== 获取重置验证码
+....
+GET /user/sendVerificationCode/forget/{phoneNumbers}
+....
+
+
+==== 说明
+注意：若返回状态码为500,表示服务器异常
+
+
+==== 参数
+
+[options="header", cols=".^2,.^3,.^9,.^4"]
+|===
+|类型|名称|说明|类型
+|**Path**|**phoneNumbers** +
+__必填__|用户手机号码|string
+|===
+
+
+==== 响应
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|<<_result,Result>>
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+==== 生成
+
+* `application/json;charset=UTF-8`
+
+
+==== 标签
+
+* userAPI
+
+
+==== HTTP请求示例
+
+===== 请求 path
+----
+/user/sendVerificationCode/forget/string
+----
+
+
+==== HTTP响应示例
+
+===== 响应 200
+[source,json]
+----
+{
+  "data" : "object",
+  "message" : "string"
+}
+----
+
+
+[[_sendverificationmodifycodeusingget]]
+=== 获取修改账户验证码
+....
+GET /user/sendVerificationCode/modify/{phoneNumbers}
+....
+
+
+==== 说明
+注意：若返回状态码为500,表示服务器异常
+
+
+==== 参数
+
+[options="header", cols=".^2,.^3,.^9,.^4"]
+|===
+|类型|名称|说明|类型
+|**Path**|**phoneNumbers** +
+__必填__|用户手机号码|string
+|===
+
+
+==== 响应
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|<<_result,Result>>
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+==== 生成
+
+* `application/json;charset=UTF-8`
+
+
+==== 标签
+
+* userAPI
+
+
+==== HTTP请求示例
+
+===== 请求 path
+----
+/user/sendVerificationCode/modify/string
+----
+
+
+==== HTTP响应示例
+
+===== 响应 200
+[source,json]
+----
+{
+  "data" : "object",
+  "message" : "string"
+}
+----
+
+
+[[_sendverificationregistercodeusingget]]
+=== 获取注册验证码
+....
+GET /user/sendVerificationCode/register/{phoneNumbers}
+....
+
+
+==== 说明
+注意：若返回状态码为500,表示服务器异常
+
+
+==== 参数
+
+[options="header", cols=".^2,.^3,.^9,.^4"]
+|===
+|类型|名称|说明|类型
+|**Path**|**phoneNumbers** +
+__必填__|用户手机号码|string
+|===
+
+
+==== 响应
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|<<_result,Result>>
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+==== 生成
+
+* `application/json;charset=UTF-8`
+
+
+==== 标签
+
+* userAPI
+
+
+==== HTTP请求示例
+
+===== 请求 path
+----
+/user/sendVerificationCode/register/string
+----
+
+
+==== HTTP响应示例
+
+===== 响应 200
+[source,json]
+----
+{
+  "data" : "object",
+  "message" : "string"
+}
+----
+
+
+[[_getuserinfobyidusingget_1]]
+=== 根据唯一标识获取对应的用户详情信息
+....
+GET /user/userInfo/{userInfoId}
+....
+
+
+==== 说明
+注意：若返回状态码为204,表示没有该用户详情信息；若返回状态码为500,表示服务器异常
+
+
+==== 参数
+
+[options="header", cols=".^2,.^3,.^9,.^4"]
+|===
+|类型|名称|说明|类型
+|**Path**|**userInfoId** +
+__必填__|用户详情信息实例的唯一标识|string
+|===
+
+
+==== 响应
+
+[options="header", cols=".^2,.^14,.^4"]
+|===
+|HTTP代码|说明|类型
+|**200**|OK|<<_userinfo,UserInfo>>
+|**401**|Unauthorized|无内容
+|**403**|Forbidden|无内容
+|**404**|Not Found|无内容
+|===
+
+
+==== 生成
+
+* `application/json;charset=UTF-8`
+
+
+==== 标签
+
+* userAPI
+
+
+==== HTTP请求示例
+
+===== 请求 path
+----
+/user/userInfo/string
+----
+
+
+==== HTTP响应示例
+
+===== 响应 200
+[source,json]
+----
+{
+  "userInfoClass" : "string",
+  "userInfoCollege" : "string",
+  "userInfoId" : "string",
+  "userInfoName" : "string",
+  "userInfoPhotoUrl" : "string",
+  "userInfoSex" : "string",
+  "userInfoStudentNumber" : "string",
+  "userInfoSubject" : "string",
+  "userInfoThumbPhotoUrl" : "string"
+}
+----
+
+
+
+
+[[_definitions]]
+== 定义
+
+[[_criteriamodel]]
+=== CriteriaModel
+审核包装
+
+
+[options="header", cols=".^3,.^11,.^4"]
+|===
+|名称|说明|类型
+|**college** +
+__可选__|**样例** : `"string"`|string
+|**criteriaTime** +
+__可选__|**样例** : `"string"`|string (date-time)
+|**photoUrl** +
+__可选__|**样例** : `"string"`|string
+|**reviewId** +
+__可选__|**样例** : `"string"`|string
+|**sex** +
+__可选__|**样例** : `"string"`|string
+|**studentNumber** +
+__可选__|**样例** : `"string"`|string
+|**subject** +
+__可选__|**样例** : `"string"`|string
+|**thumbPhotoUrl** +
+__可选__|**样例** : `"string"`|string
+|**userClass** +
+__可选__|**样例** : `"string"`|string
+|**userId** +
+__可选__|**样例** : `"string"`|string
+|**userInfoId** +
+__可选__|**样例** : `"string"`|string
+|**userName** +
+__可选__|**样例** : `"string"`|string
+|**userPhone** +
+__可选__|**样例** : `"string"`|string
+|===
+
+
+[[_delivery]]
+=== Delivery
+包裹信息
+
+
+[options="header", cols=".^3,.^11,.^4"]
+|===
+|名称|说明|类型
+|**deliveryAddress** +
+__可选__|deliveryAddress包裹信息-包裹所在地址 +
+**样例** : `"string"`|string
+|**deliveryCode** +
+__可选__|deliveryCode包裹信息-快递取货号 +
+**样例** : `"string"`|string
+|**deliveryDate** +
+__可选__|deliveryDate包裹信息-日期 +
+**样例** : `"string"`|string (date-time)
+|**deliveryDeliveryUserId** +
+__可选__|deliveryDeliveryUserId包裹信息-包裹工作者的安全用户唯一标识 +
+**样例** : `"string"`|string
+|**deliveryGoalAddress** +
+__可选__|deliveryGoalAddress包裹信息-包裹要送达的地址 +
+**样例** : `"string"`|string
+|**deliveryGoalFloor** +
+__可选__|deliveryGoalFloor包裹信息-包裹要送达的楼号 +
+**样例** : `"string"`|string
+|**deliveryId** +
+__可选__|deliveryId包裹信息-唯一标识 +
+**样例** : `"string"`|string
+|**deliveryName** +
+__可选__|deliveryName包裹信息-快递名称 +
+**样例** : `"string"`|string
+|**deliveryOrderCode** +
+__可选__|deliveryOrderCode包裹信息-订单编号 +
+**样例** : `"string"`|string
+|**deliveryRemark** +
+__可选__|deliveryRemark包裹信息-备注 +
+**样例** : `"string"`|string
+|**deliveryReward** +
+__可选__|deliveryReward包裹信息-包裹的赏金 +
+**样例** : `"string"`|string
+|**deliverySexImageUrl** +
+__可选__|deliverySexImageUrl包裹信息-包裹收货人性别图片地址 +
+**样例** : `"string"`|string
+|**deliveryStatus** +
+__可选__|deliveryStatus包裹信息-包裹是否被接单 +
+**样例** : `true`|boolean
+|**deliveryUserId** +
+__可选__|deliveryUserId包裹信息-发布者的安全用户唯一标识 +
+**样例** : `"string"`|string
+|**deliveryUserName** +
+__可选__|deliveryUserName包裹信息-包裹的收货人名字 +
+**样例** : `"string"`|string
+|**deliveryUserPhone** +
+__可选__|deliveryUserPhone包裹信息-包裹的收货人手机号 +
+**样例** : `"string"`|string
+|**deliveryUserSex** +
+__可选__|deliveryUserSex包裹信息-包裹收货人性别 +
+**样例** : `"string"`|string
+|**deliveryWeight** +
+__可选__|deliveryWeight包裹信息-包裹重量 +
+**样例** : `"string"`|string
+|===
+
+
+[[_result]]
+=== Result
+响应数据和信息的封装
+
+
+[options="header", cols=".^3,.^11,.^4"]
+|===
+|名称|说明|类型
+|**data** +
+__可选__|响应数据 +
+**样例** : `"object"`|object
+|**message** +
+__可选__|响应信息 +
+**样例** : `"string"`|string
+|===
+
+
+[[_review]]
+=== Review
+审核信息
+
+
+[options="header", cols=".^3,.^11,.^4"]
+|===
+|名称|说明|类型
+|**reviewDate** +
+__可选__|reviewDate审核信息-审核日期 +
+**样例** : `"string"`|string (date-time)
+|**reviewId** +
+__可选__|reviewId审核信息的唯一标识 +
+**样例** : `"string"`|string
+|**reviewIsBy** +
+__可选__|reviewIsBy审核信息-审核是否已通过 +
+**样例** : `true`|boolean
+|**reviewMessage** +
+__可选__|reviewMessage审核信息-审核说明 +
+**样例** : `"string"`|string
+|**userId** +
+__可选__|userId审核信息-审核用户的唯一标识 +
+**样例** : `"string"`|string
+|===
+
+
+[[_suggest]]
+=== Suggest
+建议反馈
+
+
+[options="header", cols=".^3,.^11,.^4"]
+|===
+|名称|说明|类型
+|**suggestContent** +
+__可选__|suggestContent建议反馈-反馈内容 +
+**样例** : `"string"`|string
+|**suggestDate** +
+__可选__|suggestDate建议反馈-反馈时间 +
+**样例** : `"string"`|string (date-time)
+|**suggestId** +
+__可选__|suggestId建议反馈的唯一标识 +
+**样例** : `"string"`|string
+|**suggestUserId** +
+__可选__|suggestUserId建议反馈-建议者的安全用户唯一标识 +
+**样例** : `"string"`|string
+|===
+
+
+[[_user]]
+=== User
+安全账户
+
+
+[options="header", cols=".^3,.^11,.^4"]
+|===
+|名称|说明|类型
+|**reviewId** +
+__可选__|reviewId该帐号对应的审核信息唯一标识 +
+**样例** : `"string"`|string
+|**userId** +
+__可选__|userId安全用户唯一标识 +
+**样例** : `"string"`|string
+|**userInfoId** +
+__可选__|userInfoId该帐号对应用户信息的唯一标识 +
+**样例** : `"string"`|string
+|**userIsAccountNonExpired** +
+__可选__|userIsAccountNonExpired该安全用户帐号是否未过期 +
+**样例** : `true`|boolean
+|**userIsAccountNonLocked** +
+__可选__|userIsAccountNonLocked该安全用户帐号是否未锁定 +
+**样例** : `true`|boolean
+|**userIsByReview** +
+__可选__|userIsByReview该安全用户帐号是否已通过审核 +
+**样例** : `true`|boolean
+|**userIsCredentialsNonExpired** +
+__可选__|userIsCredentialsNonExpired该安全用户帐号凭证是否未过期 +
+**样例** : `true`|boolean
+|**userIsEnabled** +
+__可选__|userIsEnabled该安全用户帐号是否启用 +
+**样例** : `true`|boolean
+|**userIsSubmitReview** +
+__可选__|userIsSubmitReview该安全用户账户是否已提交用户审核 +
+**样例** : `true`|boolean
+|**userIsValid** +
+__可选__|userIsValid该安全用户帐号是否已注册 +
+**样例** : `true`|boolean
+|**userPassword** +
+__可选__|userPassword安全用户的密码 +
+**样例** : `"string"`|string
+|**userPhone** +
+__可选__|userPhone安全用户帐号（手机号） +
+**样例** : `"string"`|string
+|===
+
+
+[[_userinfo]]
+=== UserInfo
+用户详细信息
+
+
+[options="header", cols=".^3,.^11,.^4"]
+|===
+|名称|说明|类型
+|**userInfoClass** +
+__可选__|userInfoClass用户信息-班级 +
+**样例** : `"string"`|string
+|**userInfoCollege** +
+__可选__|userInfoCollege用户信息-学院 +
+**样例** : `"string"`|string
+|**userInfoId** +
+__可选__|userInfoId用户信息的唯一标识 +
+**样例** : `"string"`|string
+|**userInfoName** +
+__可选__|userInfoName用户信息—名字 +
+**样例** : `"string"`|string
+|**userInfoPhotoUrl** +
+__可选__|userInfoPhotoUrl用户信息-审核图片 +
+**样例** : `"string"`|string
+|**userInfoSex** +
+__可选__|userInfoSex用户信息—性别 +
+**样例** : `"string"`|string
+|**userInfoStudentNumber** +
+__可选__|userInfoStudentNumber用户信息-学号 +
+**样例** : `"string"`|string
+|**userInfoSubject** +
+__可选__|userInfoSubject用户信息-专业 +
+**样例** : `"string"`|string
+|**userInfoThumbPhotoUrl** +
+__可选__|userInfoThumbPhotoUrl用户信息-审核缩略图片 +
+**样例** : `"string"`|string
+|===
+
+
+
+
+

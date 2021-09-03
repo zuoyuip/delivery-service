@@ -10,7 +10,7 @@ spring:
     name: delivery-service
   profiles:
     include: c3p0
-    active: prod
+    active: dev
   servlet:
     multipart:
       enabled: true
@@ -19,10 +19,11 @@ spring:
   datasource:
     type: com.mchange.v2.c3p0.ComboPooledDataSource
   redis:
-    host: 127.0.0.1
+    host: 39.107.244.193
     port: 6379
     database: 0
-#    timeout: 50
+    password: root
+  #    timeout: 50
   cache:
     type: redis
     redis:

@@ -6,6 +6,14 @@ import com.github.tobato.fastdfs.service.FastFileStorageClient;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.net.URL;
+import java.nio.file.Paths;
+
+import io.github.swagger2markup.Language;
+import io.github.swagger2markup.Swagger2MarkupConfig;
+import io.github.swagger2markup.Swagger2MarkupConverter;
+import io.github.swagger2markup.builder.Swagger2MarkupConfigBuilder;
+import io.github.swagger2markup.markup.builder.MarkupLanguage;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,5 +50,21 @@ public class DeliveryServiceApplicationTests {
 //    log.info("获取缩略图路径\n" + thumbImagePath);
 //    System.out.println(storePath.getGroup());
   }
+
+    @Test
+    public void generateAsciiDocs() throws Exception {
+        //    输出Ascii格式
+        Swagger2MarkupConfig config = new Swagger2MarkupConfigBuilder()
+                .withMarkupLanguage(MarkupLanguage.MARKDOWN)
+                .withOutputLanguage(Language.ZH)
+                .withGeneratedExamples()
+                .build();
+        //此处填写swagger项目地址
+        // http://localhost:8080/delivery/swagger-ui.html
+        Swagger2MarkupConverter.from(new URL("http://127.0.0.1:8080/delivery/v2/api-docs"))
+                .withConfig(config)
+                .build()
+                .toFile(Paths.get("src/docs/asciidoc/generated/all"));
+    }
 
 }

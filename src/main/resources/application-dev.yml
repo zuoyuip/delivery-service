@@ -3,6 +3,6 @@ spring:
     type: org.h2.jdbcx.JdbcDataSource
     driver-class-name: org.h2.Driver
     schema: classpath:db/h2-schema.sql
-    data: classpath:db/h2-data.sql
+#    data: classpath:db/h2-data.sql
 
 

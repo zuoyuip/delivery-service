@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Scope;
+import org.springframework.lang.NonNull;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
@@ -51,12 +52,14 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
   }
 
   @Override
-  protected void addResourceHandlers(ResourceHandlerRegistry registry) {
+  protected void addResourceHandlers(@NonNull ResourceHandlerRegistry registry) {
     /*放行swagger*/
     registry.addResourceHandler("swagger-ui.html")
         .addResourceLocations("classpath:/META-INF/resources/");
     registry.addResourceHandler("/webjars/**")
         .addResourceLocations("classpath:/META-INF/resources/webjars/");
+      registry.addResourceHandler("/**")
+              .addResourceLocations("classpath:/static/");
     super.addResourceHandlers(registry);
   }
 

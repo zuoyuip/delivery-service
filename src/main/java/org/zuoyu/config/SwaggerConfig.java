@@ -21,7 +21,7 @@ public class SwaggerConfig {
   public Docket restApi() {
     return new Docket(DocumentationType.SWAGGER_2)
         .apiInfo(apiInfo())
-        .enable(false)
+        .enable(true)
         .select()
         .apis(RequestHandlerSelectors
             .basePackage("org.zuoyu.controller"))
@@ -33,8 +33,8 @@ public class SwaggerConfig {
     return new ApiInfoBuilder()
         .title("微信小程序后端API文档")
         .description("微信小程序包裹信息平台接口说明")
-        .termsOfServiceUrl("http://www.zuoyu.top")
-        .contact(new Contact("zuoyu", "www.zuoyu.top", "zuoyuip@qq.com"))
+        .termsOfServiceUrl("https://www.zuoyu.top")
+        .contact(new Contact("zuoyu", "www.zuoyu.top", "zuoyuip@foxmail.com"))
         .license("© 2019 zuoyu.top 版权所有 · 豫ICP备19014153号-1")
         .version("1.0.0")
         .build();
