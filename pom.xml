@@ -17,7 +17,7 @@
 
     <properties>
         <java.version>1.8</java.version>
-        <mysql>8.0.16</mysql>
+        <mysql>8.0.28</mysql>
     </properties>
 
     <dependencies>
